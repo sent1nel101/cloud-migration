@@ -100,6 +100,11 @@ export default function SignInPage() {
 
             <div className="auth-footer">
               <p>
+                <Link href="/auth/forgot-password" className="auth-link">
+                  Forgot password?
+                </Link>
+              </p>
+              <p>
                 Don't have an account?{' '}
                 <Link href="/auth/signup" className="auth-link">
                   Create one

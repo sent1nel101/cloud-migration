@@ -1,75 +1,76 @@
-'use client';
+"use client"
 
-import React, { useEffect, useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import React, { useEffect, useState } from "react"
+import { useSession, signOut } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
 interface Roadmap {
-  id: string;
-  title: string;
-  createdAt: string;
-  currentRole?: string;
-  targetRole?: string;
+  id: string
+  title: string
+  createdAt: string
+  currentRole?: string
+  targetRole?: string
 }
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const [roadmaps, setRoadmaps] = useState<Roadmap[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [roadmaps, setRoadmaps] = useState<Roadmap[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-      return;
+    if (status === "unauthenticated") {
+      router.push("/auth/signin")
+      return
     }
 
-    if (status === 'authenticated') {
-      fetchRoadmaps();
+    if (status === "authenticated") {
+      fetchRoadmaps()
     }
-  }, [status, router]);
+  }, [status, router])
 
   const fetchRoadmaps = async () => {
     try {
-      const res = await fetch('/api/roadmaps');
-      console.log('Fetch response status:', res.status);
-      
+      const res = await fetch("/api/roadmaps")
+      console.log("Fetch response status:", res.status)
+
       if (!res.ok) {
-        const errorData = await res.json();
-        console.error('API error:', errorData);
-        throw new Error(errorData.error || 'Failed to fetch roadmaps');
+        const errorData = await res.json()
+        console.error("API error:", errorData)
+        throw new Error(errorData.error || "Failed to fetch roadmaps")
       }
-      
-      const data = await res.json();
-      console.log('Roadmaps data received:', data);
-      setRoadmaps(Array.isArray(data) ? data : data.roadmaps || []);
+
+      const data = await res.json()
+      console.log("Roadmaps data received:", data)
+      setRoadmaps(Array.isArray(data) ? data : data.roadmaps || [])
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to load roadmaps';
-      setError(message);
-      console.error('Dashboard error:', err);
+      const message =
+        err instanceof Error ? err.message : "Failed to load roadmaps"
+      setError(message)
+      console.error("Dashboard error:", err)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleLogout = async () => {
-    await signOut({ redirect: true, callbackUrl: '/' });
-  };
+    await signOut({ redirect: true, callbackUrl: "/" })
+  }
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  };
+    const date = new Date(dateString)
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <>
         <Header />
@@ -78,11 +79,11 @@ export default function DashboardPage() {
         </main>
         <Footer />
       </>
-    );
+    )
   }
 
   if (!session) {
-    return null;
+    return null
   }
 
   return (
@@ -94,12 +95,18 @@ export default function DashboardPage() {
           <aside className="dashboard-sidebar">
             <div className="user-profile">
               <div className="user-avatar">
-                {session.user?.name?.charAt(0).toUpperCase() || 'U'}
+                {session.user?.name?.charAt(0).toUpperCase() || "U"}
               </div>
-              <h3>{session.user?.name || 'User'}</h3>
+              <h3>{session.user?.name || "User"}</h3>
               <p className="user-email">{session.user?.email}</p>
               <div className="user-tier">
-                <span className="tier-badge">{(session.user as any)?.tier || 'FREE'}</span>
+                <span
+                  className={`tier-badge ${(
+                    (session.user as any)?.tier || "FREE"
+                  ).toLowerCase()}`}
+                >
+                  {(session.user as any)?.tier || "FREE"}
+                </span>
               </div>
             </div>
 
@@ -140,30 +147,41 @@ export default function DashboardPage() {
               <div className="roadmaps-grid">
                 {roadmaps.map((roadmap) => (
                   <div key={roadmap.id} className="roadmap-card">
-                    <h3>{roadmap.title || 'Untitled Roadmap'}</h3>
+                    <h3>{roadmap.title || "Untitled Roadmap"}</h3>
                     <div className="roadmap-meta">
                       {roadmap.currentRole && (
                         <div className="meta-item">
                           <span className="meta-label">Current Role:</span>
-                          <span className="meta-value">{roadmap.currentRole}</span>
+                          <span className="meta-value">
+                            {roadmap.currentRole}
+                          </span>
                         </div>
                       )}
                       {roadmap.targetRole && (
                         <div className="meta-item">
                           <span className="meta-label">Target Role:</span>
-                          <span className="meta-value">{roadmap.targetRole}</span>
+                          <span className="meta-value">
+                            {roadmap.targetRole}
+                          </span>
                         </div>
                       )}
                       <div className="meta-item">
                         <span className="meta-label">Created:</span>
-                        <span className="meta-value">{formatDate(roadmap.createdAt)}</span>
+                        <span className="meta-value">
+                          {formatDate(roadmap.createdAt)}
+                        </span>
                       </div>
                     </div>
                     <div className="roadmap-actions">
-                      <Link href={`/roadmap/${roadmap.id}`} className="action-button">
+                      <Link
+                        href={`/roadmap/${roadmap.id}`}
+                        className="action-button"
+                      >
                         View
                       </Link>
-                      <button className="action-button action-delete">Delete</button>
+                      <button className="action-button action-delete">
+                        Delete
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -174,5 +192,5 @@ export default function DashboardPage() {
       </main>
       <Footer />
     </>
-  );
+  )
 }

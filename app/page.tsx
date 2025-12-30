@@ -63,11 +63,18 @@ export default function Home() {
 
       // Parse and store the roadmap
       const data = await response.json();
+      console.log("=== ROADMAP RESPONSE ===");
+      console.log("Full response:", data);
+      console.log("Has skill_gaps?", !!data.skill_gaps);
+      console.log("Has resource_categories?", !!data.resource_categories);
+      console.log("Keys in response:", Object.keys(data));
       setRoadmap(data);
       setFormSubmitted(true);
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to generate roadmap. Please try again.");
+      const errorMsg = error instanceof Error ? error.message : "Unknown error";
+      console.error("Error details:", errorMsg);
+      alert(`Failed to generate roadmap.\n\nError: ${errorMsg}\n\nCheck console for details.`);
     } finally {
       setLoading(false);
     }

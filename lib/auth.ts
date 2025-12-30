@@ -70,13 +70,23 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     /**
      * JWT callback - runs whenever JWT is created or updated
-     * Add tier information to the token
+     * Always fetch fresh user data to ensure tier is current
      */
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.tier = user.tier;
+      } else if (token.id) {
+        // Always fetch fresh user data from database to get latest tier
+        const freshUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { tier: true },
+        });
+        if (freshUser) {
+          token.tier = freshUser.tier;
+        }
       }
+      
       return token;
     },
 

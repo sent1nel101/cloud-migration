@@ -1,83 +1,93 @@
-'use client';
+"use client"
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import React, { useState, useEffect, Suspense } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 import {
   Elements,
   CardElement,
   useStripe,
   useElements,
-} from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+} from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
 /**
  * CheckoutForm - Handles payment collection with Stripe Elements
  */
-function CheckoutForm({ tier, amount }: { tier: 'PROFESSIONAL' | 'PREMIUM'; amount: number }) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+function CheckoutForm({
+  tier,
+  amount,
+}: {
+  tier: "PROFESSIONAL" | "PREMIUM"
+  amount: number
+}) {
+  const stripe = useStripe()
+  const elements = useElements()
+  const router = useRouter()
+  const { update } = useSession()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    if (!stripe || !elements) return;
+    if (!stripe || !elements) return
 
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     try {
       // Step 1: Create payment intent on backend
-      const paymentRes = await fetch('/api/payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const paymentRes = await fetch("/api/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tier, amount }),
-      });
+      })
 
       if (!paymentRes.ok) {
-        const errorData = await paymentRes.json();
-        throw new Error(errorData.error || 'Failed to create payment');
+        const errorData = await paymentRes.json()
+        throw new Error(errorData.error || "Failed to create payment")
       }
 
-      const { clientSecret } = await paymentRes.json();
+      const { clientSecret } = await paymentRes.json()
 
       // Step 2: Confirm payment with Stripe
-      const cardElement = elements.getElement(CardElement);
-      if (!cardElement) throw new Error('Card element not found');
+      const cardElement = elements.getElement(CardElement)
+      if (!cardElement) throw new Error("Card element not found")
 
       const confirmRes = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
-          billing_details: { name: 'User' },
+          billing_details: { name: "User" },
         },
-      });
+      })
 
       if (confirmRes.error) {
-        throw new Error(confirmRes.error.message);
+        throw new Error(confirmRes.error.message)
       }
 
-      if (confirmRes.paymentIntent?.status === 'succeeded') {
-        setSuccess(true);
-        // Redirect to dashboard after 2 seconds
-        setTimeout(() => router.push('/dashboard'), 2000);
+      if (confirmRes.paymentIntent?.status === "succeeded") {
+        setSuccess(true)
+        // Wait for webhook to process, then redirect to dashboard
+        // Dashboard will fetch fresh session with updated tier
+        setTimeout(() => {
+          window.location.href = "/dashboard" // Hard redirect to fetch fresh session
+        }, 2000) // Wait 2 seconds for webhook to process
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Payment failed');
+      setError(err instanceof Error ? err.message : "Payment failed")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
-  const formattedAmount = (amount / 100).toFixed(2);
-  const tierLabel = tier === 'PROFESSIONAL' ? 'Professional' : 'Premium';
+  const formattedAmount = (amount / 100).toFixed(2)
+  const tierLabel = tier === "PROFESSIONAL" ? "Professional" : "Premium"
 
   return (
     <form onSubmit={handleSubmit} className="checkout-form">
@@ -93,14 +103,14 @@ function CheckoutForm({ tier, amount }: { tier: 'PROFESSIONAL' | 'PREMIUM'; amou
           options={{
             style: {
               base: {
-                fontSize: '16px',
-                color: '#424242',
-                '::placeholder': {
-                  color: '#aab7c4',
+                fontSize: "16px",
+                color: "#424242",
+                "::placeholder": {
+                  color: "#aab7c4",
                 },
               },
               invalid: {
-                color: '#fa755a',
+                color: "#fa755a",
               },
             },
           }}
@@ -119,45 +129,46 @@ function CheckoutForm({ tier, amount }: { tier: 'PROFESSIONAL' | 'PREMIUM'; amou
         disabled={!stripe || loading || success}
         className="checkout-button"
       >
-        {loading ? 'Processing...' : `Pay $${formattedAmount}`}
+        {loading ? "Processing..." : `Pay $${formattedAmount}`}
       </button>
 
       <p className="checkout-disclaimer">
         Your payment is secure and processed by Stripe.
       </p>
     </form>
-  );
+  )
 }
 
 /**
  * CheckoutContent - Separated to use useSearchParams within Suspense
  */
 function CheckoutContent() {
-  const { data: session, status } = useSession();
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const { data: session, status } = useSession()
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
-  const tier = (searchParams.get('tier') as 'PROFESSIONAL' | 'PREMIUM') || 'PROFESSIONAL';
-  const amount = tier === 'PROFESSIONAL' ? 3900 : 12900; // in cents
+  const tier =
+    (searchParams.get("tier") as "PROFESSIONAL" | "PREMIUM") || "PROFESSIONAL"
+  const amount = tier === "PROFESSIONAL" ? 3900 : 12900 // in cents
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+    if (status === "unauthenticated") {
+      router.push("/auth/signin")
     }
-  }, [status, router]);
+  }, [status, router])
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <>
         <Header />
         <main className="checkout-loading">Loading...</main>
         <Footer />
       </>
-    );
+    )
   }
 
   if (!session) {
-    return null;
+    return null
   }
 
   return (
@@ -184,7 +195,7 @@ function CheckoutContent() {
       </main>
       <Footer />
     </>
-  );
+  )
 }
 
 /**
@@ -195,5 +206,5 @@ export default function CheckoutPage() {
     <Suspense fallback={<>Loading...</>}>
       <CheckoutContent />
     </Suspense>
-  );
+  )
 }

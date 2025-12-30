@@ -102,23 +102,26 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
         </section>
 
         {/* Skill Gaps */}
-        <section className="skills-section">
-          <h2>Skills You'll Need to Develop</h2>
-          <div className="skills-grid">
-            {roadmap.skill_gaps.map((skill, idx) => (
-              <div key={idx} className="skill-item">
-                <span className="skill-dot"></span>
-                <span>{skill}</span>
-              </div>
-            ))}
-          </div>
-        </section>
+        {roadmap.skill_gaps && roadmap.skill_gaps.length > 0 && (
+          <section className="skills-section">
+            <h2>Skills You'll Need to Develop</h2>
+            <div className="skills-grid">
+              {roadmap.skill_gaps.map((skill, idx) => (
+                <div key={idx} className="skill-item">
+                  <span className="skill-dot"></span>
+                  <span>{skill}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Recommended Roles */}
-        <section className="roles-section">
-          <h2>Recommended Career Paths</h2>
-          <div className="roles-grid">
-            {roadmap.recommended_roles.map((role, idx) => (
+        {roadmap.recommended_roles && roadmap.recommended_roles.length > 0 && (
+          <section className="roles-section">
+            <h2>Recommended Career Paths</h2>
+            <div className="roles-grid">
+              {roadmap.recommended_roles.map((role, idx) => (
               <div key={idx} className="role-card">
                 <h3>{role.title}</h3>
                 <p>{role.description}</p>
@@ -137,81 +140,174 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Resources */}
-        <section style={{ margin: "2rem 0" }}>
-          <h2 style={{ fontSize: "1.875rem", fontWeight: "bold", marginBottom: "1.5rem" }}>Learning Resources</h2>
+        {roadmap.resource_categories && (
+          <section style={{ margin: "2rem 0" }}>
+            <h2 style={{ fontSize: "1.875rem", fontWeight: "bold", marginBottom: "1.5rem" }}>Learning Resources</h2>
 
-          {/* Courses */}
-          <div style={{ marginBottom: "2rem" }}>
-            <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
-              Courses
-            </h3>
-            <div style={{ marginBottom: "1rem" }}>
-              <h4 style={{ fontSize: "0.95rem", fontWeight: "600", marginBottom: "0.5rem" }}>Essential</h4>
-              <ul style={{ listStyle: "none", paddingLeft: 0, marginBottom: "1rem" }}>
-                {roadmap.resource_categories.courses.essential.map((course, idx) => (
-                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                    • {course}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ fontSize: "0.95rem", fontWeight: "600", marginBottom: "0.5rem" }}>Advanced</h4>
+            {/* Courses */}
+            {roadmap.resource_categories.courses?.essential && (
+              <div style={{ marginBottom: "2rem" }}>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
+                  Courses
+                </h3>
+                <div style={{ marginBottom: "1rem" }}>
+                  <h4 style={{ fontSize: "0.95rem", fontWeight: "600", marginBottom: "0.5rem" }}>Essential</h4>
+                  <ul style={{ listStyle: "none", paddingLeft: 0, marginBottom: "1rem" }}>
+                    {roadmap.resource_categories.courses.essential.map((course, idx) => (
+                      <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                        • {course}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {roadmap.resource_categories.courses.advanced && (
+                  <div>
+                    <h4 style={{ fontSize: "0.95rem", fontWeight: "600", marginBottom: "0.5rem" }}>Advanced</h4>
+                    <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                      {roadmap.resource_categories.courses.advanced.map((course, idx) => (
+                        <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                          • {course}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Certifications */}
+            {roadmap.resource_categories.certifications && (
+              <div style={{ marginBottom: "2rem" }}>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
+                  Certifications
+                </h3>
+                <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                  {roadmap.resource_categories.certifications.map((cert, idx) => (
+                    <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                      • {cert}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Communities */}
+            {roadmap.resource_categories.communities && (
+              <div>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
+                  Communities
+                </h3>
+                <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                  {roadmap.resource_categories.communities.map((community, idx) => (
+                    <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                      • {community}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* Professional Tier Content */}
+        {(roadmap as any).professional_tier_content && (
+          <section style={{ margin: "2rem 0", padding: "2rem", backgroundColor: "var(--bg-secondary)", borderRadius: "0.5rem", border: "2px solid var(--primary-color)" }}>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem", color: "var(--primary-color)" }}>
+              ✓ Professional Tier Content
+            </h2>
+            
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Curated Courses for Your Background</h3>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                {roadmap.resource_categories.courses.advanced.map((course, idx) => (
+                {(roadmap as any).professional_tier_content.curated_courses.map((course: string, idx: number) => (
                   <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
                     • {course}
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
 
-          {/* Certifications */}
-          <div style={{ marginBottom: "2rem" }}>
-            <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
-              Certifications
-            </h3>
-            <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-              {roadmap.resource_categories.certifications.map((cert, idx) => (
-                <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                  • {cert}
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Resume Enhancement Suggestions</h3>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                {(roadmap as any).professional_tier_content.resume_suggestions.map((suggestion: string, idx: number) => (
+                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                    • {suggestion}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Communities */}
-          <div>
-            <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
-              Communities
-            </h3>
-            <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-              {roadmap.resource_categories.communities.map((community, idx) => (
-                <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                  • {community}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+            <div>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Portfolio Project Ideas</h3>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                {(roadmap as any).professional_tier_content.portfolio_ideas.map((idea: string, idx: number) => (
+                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                    • {idea}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
+
+        {/* Premium Tier Content */}
+        {(roadmap as any).premium_tier_content && (
+          <section style={{ margin: "2rem 0", padding: "2rem", backgroundColor: "var(--bg-secondary)", borderRadius: "0.5rem", border: "2px solid #d4af37" }}>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem", color: "#d4af37" }}>
+              ⭐ Premium Tier Content (Exclusive Career Coaching)
+            </h2>
+            
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>AI-Powered Resume Rewrite</h3>
+              <p style={{ color: "var(--text-primary)", padding: "1rem", backgroundColor: "var(--bg-primary)", borderRadius: "0.5rem", borderLeft: "4px solid #d4af37" }}>
+                {(roadmap as any).premium_tier_content.ai_resume_rewrite}
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>LinkedIn Optimization Strategy</h3>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                {(roadmap as any).premium_tier_content.linkedin_optimization.map((tip: string, idx: number) => (
+                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                    • {tip}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>1-on-1 Career Coaching Insights</h3>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                {(roadmap as any).premium_tier_content.career_coaching_insights.map((insight: string, idx: number) => (
+                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                    • {insight}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
 
         {/* Next Steps */}
-        <section style={{ padding: "2rem", backgroundColor: "var(--bg-secondary)", borderRadius: "0.5rem", margin: "2rem 0" }}>
-          <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem" }}>Next Steps</h2>
-          <ol style={{ paddingLeft: "1.5rem" }}>
-            {roadmap.next_steps.map((step, idx) => (
-              <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                {step}
-              </li>
-            ))}
-          </ol>
-        </section>
+        {roadmap.next_steps && roadmap.next_steps.length > 0 && (
+          <section style={{ padding: "2rem", backgroundColor: "var(--bg-secondary)", borderRadius: "0.5rem", margin: "2rem 0" }}>
+            <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem" }}>Next Steps</h2>
+            <ol style={{ paddingLeft: "1.5rem" }}>
+              {roadmap.next_steps.map((step, idx) => (
+                <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                  {step}
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
       </div>
     </div>
   );
