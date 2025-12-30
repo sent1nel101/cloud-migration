@@ -40,8 +40,8 @@ export async function POST(req: NextRequest) {
         const tier = (paymentIntent.metadata?.tier as 'PROFESSIONAL' | 'PREMIUM') || 'PROFESSIONAL';
 
         // Confirm payment in database and upgrade user tier
-        await confirmPayment(stripePaymentId, tier);
-        console.log(`Payment ${stripePaymentId} succeeded, user upgraded to ${tier}`);
+        await confirmPayment(stripePaymentId);
+        console.log(`Payment ${stripePaymentId} succeeded, user upgraded`);
         break;
       }
 
