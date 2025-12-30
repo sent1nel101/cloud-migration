@@ -2,11 +2,12 @@
 
 ## ⚠️ CRITICAL: Tracking Files Maintenance
 
-**Keep these THREE files updated at ALL times** - they are your project source of truth:
+**Keep these FOUR files updated at ALL times** - they are your project source of truth:
 
 1. **TODO.md** - What needs to be done (update task status)
-2. **ACTIONS.md** - Current work and next steps (update with progress)
+2. **ACTIONS.md** - Current work and next steps (update with progress, add session notes)
 3. **SUMMARY.md** - Completed work and progress tracking (add new completions)
+4. **AGENTS.md** - Commands, styles, structure (this file - update when adding recurring commands)
 
 Update these files WHENEVER:
 - You complete a major task
@@ -29,6 +30,19 @@ npm run dev       # Start development server (http://localhost:3000)
 npm run build     # Build for production
 npm start         # Start production server
 npm run lint      # Run ESLint (no test framework configured)
+```
+
+## Database Commands
+
+```bash
+# Push schema to database (always use --url for direct connection)
+npx prisma db push --url="postgresql://..." --accept-data-loss
+
+# View database GUI
+npx prisma studio
+
+# Generate Prisma client
+npx prisma generate
 ```
 
 No test runner currently configured. Testing should be added with Jest or Vitest if needed.
