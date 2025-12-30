@@ -1,0 +1,162 @@
+// This is your Prisma schema file for Cloud Designs AI Career Planner
+// Phase 2: User Management & Payment System
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User model for authentication and profile management
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?   // For email/password auth (NextAuth handles hashing)
+  emailVerified DateTime?
+  image         String?
+  
+  // Tier management
+  tier          Tier      @default(FREE) // FREE, PROFESSIONAL, PREMIUM
+  stripeCustomerId String? @unique
+  
+  // Roadmaps created by this user
+  roadmaps      Roadmap[]
+  
+  // Payment history
+  payments      Payment[]
+  
+  // Session & auth
+  accounts      Account[]
+  sessions      Session[]
+  
+  // Audit
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([email])
+  @@index([tier])
+}
+
+// NextAuth.js Account model for OAuth
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// NextAuth.js Session model
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+}
+
+// Verification token for email verification
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  
+  @@unique([identifier, token])
+}
+
+// Roadmap model - stores generated career roadmaps
+model Roadmap {
+  id            String   @id @default(cuid())
+  userId        String
+  
+  // Input data saved with roadmap
+  currentRole   String
+  targetRole    String
+  experience    Int       // Years of experience
+  skills        String    // JSON array stored as text
+  
+  // Generated roadmap content
+  content       String    @db.Text // JSON format: phases, milestones, resources
+  
+  // Metadata
+  title         String?   // User-given title for the roadmap
+  description   String?
+  isPublic      Boolean   @default(false)
+  
+  // Audit
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Payment model - tracks all payments
+model Payment {
+  id                String   @id @default(cuid())
+  userId            String
+  
+  // Payment details
+  amount            Int      // In cents (e.g., 3900 for $39.00)
+  currency          String   @default("usd")
+  tier              Tier     // PROFESSIONAL or PREMIUM
+  description       String?
+  
+  // Stripe integration
+  stripePaymentId   String   @unique
+  stripeSessionId   String?  @unique
+  
+  // Status
+  status            PaymentStatus @default(PENDING)
+  paidAt            DateTime?
+  
+  // Refund tracking
+  refundedAt        DateTime?
+  refundReason      String?
+  
+  // Audit
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([stripePaymentId])
+}
+
+// Enums
+enum Tier {
+  FREE
+  PROFESSIONAL
+  PREMIUM
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}

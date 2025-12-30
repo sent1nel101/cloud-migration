@@ -1,0 +1,193 @@
+/**
+ * Home Page (/)
+ * 
+ * Main landing page for Cloud Designs. Handles the career roadmap generation flow:
+ * 1. Show hero + form for first-time visitors
+ * 2. Show loading state while generating roadmap
+ * 3. Display results + pricing after generation
+ * 
+ * State Management:
+ * - formSubmitted: Whether user has submitted the form
+ * - roadmap: The generated AI roadmap data
+ * - loading: Whether API call is in progress
+ */
+
+"use client";
+
+import { useState } from "react";
+import * as React from "react";
+import Header from "@/components/Header";
+import InputForm from "@/components/InputForm";
+import RoadmapDisplay from "@/components/RoadmapDisplay";
+import PricingSection from "@/components/PricingSection";
+import Footer from "@/components/Footer";
+import type { CareerInput, Roadmap } from "@/types/index";
+
+export default function Home() {
+  // Track whether user has submitted the initial form
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  // Stores the AI-generated roadmap object
+  const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
+  // Track API call loading state
+  const [loading, setLoading] = useState(false);
+  // Ref to form section for scroll-to functionality
+  const formSectionRef = React.useRef<HTMLDivElement>(null);
+
+  /**
+   * Scrolls the page to the form section with smooth animation.
+   */
+  const scrollToForm = () => {
+    formSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  /**
+   * Submits career input form to /api/roadmap endpoint.
+   * Generates AI roadmap and displays results on success.
+   * Shows error alert on failure.
+   * 
+   * @param formData - User's career information
+   */
+  const handleSubmit = async (formData: CareerInput) => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/roadmap", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      // Handle API errors
+      if (!response.ok) {
+        throw new Error("Failed to generate roadmap");
+      }
+
+      // Parse and store the roadmap
+      const data = await response.json();
+      setRoadmap(data);
+      setFormSubmitted(true);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to generate roadmap. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="app-container">
+      <Header />
+      
+      {!formSubmitted ? (
+        <main className="main-content">
+          {/* Hero Section */}
+          <section className="hero">
+            <div className="hero-content">
+              <h1>Migrate Your Career Into AI-Proof Roles</h1>
+              <p>
+                AI is transforming the job market. Get a personalized roadmap to
+                transition into roles that thrive in the age of AI.
+              </p>
+              <button
+                onClick={scrollToForm}
+                className="hero-badge"
+                style={{
+                  cursor: "pointer",
+                  border: "2px solid var(--primary-color)",
+                  background: "rgba(59, 130, 246, 0.1)",
+                  color: "white",
+                  padding: "12px 24px",
+                  borderRadius: "8px",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--primary-color)";
+                  e.currentTarget.style.color = "white";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(59, 130, 246, 0.1)";
+                  e.currentTarget.style.color = "white";
+                }}
+              >
+                ✓ Free Career Roadmap
+              </button>
+            </div>
+          </section>
+
+          {/* Input Form Section */}
+          <section className="form-section" ref={formSectionRef}>
+            <div className="container-md">
+              <InputForm onSubmit={handleSubmit} loading={loading} />
+            </div>
+          </section>
+
+          {/* Info Section */}
+          <section className="info-section">
+            <div className="container-md">
+              <h2>How It Works</h2>
+              <div className="info-grid">
+                <div className="info-card">
+                  <div className="info-card-number">1</div>
+                  <h3>Share Your Profile</h3>
+                  <p>
+                    Tell us about your current role, skills, and career goals.
+                  </p>
+                </div>
+                <div className="info-card">
+                  <div className="info-card-number">2</div>
+                  <h3>AI Analysis</h3>
+                  <p>
+                    Our AI analyzes your profile and creates a personalized path.
+                  </p>
+                </div>
+                <div className="info-card">
+                  <div className="info-card-number">3</div>
+                  <h3>Your Roadmap</h3>
+                  <p>
+                    Get actionable steps, timelines, and skill recommendations.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      ) : (
+        <main className="main-content" style={{ padding: "1.5rem" }}>
+          {loading ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "6rem 0" }}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{
+                  display: "inline-block",
+                  animation: "spin 1s linear infinite",
+                  borderRadius: "50%",
+                  width: "3rem",
+                  height: "3rem",
+                  borderBottom: "2px solid var(--primary-color)"
+                }}></div>
+                <p style={{ marginTop: "1rem", fontSize: "1rem" }}>
+                  Generating your personalized career roadmap...
+                </p>
+              </div>
+              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+          ) : roadmap ? (
+            <>
+              <RoadmapDisplay roadmap={roadmap} />
+              <PricingSection />
+              <button
+                onClick={() => setFormSubmitted(false)}
+                className="btn btn-secondary"
+                style={{ margin: "2rem auto", display: "block" }}
+              >
+                Generate Another Roadmap
+              </button>
+            </>
+          ) : null}
+        </main>
+      )}
+
+      <Footer />
+    </div>
+  );
+}

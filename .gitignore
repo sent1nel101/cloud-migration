@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+.npm
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+.next/
+out/
+build/
+dist/
+
+# Misc
+.DS_Store
+*.pem
+.env
+.env.local
+.env.*.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Development Documentation (session notes, tracking, etc.)
+ACTIONS.md
+SUMMARY.md
+TODO.md
+SESSION_*.md
+PHASE_*.md
+CONTEXT_HANDOFF.md
+PROJECT_STATUS.txt
+NEXT_STEPS.md
+TEST_CLAUDE_INTEGRATION.md
+WINDOWS_PATH_FIX.md
+BUG_FIXES.md
+CODE_QUALITY_CHECKLIST.md
+COMPLETION_REPORT.md
+FREEMIUM_IMPLEMENTATION.md
+HERO_BUTTON_STYLING.md
+MVP_COMPLETE.md
+SECONDARY_PAGES_SUMMARY.md
+START_HERE.md
+WHAT_WAS_BUILT.md
+INDEX.md
+DOCUMENTATION_INDEX.md
+PRICING_MODEL.md
+PROJECT_OUTLINE.md
+
+# Keep production documentation
+!QUICK_START.md
+!ARCHITECTURE.md
+!DEPLOYMENT.md
+!AI_INTEGRATION.md
+!TROUBLESHOOTING.md
+!README.md
+!AGENTS.md
