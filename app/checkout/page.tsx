@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import {
@@ -130,9 +130,9 @@ function CheckoutForm({ tier, amount }: { tier: 'PROFESSIONAL' | 'PREMIUM'; amou
 }
 
 /**
- * CheckoutPage - Payment page with Stripe Elements
+ * CheckoutContent - Separated to use useSearchParams within Suspense
  */
-export default function CheckoutPage() {
+function CheckoutContent() {
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -184,5 +184,16 @@ export default function CheckoutPage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+/**
+ * CheckoutPage - Payment page with Stripe Elements
+ */
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<>Loading...</>}>
+      <CheckoutContent />
+    </Suspense>
   );
 }
