@@ -60,7 +60,6 @@ export async function POST(req: NextRequest) {
     // Record payment in database
     const payment = await createPayment(
       session.user.id!,
-      amount,
       tier as 'PROFESSIONAL' | 'PREMIUM',
       paymentIntent.id
     );
