@@ -14,6 +14,7 @@ import { getServerSession } from "next-auth"
 import Anthropic from "@anthropic-ai/sdk"
 import { saveRoadmap } from "@/lib/roadmap-service"
 import { authOptions } from "@/lib/auth"
+import { prisma } from "@/lib/prisma"
 import {
   checkRateLimit,
   ROADMAP_RATE_LIMITS,
@@ -38,17 +39,29 @@ const client = new Anthropic({
  * @returns Promise<Roadmap> - AI-generated career roadmap
  * @throws Error if API call fails or response cannot be parsed
  */
+/**
+ * Escape special characters in a string for safe JSON embedding
+ */
+function escapeForJSON(str: string): string {
+  return str
+    .replace(/\\/g, "\\\\")  // Backslash
+    .replace(/"/g, '\\"')    // Double quote
+    .replace(/\n/g, "\\n")   // Newline
+    .replace(/\r/g, "\\r")   // Carriage return
+    .replace(/\t/g, "\\t")   // Tab
+}
+
 async function generateRoadmapWithAI(
   input: CareerInput,
   userTier: string = "FREE"
 ): Promise<Roadmap> {
-  // Customize prompt based on user tier
+  // Customize prompt based on user tier - keep guidance brief to avoid token limits
   const tierGuidance = {
-    FREE: "Focus on essential, free resources and general guidance. Limit course recommendations to 3 free options.",
+    FREE: "Keep it simple.",
     PROFESSIONAL:
-      "Include curated courses and paid resources. Add resume suggestions and portfolio project ideas.",
+      "Add professional tier content.",
     PREMIUM:
-      "Provide comprehensive guidance including AI resume rewrite examples, LinkedIn optimization tips, and detailed career coaching insights.",
+      "Add premium tier content with all coaching details.",
   }
 
   const guidance =
@@ -59,10 +72,10 @@ async function generateRoadmapWithAI(
   const experienceFactor = Math.max(0, (10 - input.yearsExperience) * 3)
   const totalMonths = Math.min(48, baseMonths + experienceFactor)
 
-  // Build personalization context with all variables resolved
-  const currentRoleRef = input.currentRole
-  const goalsRef = input.goals
-  const skillsRef = input.skills?.join(", ") || "your existing skills"
+  // Build personalization context with all variables resolved and properly escaped
+  const currentRoleRef = escapeForJSON(input.currentRole)
+  const goalsRef = escapeForJSON(input.goals)
+  const skillsRef = escapeForJSON(input.skills?.join(", ") || "your existing skills")
   const yearsRef = input.yearsExperience
   const completionDate = new Date(
     Date.now() + totalMonths * 30 * 24 * 60 * 60 * 1000
@@ -70,8 +83,9 @@ async function generateRoadmapWithAI(
     .toISOString()
     .split("T")[0]
 
-  // Create the roadmap template with all variables interpolated
-  const roadmapTemplate = {
+  // Separate base template (for Claude) from tier-specific content (added afterwards)
+  // This avoids token limits by keeping the Claude prompt manageable
+  const baseTemplate = {
     title: `Career Migration Path: From ${currentRoleRef} to ${goalsRef}, emphasizing ${skillsRef}`,
     summary: `With ${yearsRef} years in ${currentRoleRef}, you have a strong foundation for transitioning to ${goalsRef}. This roadmap leverages your ${skillsRef} while developing new capabilities needed for ${goalsRef} roles. Your background gives you a unique advantage in understanding how to bridge these two career paths.`,
     timeline: {
@@ -225,7 +239,20 @@ async function generateRoadmapWithAI(
         `Local meetups for ${goalsRef} professionals with diverse ${currentRoleRef} backgrounds`,
       ],
     },
-    professional_tier_content: {
+    next_steps: [
+      `This week: Identify 3-5 specific aspects of ${currentRoleRef} work that transfer to ${goalsRef}`,
+      `This week: Research case studies of ${currentRoleRef} professionals who transitioned to ${goalsRef}`,
+      `Next 2 weeks: Enroll in foundational ${goalsRef} course for professionals like you`,
+      `Next 2 weeks: Connect with 3-5 people in ${goalsRef} who have ${currentRoleRef} backgrounds`,
+      `Next month: Start your first ${goalsRef} project using your ${skillsRef}`,
+      `Next month: Update LinkedIn to highlight your ${currentRoleRef} → ${goalsRef} journey`,
+      `Ongoing: Document your journey publicly (blog, social media, portfolio)`,
+    ],
+  }
+
+  // Create tier-specific content separately (won't be sent to Claude)
+  const tierSpecificContent = {
+    professional: {
       curated_courses: [
         `Advanced ${goalsRef} courses specifically for ${currentRoleRef} professionals`,
         `Leveraging ${yearsRef} years of ${currentRoleRef} experience in ${goalsRef} roles`,
@@ -248,57 +275,48 @@ async function generateRoadmapWithAI(
         `Create thought leadership at the intersection of ${currentRoleRef} and ${goalsRef}`,
       ],
     },
-    premium_tier_content: {
+    premium: {
       resumes: [
         {
           type: "Tech-Focused",
           description: "Emphasizes technical skills and projects for tech-heavy roles",
-          content: `Transform your ${yearsRef} years in ${currentRoleRef} into a tech-forward narrative. Lead with technical skills (${skillsRef}), emphasize metrics-driven projects, and show how your ${currentRoleRef} background built strong foundations for ${goalsRef} roles. Use quantified impact: "Improved systems efficiency by X%", "Architected solutions for Y users". Position you as technically grounded ${goalsRef} professional ready to contribute immediately.`,
+          content: `• Transform your ${yearsRef}-year ${currentRoleRef} background into tech-forward narrative\n• Lead with technical skills: ${skillsRef}\n• Emphasize metrics-driven projects with quantified impact\n• Show how ${currentRoleRef} background built foundations for ${goalsRef}\n• Use examples: "Improved systems efficiency by X%", "Architected solutions for Y users"\n• Position as technically grounded ${goalsRef} professional ready to contribute immediately`,
         },
         {
           type: "General/Versatile",
           description: "Broad appeal works for various industries and roles",
-          content: `Position your ${yearsRef} years in ${currentRoleRef} as preparation for ${goalsRef}. Show how ${skillsRef} transfer across domains. Tell a narrative of intentional growth: "My ${currentRoleRef} background gives me unique perspective on ${goalsRef} challenges." Include both technical achievements and soft skills. Make you attractive to companies looking for ${goalsRef} talent with your specific background.`,
+          content: `• Position ${yearsRef} years in ${currentRoleRef} as preparation for ${goalsRef}\n• Show how ${skillsRef} transfer across domains\n• Narrative: "My ${currentRoleRef} background gives unique perspective on ${goalsRef} challenges"\n• Include both technical achievements and soft skills\n• Demonstrate intentional growth and learning\n• Appeal to companies seeking ${goalsRef} talent with your background`,
         },
         {
           type: "Startup-Focused",
           description: "Highlights adaptability and growth mindset for fast-moving companies",
-          content: `Highlight your adaptability as a ${currentRoleRef} transitioning to ${goalsRef}. Emphasize side projects, learning velocity, and how you've worn multiple hats. Use startup language: "Built ${goalsRef} solution from ground up", "Scaled processes as ${currentRoleRef} professional", "Learned ${goalsRef} while maintaining ${currentRoleRef} excellence". Show hunger to grow and energy to move fast. Perfect for startups valuing hustle and diverse experience.`,
+          content: `• Highlight adaptability as a ${currentRoleRef} transitioning to ${goalsRef}\n• Emphasize: side projects, learning velocity, wearing multiple hats\n• Use startup language: "Built from ground up", "Scaled processes", "Learned fast"\n• Show hunger to grow and energy to move fast\n• Demonstrate: continuous learning, rapid skill acquisition, flexibility\n• Appeal to startups valuing hustle and diverse experience`,
         },
         {
           type: "Enterprise-Focused",
           description: "Emphasizes leadership and structured process improvement",
-          content: `Position your ${yearsRef} years in ${currentRoleRef} as leadership and process-improvement experience applicable to ${goalsRef}. Emphasize: cross-functional collaboration, budget management, team leadership, stakeholder communication. Show how you led change in ${currentRoleRef}. Use enterprise language: "Optimized workflows", "Managed initiatives across teams", "Drove adoption of new processes". Make you attractive to enterprises seeking ${goalsRef} leaders with management credibility.`,
+          content: `• Position ${yearsRef} years in ${currentRoleRef} as leadership experience\n• Highlight: cross-functional collaboration, budget management, team leadership\n• Demonstrate: stakeholder communication, process improvement, change management\n• Use enterprise language: "Optimized workflows", "Managed initiatives", "Drove adoption"\n• Show how you led change in ${currentRoleRef}\n• Appeal to enterprises seeking ${goalsRef} leaders with management credibility`,
         },
       ],
       linkedin_optimization: [
-        `Headline: "${currentRoleRef} Expert Transitioning to ${goalsRef}" - expert integrating new skills, not a career changer`,
-        `About: Tell why ${goalsRef} is the natural next step from ${currentRoleRef}, emphasizing your unique perspective`,
-        `Experience: Reframe ${currentRoleRef} achievements through ${goalsRef} lens, showing foresight`,
-        `Skills: Prioritize both ${currentRoleRef} AND ${goalsRef} to show integrated expertise`,
-        `Featured: Showcase ${goalsRef} projects alongside ${currentRoleRef} achievements`,
+        `• Headline: "${currentRoleRef} Expert Transitioning to ${goalsRef}" (expert integrating new skills)`,
+        `• About: Explain why ${goalsRef} is natural next step from ${currentRoleRef}, your unique perspective`,
+        `• Experience: Reframe ${currentRoleRef} achievements through ${goalsRef} lens`,
+        `• Skills: Prioritize both ${currentRoleRef} AND ${goalsRef} to show integrated expertise`,
+        `• Featured: Showcase ${goalsRef} projects alongside ${currentRoleRef} achievements`,
       ],
       career_coaching_insights: [
-        `Timing: You're ready to transition to ${goalsRef} after ${yearsRef} years in ${currentRoleRef} - you have credibility AND differentiation`,
-        `Salary: Position your ${currentRoleRef} background as adding $10-20K premium in ${goalsRef} roles`,
-        `Job search: Focus on companies in your current ${currentRoleRef} industry embracing ${goalsRef}`,
-        `Interviews: Lead with ${currentRoleRef} achievements, pivot to ${goalsRef} passion, emphasize fresh perspective`,
-        `Networking: Connect ${currentRoleRef} peers with ${goalsRef} professionals - become the bridge`,
+        `• Timing: You're ready after ${yearsRef} years in ${currentRoleRef} - you have credibility AND differentiation`,
+        `• Salary: Your ${currentRoleRef} background adds $10-20K premium in ${goalsRef} roles`,
+        `• Job search: Target companies in your current ${currentRoleRef} industry embracing ${goalsRef}`,
+        `• Interviews: Lead with ${currentRoleRef} achievements, pivot to ${goalsRef} passion, emphasize fresh perspective`,
+        `• Networking: Connect ${currentRoleRef} peers with ${goalsRef} professionals - become the bridge`,
       ],
     },
-    next_steps: [
-      `This week: Identify 3-5 specific aspects of ${currentRoleRef} work that transfer to ${goalsRef}`,
-      `This week: Research case studies of ${currentRoleRef} professionals who transitioned to ${goalsRef}`,
-      `Next 2 weeks: Enroll in foundational ${goalsRef} course for professionals like you`,
-      `Next 2 weeks: Connect with 3-5 people in ${goalsRef} who have ${currentRoleRef} backgrounds`,
-      `Next month: Start your first ${goalsRef} project using your ${skillsRef}`,
-      `Next month: Update LinkedIn to highlight your ${currentRoleRef} → ${goalsRef} journey`,
-      `Ongoing: Document your journey publicly (blog, social media, portfolio)`,
-    ],
   }
 
-  // Convert template to JSON string for the prompt
-  const roadmapJSON = JSON.stringify(roadmapTemplate, null, 2)
+  // Only send base template to Claude (keeps response manageable)
+  const roadmapJSON = JSON.stringify(baseTemplate, null, 2)
 
   const prompt = `Output ONLY valid JSON. No explanation. No summary. Only JSON.
 
@@ -375,11 +393,27 @@ ${roadmapJSON}`
       console.log("Extracted JSON from wrapped response")
     }
 
+    console.log("=== JSON TO PARSE ===")
+    console.log("JSON text length:", jsonText.length)
+    console.log("Last 500 chars of JSON:", jsonText.substring(jsonText.length - 500))
+    console.log("Area around error position 8263:", jsonText.substring(8200, 8300))
+    
     // Parse cleaned JSON string
     const parsed = JSON.parse(jsonText)
 
     console.log("JSON parsed successfully")
     console.log("Parsed keys:", Object.keys(parsed))
+
+    // Add tier-specific content from our template (not from Claude)
+    let professionalContent = null
+    if (userTier === "PROFESSIONAL" || userTier === "PREMIUM") {
+      professionalContent = tierSpecificContent.professional
+    }
+
+    let premiumContent = null
+    if (userTier === "PREMIUM") {
+      premiumContent = tierSpecificContent.premium
+    }
 
     // Ensure all required fields exist with defaults
     const roadmap: Roadmap = {
@@ -403,14 +437,20 @@ ${roadmapJSON}`
         communities: [],
       },
       next_steps: parsed.next_steps || [],
-      professional_tier_content: parsed.professional_tier_content,
-      premium_tier_content: parsed.premium_tier_content,
+      ...(professionalContent && { professional_tier_content: professionalContent }),
+      ...(premiumContent && { premium_tier_content: premiumContent }),
     }
 
     console.log("Roadmap structure ensured")
     console.log("Has skill_gaps?", roadmap.skill_gaps.length > 0)
     console.log("Has milestones?", roadmap.milestones.length > 0)
     console.log("Has resource_categories?", !!roadmap.resource_categories)
+    console.log("Has professional_tier_content?", !!roadmap.professional_tier_content)
+    console.log("Has premium_tier_content?", !!roadmap.premium_tier_content)
+    if (premiumContent) {
+      console.log("Premium resumes count:", premiumContent.resumes?.length || 0)
+      console.log("Premium coaching insights count:", premiumContent.career_coaching_insights?.length || 0)
+    }
     return roadmap
   } catch (error) {
     console.error("Error in generateRoadmapWithAI:", error)
@@ -485,12 +525,34 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get user tier (session already fetched for rate limiting)
-    const userTier = (session?.user as any)?.tier || "FREE"
+    // Get user tier from session, but verify from database for authenticated users
+    let userTier = (session?.user as any)?.tier || "FREE"
 
-    console.log("Session user:", session?.user)
+    console.log("=== ROADMAP GENERATION - USER TIER ===")
+    console.log("Session user:", session?.user?.email)
     console.log("UserId from session:", userId)
-    console.log("User tier:", userTier)
+    console.log("User tier from session:", userTier)
+
+    // Always fetch fresh tier from database for authenticated users
+    if (userId) {
+      try {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: userId },
+          select: { tier: true },
+        })
+        if (dbUser) {
+          if (dbUser.tier !== userTier) {
+            console.log(`⚠️ Session tier was stale! Updated from ${userTier} to ${dbUser.tier}`)
+          }
+          userTier = dbUser.tier
+        }
+      } catch (e) {
+        console.error("Could not fetch fresh tier from database:", e)
+      }
+    }
+
+    console.log("Final user tier for roadmap:", userTier)
+    console.log("=====================================")
 
     // Generate personalized roadmap using Claude AI with tier-specific content
     const roadmap = await generateRoadmapWithAI(body, userTier)
@@ -499,6 +561,7 @@ export async function POST(request: NextRequest) {
     let savedRoadmap = null
     if (userId) {
       try {
+        console.log("Attempting to save roadmap for user:", userId)
         const roadmapContent = JSON.stringify(roadmap)
         savedRoadmap = await saveRoadmap(
           userId,
@@ -511,11 +574,17 @@ export async function POST(request: NextRequest) {
           roadmapContent,
           `${body.currentRole} → AI Role`
         )
-        console.log("Roadmap saved to database:", savedRoadmap.id)
+        console.log("✅ Roadmap saved successfully:", savedRoadmap.id)
       } catch (dbError) {
-        console.error("Error saving roadmap to database:", dbError)
+        console.error("❌ Error saving roadmap to database:", dbError)
+        // Log detailed error info
+        if (dbError instanceof Error) {
+          console.error("Error details:", dbError.message)
+        }
         // Continue with response even if save fails
       }
+    } else {
+      console.log("User not authenticated, roadmap not saved to database (guest generation)")
     }
 
     console.log("Sending response with roadmap")

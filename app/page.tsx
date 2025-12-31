@@ -14,8 +14,9 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import InputForm from "@/components/InputForm";
 import RoadmapDisplay from "@/components/RoadmapDisplay";
@@ -23,15 +24,37 @@ import PricingSection from "@/components/PricingSection";
 import Footer from "@/components/Footer";
 import type { CareerInput, Roadmap } from "@/types/index";
 
-export default function Home() {
+function HomeContent() {
   // Track whether user has submitted the initial form
   const [formSubmitted, setFormSubmitted] = useState(false);
   // Stores the AI-generated roadmap object
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   // Track API call loading state
   const [loading, setLoading] = useState(false);
+  // Store prefill values from URL params
+  const [prefillValues, setPrefillValues] = useState<Partial<CareerInput> | undefined>();
   // Ref to form section for scroll-to functionality
   const formSectionRef = React.useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
+
+  // Extract prefill values from URL params on mount
+  useEffect(() => {
+    const role = searchParams.get("role");
+    const years = searchParams.get("years");
+    const goals = searchParams.get("goals");
+    const skills = searchParams.get("skills");
+    const education = searchParams.get("education");
+
+    if (role || years || goals || skills || education) {
+      setPrefillValues({
+        currentRole: role || undefined,
+        yearsExperience: years ? parseInt(years) : undefined,
+        goals: goals || undefined,
+        skills: skills ? skills.split(",").map(s => s.trim()) : undefined,
+        educationLevel: education || undefined,
+      });
+    }
+  }, [searchParams]);
 
   /**
    * Scrolls the page to the form section with smooth animation.
@@ -125,7 +148,7 @@ export default function Home() {
           {/* Input Form Section */}
           <section className="form-section" ref={formSectionRef}>
             <div className="container-md">
-              <InputForm onSubmit={handleSubmit} loading={loading} />
+              <InputForm onSubmit={handleSubmit} loading={loading} initialValues={prefillValues} />
             </div>
           </section>
 
@@ -196,5 +219,13 @@ export default function Home() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
