@@ -51,6 +51,50 @@ function escapeForJSON(str: string): string {
     .replace(/\t/g, "\\t")   // Tab
 }
 
+/**
+ * Extracts a target role from the user's goal statement.
+ * Uses Claude to infer a specific job title that matches the goals.
+ * 
+ * @param goals - User's career goals statement
+ * @param currentRole - User's current role (for context)
+ * @returns Promise<string> - Inferred target role name
+ */
+async function extractTargetRoleFromGoals(
+  goals: string,
+  currentRole: string
+): Promise<string> {
+  try {
+    const response = await client.messages.create({
+      model: "claude-3-5-haiku-20241022",
+      max_tokens: 100,
+      messages: [
+        {
+          role: "user",
+          content: `Given a user's career goals, extract ONE specific job title they are likely aiming for.
+
+Current Role: ${currentRole}
+Career Goals: ${goals}
+
+Respond with ONLY a specific job title (2-4 words max), nothing else.
+Examples: "Data Scientist", "Product Manager", "Machine Learning Engineer", "UX Designer"`,
+        },
+      ],
+    })
+
+    const targetRole = response.content
+      .filter((block) => block.type === "text")
+      .map((block) => (block as any).text)
+      .join("")
+      .trim()
+
+    return targetRole || "Career Transition Specialist"
+  } catch (error) {
+    console.error("Error extracting target role:", error)
+    // Fallback: use a generic version based on goals
+    return "Career Transition Specialist"
+  }
+}
+
 async function generateRoadmapWithAI(
   input: CareerInput,
   userTier: string = "FREE"
@@ -72,9 +116,13 @@ async function generateRoadmapWithAI(
   const experienceFactor = Math.max(0, (10 - input.yearsExperience) * 3)
   const totalMonths = Math.min(48, baseMonths + experienceFactor)
 
+  // Extract target role from goals for proper job title usage
+  const targetRole = await extractTargetRoleFromGoals(input.goals, input.currentRole)
+
   // Build personalization context with all variables resolved and properly escaped
   const currentRoleRef = escapeForJSON(input.currentRole)
   const goalsRef = escapeForJSON(input.goals)
+  const targetRoleRef = escapeForJSON(targetRole)
   const skillsRef = escapeForJSON(input.skills?.join(", ") || "your existing skills")
   const yearsRef = input.yearsExperience
   const completionDate = new Date(
@@ -86,8 +134,8 @@ async function generateRoadmapWithAI(
   // Separate base template (for Claude) from tier-specific content (added afterwards)
   // This avoids token limits by keeping the Claude prompt manageable
   const baseTemplate = {
-    title: `Career Migration Path: From ${currentRoleRef} to ${goalsRef}, emphasizing ${skillsRef}`,
-    summary: `With ${yearsRef} years in ${currentRoleRef}, you have a strong foundation for transitioning to ${goalsRef}. This roadmap leverages your ${skillsRef} while developing new capabilities needed for ${goalsRef} roles. Your background gives you a unique advantage in understanding how to bridge these two career paths.`,
+    title: `Career Migration Path: From ${currentRoleRef} to ${targetRoleRef}, emphasizing ${skillsRef}`,
+    summary: `With ${yearsRef} years in ${currentRoleRef}, you have a strong foundation for transitioning to ${targetRoleRef}. Your goal is to ${goalsRef}. This roadmap leverages your ${skillsRef} while developing new capabilities needed for ${targetRoleRef} roles. Your background gives you a unique advantage in understanding how to bridge these two career paths.`,
     timeline: {
       total_months: totalMonths,
       start_date: "2024-12-29",
@@ -99,13 +147,13 @@ async function generateRoadmapWithAI(
         title: `Foundation: Leverage Your ${currentRoleRef} Strengths (Months 1-${Math.ceil(
           totalMonths * 0.2
         )})`,
-        description: `Identify which aspects of your ${currentRoleRef} background transfer to ${goalsRef}. Focus on your ${skillsRef} as a foundation.`,
+        description: `Identify which aspects of your ${currentRoleRef} background transfer to ${targetRoleRef}. Focus on your ${skillsRef} as a foundation.`,
         tasks: [
-          `Identify 3-5 specific aspects of ${currentRoleRef} work applicable to ${goalsRef}`,
-          `List which of your skills (${skillsRef}) are already valuable for ${goalsRef}`,
-          `Research ${goalsRef} roles that specifically value ${currentRoleRef} background`,
-          `Join communities focused on ${goalsRef} where ${currentRoleRef} professionals discuss careers`,
-          `Find case studies of people transitioning from ${currentRoleRef} to ${goalsRef}`,
+          `Identify 3-5 specific aspects of ${currentRoleRef} work applicable to ${targetRoleRef}`,
+          `List which of your skills (${skillsRef}) are already valuable for ${targetRoleRef}`,
+          `Research ${targetRoleRef} roles that specifically value ${currentRoleRef} background`,
+          `Join communities focused on ${targetRoleRef} where ${currentRoleRef} professionals discuss careers`,
+          `Find case studies of people transitioning from ${currentRoleRef} to ${targetRoleRef}`,
         ],
         duration_months: Math.ceil(totalMonths * 0.2),
       },
@@ -113,82 +161,82 @@ async function generateRoadmapWithAI(
         phase: 2,
         title: `Build Skills Gaps: ${
           skillsRef.split(",")[0]
-        } Skills for ${goalsRef} (Months ${
+        } Skills for ${targetRoleRef} (Months ${
           Math.ceil(totalMonths * 0.2) + 1
         }-${Math.ceil(totalMonths * 0.5)})`,
-        description: `Develop technical and soft skills needed for ${goalsRef} that aren't yet in your toolkit`,
+        description: `Develop technical and soft skills needed for ${targetRoleRef} that aren't yet in your toolkit`,
         tasks: [
-          `Take 2-3 courses specifically recommended for ${currentRoleRef} → ${goalsRef} transitions`,
+          `Take 2-3 courses specifically recommended for ${currentRoleRef} → ${targetRoleRef} transitions`,
           `Apply your ${
             skillsRef.split(",")[0]
-          } skills to ${goalsRef}-related projects`,
-          `Build your first ${goalsRef}-relevant portfolio project that demonstrates your ${currentRoleRef} advantage`,
-          `Connect with mentors in ${goalsRef} who have similar ${currentRoleRef} backgrounds`,
+          } skills to ${targetRoleRef}-related projects`,
+          `Build your first ${targetRoleRef}-relevant portfolio project that demonstrates your ${currentRoleRef} advantage`,
+          `Connect with mentors in ${targetRoleRef} who have similar ${currentRoleRef} backgrounds`,
           `Document and share your learning journey in your industry`,
         ],
         duration_months: Math.ceil(totalMonths * 0.3),
       },
       {
         phase: 3,
-        title: `Specialize & Differentiate: Advanced ${goalsRef} with Your ${currentRoleRef} Edge (Months ${
+        title: `Specialize & Differentiate: Advanced ${targetRoleRef} with Your ${currentRoleRef} Edge (Months ${
           Math.ceil(totalMonths * 0.5) + 1
         }-${Math.ceil(totalMonths * 0.75)})`,
-        description: `Build specialized expertise that combines ${goalsRef} knowledge with your unique ${currentRoleRef} perspective`,
+        description: `Build specialized expertise that combines ${targetRoleRef} knowledge with your unique ${currentRoleRef} perspective`,
         tasks: [
-          `Complete advanced certifications in ${goalsRef}`,
-          `Build 2-3 portfolio projects showcasing how your ${currentRoleRef} expertise enhances ${goalsRef} outcomes`,
-          `Write articles/posts about your unique perspective on ${goalsRef} from a ${currentRoleRef} angle`,
-          `Contribute to open-source projects in ${goalsRef}`,
-          `Network intensively with ${goalsRef} professionals, highlighting your unique background`,
+          `Complete advanced certifications in ${targetRoleRef}`,
+          `Build 2-3 portfolio projects showcasing how your ${currentRoleRef} expertise enhances ${targetRoleRef} outcomes`,
+          `Write articles/posts about your unique perspective on ${targetRoleRef} from a ${currentRoleRef} angle`,
+          `Contribute to open-source projects in ${targetRoleRef}`,
+          `Network intensively with ${targetRoleRef} professionals, highlighting your unique background`,
         ],
         duration_months: Math.ceil(totalMonths * 0.25),
       },
       {
         phase: 4,
-        title: `Job Search & Transition: Landing Your ${goalsRef} Role (Months ${
+        title: `Job Search & Transition: Landing Your ${targetRoleRef} Role (Months ${
           Math.ceil(totalMonths * 0.75) + 1
         }+)`,
-        description: `Position yourself for ${goalsRef} roles that value your ${currentRoleRef} background`,
+        description: `Position yourself for ${targetRoleRef} roles that value your ${currentRoleRef} background`,
         tasks: [
-          `Tailor your LinkedIn profile to highlight ${goalsRef} while showcasing your ${currentRoleRef} experience as an advantage`,
-          `Reframe your resume to show progression toward ${goalsRef} with your ${currentRoleRef} skills as foundation`,
-          `Target companies that need ${currentRoleRef} professionals transitioning to ${goalsRef}`,
-          `Practice interviews emphasizing how ${currentRoleRef} experience prepared you for ${goalsRef}`,
-          `Negotiate roles that value your dual expertise in ${currentRoleRef} and ${goalsRef}`,
+          `Tailor your LinkedIn profile to highlight ${targetRoleRef} while showcasing your ${currentRoleRef} experience as an advantage`,
+          `Reframe your resume to show progression toward ${targetRoleRef} with your ${currentRoleRef} skills as foundation`,
+          `Target companies that need ${currentRoleRef} professionals transitioning to ${targetRoleRef}`,
+          `Practice interviews emphasizing how ${currentRoleRef} experience prepared you for ${targetRoleRef}`,
+          `Negotiate roles that value your dual expertise in ${currentRoleRef} and ${targetRoleRef}`,
         ],
         duration_months: Math.ceil(totalMonths * 0.25),
       },
     ],
     skill_gaps: [
-      `Advanced proficiency in ${goalsRef}-specific tools and platforms`,
-      `Deep industry knowledge specific to ${goalsRef}`,
-      `Soft skills highly valued in ${goalsRef} industry`,
-      `Certifications or credentials specific to ${goalsRef}`,
-      `${yearsRef}+ years of practical experience in ${goalsRef} (your ${currentRoleRef} background helps offset this)`,
-      `Understanding of how ${goalsRef} applies to your current ${currentRoleRef} domain`,
+      `Advanced proficiency in ${targetRoleRef}-specific tools and platforms`,
+      `Deep industry knowledge specific to ${targetRoleRef}`,
+      `Soft skills highly valued in ${targetRoleRef} industry`,
+      `Certifications or credentials specific to ${targetRoleRef}`,
+      `${yearsRef}+ years of practical experience in ${targetRoleRef} (your ${currentRoleRef} background helps offset this)`,
+      `Understanding of how ${targetRoleRef} applies to your current ${currentRoleRef} domain`,
     ],
     recommended_roles: [
       {
-        title: `${currentRoleRef} + ${goalsRef} Hybrid Role`,
-        description: `Leverage your ${currentRoleRef} expertise while integrating ${goalsRef} skills - unique value proposition`,
+        title: `${currentRoleRef} + ${targetRoleRef} Hybrid Role`,
+        description: `Leverage your ${currentRoleRef} expertise while integrating ${targetRoleRef} skills - unique value proposition`,
         demand: "Very High",
         salary_range: "$85K - $130K+",
       },
       {
-        title: `${goalsRef} Specialist (Entry to Mid-Level)`,
-        description: `Transition into dedicated ${goalsRef} roles - companies value your ${currentRoleRef} background`,
+        title: `${targetRoleRef} Specialist (Entry to Mid-Level)`,
+        description: `Transition into dedicated ${targetRoleRef} roles - companies value your ${currentRoleRef} background`,
         demand: "High",
         salary_range: "$90K - $140K",
       },
       {
-        title: `${currentRoleRef} → ${goalsRef} Bridge Role`,
-        description: `Rare hybrid roles combining ${currentRoleRef} expertise with ${goalsRef} focus - highest salary potential`,
+        title: `${currentRoleRef} → ${targetRoleRef} Bridge Role`,
+        description: `Rare hybrid roles combining ${currentRoleRef} expertise with ${targetRoleRef} focus - highest salary potential`,
         demand: "Very High (but rare)",
         salary_range: "$110K - $160K+",
       },
       {
-        title: `${goalsRef} in Your ${currentRoleRef} Industry`,
-        description: `Apply ${goalsRef} expertise to your current industry where ${currentRoleRef} background is highly valuable`,
+        title: `${targetRoleRef} in Your ${currentRoleRef} Industry`,
+        description: `Apply ${targetRoleRef} expertise to your current industry where ${currentRoleRef} background is highly valuable`,
         demand: "High",
         salary_range: "$95K - $145K",
       },
@@ -196,35 +244,35 @@ async function generateRoadmapWithAI(
     resource_categories: {
       courses: {
         essential: [
-          `Foundational ${goalsRef} course for ${currentRoleRef} professionals`,
-          `How to apply your ${skillsRef.split(",")[0]} to ${goalsRef}`,
-          `${goalsRef}-specific training relevant to your ${currentRoleRef} domain`,
-          `Advanced ${goalsRef} course leveraging your ${yearsRef} years of ${currentRoleRef} experience`,
-          `Project-based ${goalsRef} course combining ${currentRoleRef} and ${goalsRef}`,
+          `Foundational ${targetRoleRef} course for ${currentRoleRef} professionals`,
+          `How to apply your ${skillsRef.split(",")[0]} to ${targetRoleRef}`,
+          `${targetRoleRef}-specific training relevant to your ${currentRoleRef} domain`,
+          `Advanced ${targetRoleRef} course leveraging your ${yearsRef} years of ${currentRoleRef} experience`,
+          `Project-based ${targetRoleRef} course combining ${currentRoleRef} and ${targetRoleRef}`,
         ],
         advanced: [
-          `Advanced ${goalsRef} certification for ${currentRoleRef} professionals`,
-          `${goalsRef} strategy and architecture course`,
-          `Leadership in ${goalsRef} for experienced professionals`,
+          `Advanced ${targetRoleRef} certification for ${currentRoleRef} professionals`,
+          `${targetRoleRef} strategy and architecture course`,
+          `Leadership in ${targetRoleRef} for experienced professionals`,
         ],
       },
       certifications: [
         {
-          cert: `AWS Solutions Architect for ${goalsRef}`,
+          cert: `AWS Solutions Architect for ${targetRoleRef}`,
           roi: 95,
           cost: 300,
           salary_impact: "+$15K",
           time_months: 6,
         },
         {
-          cert: `Industry-standard ${goalsRef} certification`,
+          cert: `Industry-standard ${targetRoleRef} certification`,
           roi: 88,
           cost: 250,
           salary_impact: "+$12K",
           time_months: 4,
         },
         {
-          cert: `Advanced ${goalsRef} Leadership certification`,
+          cert: `Advanced ${targetRoleRef} Leadership certification`,
           roi: 92,
           cost: 400,
           salary_impact: "+$18K",
@@ -232,20 +280,20 @@ async function generateRoadmapWithAI(
         },
       ],
       communities: [
-        `Communities for ${currentRoleRef} professionals transitioning to ${goalsRef}`,
-        `${goalsRef} communities where ${currentRoleRef} professionals gather`,
-        `Industry-specific ${goalsRef} groups`,
-        `Networking groups for ${currentRoleRef} → ${goalsRef} transitions`,
-        `Local meetups for ${goalsRef} professionals with diverse ${currentRoleRef} backgrounds`,
+        `Communities for ${currentRoleRef} professionals transitioning to ${targetRoleRef}`,
+        `${targetRoleRef} communities where ${currentRoleRef} professionals gather`,
+        `Industry-specific ${targetRoleRef} groups`,
+        `Networking groups for ${currentRoleRef} → ${targetRoleRef} transitions`,
+        `Local meetups for ${targetRoleRef} professionals with diverse ${currentRoleRef} backgrounds`,
       ],
     },
     next_steps: [
-      `This week: Identify 3-5 specific aspects of ${currentRoleRef} work that transfer to ${goalsRef}`,
-      `This week: Research case studies of ${currentRoleRef} professionals who transitioned to ${goalsRef}`,
-      `Next 2 weeks: Enroll in foundational ${goalsRef} course for professionals like you`,
-      `Next 2 weeks: Connect with 3-5 people in ${goalsRef} who have ${currentRoleRef} backgrounds`,
-      `Next month: Start your first ${goalsRef} project using your ${skillsRef}`,
-      `Next month: Update LinkedIn to highlight your ${currentRoleRef} → ${goalsRef} journey`,
+      `This week: Identify 3-5 specific aspects of ${currentRoleRef} work that transfer to ${targetRoleRef}`,
+      `This week: Research case studies of ${currentRoleRef} professionals who transitioned to ${targetRoleRef}`,
+      `Next 2 weeks: Enroll in foundational ${targetRoleRef} course for professionals like you`,
+      `Next 2 weeks: Connect with 3-5 people in ${targetRoleRef} who have ${currentRoleRef} backgrounds`,
+      `Next month: Start your first ${targetRoleRef} project using your ${skillsRef}`,
+      `Next month: Update LinkedIn to highlight your ${currentRoleRef} → ${targetRoleRef} journey`,
       `Ongoing: Document your journey publicly (blog, social media, portfolio)`,
     ],
   }
@@ -254,25 +302,25 @@ async function generateRoadmapWithAI(
   const tierSpecificContent = {
     professional: {
       curated_courses: [
-        `Advanced ${goalsRef} courses specifically for ${currentRoleRef} professionals`,
-        `Leveraging ${yearsRef} years of ${currentRoleRef} experience in ${goalsRef} roles`,
-        `${goalsRef} courses building on your ${skillsRef}`,
+        `Advanced ${targetRoleRef} courses specifically for ${currentRoleRef} professionals`,
+        `Leveraging ${yearsRef} years of ${currentRoleRef} experience in ${targetRoleRef} roles`,
+        `${targetRoleRef} courses building on your ${skillsRef}`,
         `Industry certifications recognizing your ${currentRoleRef} background`,
-        `Specialized ${goalsRef} training for career switchers with your profile`,
+        `Specialized ${targetRoleRef} training for career switchers with your profile`,
       ],
       resume_suggestions: [
-        `Frame your ${yearsRef} years in ${currentRoleRef} as preparation for ${goalsRef} (progression, not pivot)`,
-        `Highlight ${currentRoleRef} projects demonstrating ${goalsRef}-relevant skills`,
-        `Use metrics from ${currentRoleRef} that matter in ${goalsRef} industry`,
-        `Show moments where you applied ${goalsRef} thinking to ${currentRoleRef} problems`,
-        `Include ${goalsRef} side projects and certifications alongside ${currentRoleRef} achievements`,
+        `Frame your ${yearsRef} years in ${currentRoleRef} as preparation for ${targetRoleRef} (progression, not pivot)`,
+        `Highlight ${currentRoleRef} projects demonstrating ${targetRoleRef}-relevant skills`,
+        `Use metrics from ${currentRoleRef} that matter in ${targetRoleRef} industry`,
+        `Show moments where you applied ${targetRoleRef} thinking to ${currentRoleRef} problems`,
+        `Include ${targetRoleRef} side projects and certifications alongside ${currentRoleRef} achievements`,
       ],
       portfolio_ideas: [
-        `Create a ${goalsRef} project solving a real problem in your ${currentRoleRef} domain`,
-        `Build 2-3 case studies showing how ${goalsRef} improves ${currentRoleRef} workflows`,
-        `Document your ${currentRoleRef} → ${goalsRef} transition journey`,
-        `Contribute to open-source ${goalsRef} projects with your ${currentRoleRef} perspective`,
-        `Create thought leadership at the intersection of ${currentRoleRef} and ${goalsRef}`,
+        `Create a ${targetRoleRef} project solving a real problem in your ${currentRoleRef} domain`,
+        `Build 2-3 case studies showing how ${targetRoleRef} improves ${currentRoleRef} workflows`,
+        `Document your ${currentRoleRef} → ${targetRoleRef} transition journey`,
+        `Contribute to open-source ${targetRoleRef} projects with your ${currentRoleRef} perspective`,
+        `Create thought leadership at the intersection of ${currentRoleRef} and ${targetRoleRef}`,
       ],
     },
     premium: {
@@ -280,37 +328,37 @@ async function generateRoadmapWithAI(
         {
           type: "Tech-Focused",
           description: "Emphasizes technical skills and projects for tech-heavy roles",
-          content: `• Transform your ${yearsRef}-year ${currentRoleRef} background into tech-forward narrative\n• Lead with technical skills: ${skillsRef}\n• Emphasize metrics-driven projects with quantified impact\n• Show how ${currentRoleRef} background built foundations for ${goalsRef}\n• Use examples: "Improved systems efficiency by X%", "Architected solutions for Y users"\n• Position as technically grounded ${goalsRef} professional ready to contribute immediately`,
+          content: `• Transform your ${yearsRef}-year ${currentRoleRef} background into tech-forward narrative\n• Lead with technical skills: ${skillsRef}\n• Emphasize metrics-driven projects with quantified impact\n• Show how ${currentRoleRef} background built foundations for ${targetRoleRef}\n• Use examples: "Improved systems efficiency by X%", "Architected solutions for Y users"\n• Position as technically grounded ${targetRoleRef} professional ready to contribute immediately`,
         },
         {
           type: "General/Versatile",
           description: "Broad appeal works for various industries and roles",
-          content: `• Position ${yearsRef} years in ${currentRoleRef} as preparation for ${goalsRef}\n• Show how ${skillsRef} transfer across domains\n• Narrative: "My ${currentRoleRef} background gives unique perspective on ${goalsRef} challenges"\n• Include both technical achievements and soft skills\n• Demonstrate intentional growth and learning\n• Appeal to companies seeking ${goalsRef} talent with your background`,
+          content: `• Position ${yearsRef} years in ${currentRoleRef} as preparation for ${targetRoleRef}\n• Show how ${skillsRef} transfer across domains\n• Narrative: "My ${currentRoleRef} background gives unique perspective on ${targetRoleRef} challenges"\n• Include both technical achievements and soft skills\n• Demonstrate intentional growth and learning\n• Appeal to companies seeking ${targetRoleRef} talent with your background`,
         },
         {
           type: "Startup-Focused",
           description: "Highlights adaptability and growth mindset for fast-moving companies",
-          content: `• Highlight adaptability as a ${currentRoleRef} transitioning to ${goalsRef}\n• Emphasize: side projects, learning velocity, wearing multiple hats\n• Use startup language: "Built from ground up", "Scaled processes", "Learned fast"\n• Show hunger to grow and energy to move fast\n• Demonstrate: continuous learning, rapid skill acquisition, flexibility\n• Appeal to startups valuing hustle and diverse experience`,
+          content: `• Highlight adaptability as a ${currentRoleRef} transitioning to ${targetRoleRef}\n• Emphasize: side projects, learning velocity, wearing multiple hats\n• Use startup language: "Built from ground up", "Scaled processes", "Learned fast"\n• Show hunger to grow and energy to move fast\n• Demonstrate: continuous learning, rapid skill acquisition, flexibility\n• Appeal to startups valuing hustle and diverse experience`,
         },
         {
           type: "Enterprise-Focused",
           description: "Emphasizes leadership and structured process improvement",
-          content: `• Position ${yearsRef} years in ${currentRoleRef} as leadership experience\n• Highlight: cross-functional collaboration, budget management, team leadership\n• Demonstrate: stakeholder communication, process improvement, change management\n• Use enterprise language: "Optimized workflows", "Managed initiatives", "Drove adoption"\n• Show how you led change in ${currentRoleRef}\n• Appeal to enterprises seeking ${goalsRef} leaders with management credibility`,
+          content: `• Position ${yearsRef} years in ${currentRoleRef} as leadership experience\n• Highlight: cross-functional collaboration, budget management, team leadership\n• Demonstrate: stakeholder communication, process improvement, change management\n• Use enterprise language: "Optimized workflows", "Managed initiatives", "Drove adoption"\n• Show how you led change in ${currentRoleRef}\n• Appeal to enterprises seeking ${targetRoleRef} leaders with management credibility`,
         },
       ],
       linkedin_optimization: [
-        `• Headline: "${currentRoleRef} Expert Transitioning to ${goalsRef}" (expert integrating new skills)`,
-        `• About: Explain why ${goalsRef} is natural next step from ${currentRoleRef}, your unique perspective`,
-        `• Experience: Reframe ${currentRoleRef} achievements through ${goalsRef} lens`,
-        `• Skills: Prioritize both ${currentRoleRef} AND ${goalsRef} to show integrated expertise`,
-        `• Featured: Showcase ${goalsRef} projects alongside ${currentRoleRef} achievements`,
+        `• Headline: "${currentRoleRef} Expert Transitioning to ${targetRoleRef}" (expert integrating new skills)`,
+        `• About: Explain why ${targetRoleRef} is natural next step from ${currentRoleRef}, your unique perspective`,
+        `• Experience: Reframe ${currentRoleRef} achievements through ${targetRoleRef} lens`,
+        `• Skills: Prioritize both ${currentRoleRef} AND ${targetRoleRef} to show integrated expertise`,
+        `• Featured: Showcase ${targetRoleRef} projects alongside ${currentRoleRef} achievements`,
       ],
       career_coaching_insights: [
         `• Timing: You're ready after ${yearsRef} years in ${currentRoleRef} - you have credibility AND differentiation`,
-        `• Salary: Your ${currentRoleRef} background adds $10-20K premium in ${goalsRef} roles`,
-        `• Job search: Target companies in your current ${currentRoleRef} industry embracing ${goalsRef}`,
-        `• Interviews: Lead with ${currentRoleRef} achievements, pivot to ${goalsRef} passion, emphasize fresh perspective`,
-        `• Networking: Connect ${currentRoleRef} peers with ${goalsRef} professionals - become the bridge`,
+        `• Salary: Your ${currentRoleRef} background adds $10-20K premium in ${targetRoleRef} roles`,
+        `• Job search: Target companies in your current ${currentRoleRef} industry embracing ${targetRoleRef}`,
+        `• Interviews: Lead with ${currentRoleRef} achievements, pivot to ${targetRoleRef} passion, emphasize fresh perspective`,
+        `• Networking: Connect ${currentRoleRef} peers with ${targetRoleRef} professionals - become the bridge`,
       ],
     },
   }
