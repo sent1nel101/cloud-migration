@@ -114,6 +114,11 @@ export default function DashboardPage() {
               <a href="#roadmaps" className="nav-link active">
                 📋 My Roadmaps
               </a>
+              {(session.user as any)?.tier === "PREMIUM" && (
+                <Link href="/revisions" className="nav-link">
+                  ✏️ My Revisions
+                </Link>
+              )}
               <Link href="/features-pricing" className="nav-link">
                 🚀 Upgrade Plan
               </Link>

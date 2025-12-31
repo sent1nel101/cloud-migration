@@ -56,7 +56,8 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Roadmap: 'Roadmap',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  RevisionRequest: 'RevisionRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -164,6 +165,24 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const RevisionRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roadmapId: 'roadmapId',
+  originalInput: 'originalInput',
+  reason: 'reason',
+  status: 'status',
+  requestedAt: 'requestedAt',
+  respondedAt: 'respondedAt',
+  adminResponse: 'adminResponse',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RevisionRequestScalarFieldEnum = (typeof RevisionRequestScalarFieldEnum)[keyof typeof RevisionRequestScalarFieldEnum]
 
 
 export const SortOrder = {

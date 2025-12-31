@@ -195,9 +195,27 @@ async function generateRoadmapWithAI(
         ],
       },
       certifications: [
-        `Certification bridging ${currentRoleRef} and ${goalsRef}`,
-        `Industry-standard ${goalsRef} certification`,
-        `Leadership certification in ${goalsRef}`,
+        {
+          cert: `AWS Solutions Architect for ${goalsRef}`,
+          roi: 95,
+          cost: 300,
+          salary_impact: "+$15K",
+          time_months: 6,
+        },
+        {
+          cert: `Industry-standard ${goalsRef} certification`,
+          roi: 88,
+          cost: 250,
+          salary_impact: "+$12K",
+          time_months: 4,
+        },
+        {
+          cert: `Advanced ${goalsRef} Leadership certification`,
+          roi: 92,
+          cost: 400,
+          salary_impact: "+$18K",
+          time_months: 8,
+        },
       ],
       communities: [
         `Communities for ${currentRoleRef} professionals transitioning to ${goalsRef}`,
@@ -231,7 +249,28 @@ async function generateRoadmapWithAI(
       ],
     },
     premium_tier_content: {
-      ai_resume_rewrite: `Transform your resume to position your ${yearsRef} years in ${currentRoleRef} as a competitive advantage for ${goalsRef} roles. Highlight ${skillsRef} through metrics-driven achievement statements. Show clear progression toward ${goalsRef} with ${currentRoleRef} as your foundation, not a obstacle. Position you as the bridge companies need between ${currentRoleRef} and ${goalsRef} domains.`,
+      resumes: [
+        {
+          type: "Tech-Focused",
+          description: "Emphasizes technical skills and projects for tech-heavy roles",
+          content: `Transform your ${yearsRef} years in ${currentRoleRef} into a tech-forward narrative. Lead with technical skills (${skillsRef}), emphasize metrics-driven projects, and show how your ${currentRoleRef} background built strong foundations for ${goalsRef} roles. Use quantified impact: "Improved systems efficiency by X%", "Architected solutions for Y users". Position you as technically grounded ${goalsRef} professional ready to contribute immediately.`,
+        },
+        {
+          type: "General/Versatile",
+          description: "Broad appeal works for various industries and roles",
+          content: `Position your ${yearsRef} years in ${currentRoleRef} as preparation for ${goalsRef}. Show how ${skillsRef} transfer across domains. Tell a narrative of intentional growth: "My ${currentRoleRef} background gives me unique perspective on ${goalsRef} challenges." Include both technical achievements and soft skills. Make you attractive to companies looking for ${goalsRef} talent with your specific background.`,
+        },
+        {
+          type: "Startup-Focused",
+          description: "Highlights adaptability and growth mindset for fast-moving companies",
+          content: `Highlight your adaptability as a ${currentRoleRef} transitioning to ${goalsRef}. Emphasize side projects, learning velocity, and how you've worn multiple hats. Use startup language: "Built ${goalsRef} solution from ground up", "Scaled processes as ${currentRoleRef} professional", "Learned ${goalsRef} while maintaining ${currentRoleRef} excellence". Show hunger to grow and energy to move fast. Perfect for startups valuing hustle and diverse experience.`,
+        },
+        {
+          type: "Enterprise-Focused",
+          description: "Emphasizes leadership and structured process improvement",
+          content: `Position your ${yearsRef} years in ${currentRoleRef} as leadership and process-improvement experience applicable to ${goalsRef}. Emphasize: cross-functional collaboration, budget management, team leadership, stakeholder communication. Show how you led change in ${currentRoleRef}. Use enterprise language: "Optimized workflows", "Managed initiatives across teams", "Drove adoption of new processes". Make you attractive to enterprises seeking ${goalsRef} leaders with management credibility.`,
+        },
+      ],
       linkedin_optimization: [
         `Headline: "${currentRoleRef} Expert Transitioning to ${goalsRef}" - expert integrating new skills, not a career changer`,
         `About: Tell why ${goalsRef} is the natural next step from ${currentRoleRef}, emphasizing your unique perspective`,

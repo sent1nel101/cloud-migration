@@ -389,7 +389,8 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Roadmap: 'Roadmap',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  RevisionRequest: 'RevisionRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "roadmap" | "payment"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "roadmap" | "payment" | "revisionRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -853,6 +854,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RevisionRequest: {
+      payload: Prisma.$RevisionRequestPayload<ExtArgs>
+      fields: Prisma.RevisionRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RevisionRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RevisionRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.RevisionRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RevisionRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>
+        }
+        findMany: {
+          args: Prisma.RevisionRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>[]
+        }
+        create: {
+          args: Prisma.RevisionRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>
+        }
+        createMany: {
+          args: Prisma.RevisionRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RevisionRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.RevisionRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>
+        }
+        update: {
+          args: Prisma.RevisionRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.RevisionRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RevisionRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RevisionRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.RevisionRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevisionRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.RevisionRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRevisionRequest>
+        }
+        groupBy: {
+          args: Prisma.RevisionRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RevisionRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RevisionRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RevisionRequestCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -983,6 +1058,24 @@ export const PaymentScalarFieldEnum = {
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
+export const RevisionRequestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roadmapId: 'roadmapId',
+  originalInput: 'originalInput',
+  reason: 'reason',
+  status: 'status',
+  requestedAt: 'requestedAt',
+  respondedAt: 'respondedAt',
+  adminResponse: 'adminResponse',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RevisionRequestScalarFieldEnum = (typeof RevisionRequestScalarFieldEnum)[keyof typeof RevisionRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1087,6 +1180,20 @@ export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'PaymentStatus[]'
  */
 export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RevisionStatus'
+ */
+export type EnumRevisionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RevisionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RevisionStatus[]'
+ */
+export type ListEnumRevisionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RevisionStatus[]'>
     
 
 
@@ -1204,6 +1311,7 @@ export type GlobalOmitConfig = {
   verificationToken?: Prisma.VerificationTokenOmit
   roadmap?: Prisma.RoadmapOmit
   payment?: Prisma.PaymentOmit
+  revisionRequest?: Prisma.RevisionRequestOmit
 }
 
 /* Types for Logging */

@@ -29,6 +29,9 @@ model User {
   // Payment history
   payments      Payment[]
   
+  // Revision requests (Premium tier feature)
+  revisions     RevisionRequest[]
+  
   // Session & auth
   accounts      Account[]
   sessions      Session[]
@@ -147,6 +150,44 @@ model Payment {
   @@index([stripePaymentId])
 }
 
+// RevisionRequest model - tracks revision requests for Premium users
+model RevisionRequest {
+  id            String    @id @default(cuid())
+  userId        String
+  
+  // Reference to the original roadmap (can be null if roadmap was deleted)
+  roadmapId     String?
+  
+  // Original input data for reference
+  originalInput String    @db.Text // JSON of career input
+  
+  // Revision reason
+  reason        String    @db.Text // Why they want a revision
+  
+  // Status tracking
+  status        RevisionStatus @default(PENDING)
+  
+  // Metadata
+  requestedAt   DateTime  @default(now())
+  
+  // Admin response (when approved/rejected)
+  respondedAt   DateTime?
+  adminResponse String?   @db.Text
+  
+  // Expiration: revision valid for 3 months from purchase
+  expiresAt     DateTime  // Auto-calculated: createdAt + 3 months
+  
+  // Audit
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([status])
+  @@index([expiresAt])
+}
+
 // Enums
 enum Tier {
   FREE
@@ -159,4 +200,12 @@ enum PaymentStatus {
   SUCCEEDED
   FAILED
   REFUNDED
+}
+
+enum RevisionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+  EXPIRED
 }

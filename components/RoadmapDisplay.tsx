@@ -17,6 +17,7 @@
 
 "use client";
 
+import { useState } from "react";
 import type { Roadmap } from "@/types/index";
 
 interface RoadmapDisplayProps {
@@ -25,6 +26,9 @@ interface RoadmapDisplayProps {
 }
 
 export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
+  // Track which resume version is selected (for Premium tier)
+  const [selectedResumeIdx, setSelectedResumeIdx] = useState(0);
+
   /**
    * Triggers browser print dialog for PDF export.
    * Roadmap is already styled with @media print rules for clean output.
@@ -188,11 +192,55 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
                   Certifications
                 </h3>
                 <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                  {roadmap.resource_categories.certifications.map((cert, idx) => (
-                    <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                      • {cert}
-                    </li>
-                  ))}
+                  {roadmap.resource_categories.certifications.map((cert, idx) => {
+                    // Handle both string (FREE/PROFESSIONAL) and object (PREMIUM with ROI) formats
+                    if (typeof cert === "string") {
+                      return (
+                        <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                          • {cert}
+                        </li>
+                      );
+                    } else {
+                      // Premium tier: show cert with ROI, cost, salary impact
+                      return (
+                        <li
+                          key={idx}
+                          style={{
+                            padding: "0.75rem",
+                            marginBottom: "0.75rem",
+                            backgroundColor: "var(--bg-tertiary)",
+                            borderRadius: "0.375rem",
+                            borderLeft: "4px solid var(--primary-color)",
+                            color: "var(--text-primary)",
+                          }}
+                        >
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", gap: "1rem" }}>
+                            <div>
+                              <p style={{ fontWeight: "600", marginBottom: "0.25rem" }}>• {cert.cert}</p>
+                              <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                                <span>⭐ ROI: {cert.roi}/100</span>
+                                <span>💰 Cost: ${cert.cost}</span>
+                                <span>⏱️ Time: {cert.time_months} months</span>
+                              </div>
+                            </div>
+                            <div
+                              style={{
+                                backgroundColor: "var(--primary-color)",
+                                color: "white",
+                                padding: "0.25rem 0.75rem",
+                                borderRadius: "0.25rem",
+                                fontSize: "0.85rem",
+                                fontWeight: "600",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {cert.salary_impact}
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    }
+                  })}
                 </ul>
               </div>
             )}
@@ -265,10 +313,49 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
             </h2>
             
             <div style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>AI-Powered Resume Rewrite</h3>
-              <p style={{ color: "var(--text-primary)", padding: "1rem", backgroundColor: "var(--bg-primary)", borderRadius: "0.5rem", borderLeft: "4px solid #d4af37" }}>
-                {(roadmap as any).premium_tier_content.ai_resume_rewrite}
-              </p>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>AI-Powered Resume Rewrites (4 Versions)</h3>
+              
+              {/* Resume Tabs */}
+              {(roadmap as any).premium_tier_content.resumes && Array.isArray((roadmap as any).premium_tier_content.resumes) && (
+                <div style={{ marginBottom: "1rem" }}>
+                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem" }}>
+                    {(roadmap as any).premium_tier_content.resumes.map((resume: any, idx: number) => (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedResumeIdx(idx)}
+                        style={{
+                          padding: "0.5rem 1rem",
+                          background: selectedResumeIdx === idx ? "var(--primary-color)" : "var(--bg-tertiary)",
+                          color: selectedResumeIdx === idx ? "white" : "var(--text-primary)",
+                          border: "1px solid var(--primary-color)",
+                          borderRadius: "0.375rem",
+                          cursor: "pointer",
+                          fontFamily: "Poppins, sans-serif",
+                          fontSize: "0.95rem",
+                          fontWeight: "600",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        {resume.type}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {/* Resume Description */}
+                  {(roadmap as any).premium_tier_content.resumes[selectedResumeIdx] && (
+                    <>
+                      <p style={{ color: "var(--text-secondary)", marginBottom: "0.75rem", fontSize: "0.9rem", fontStyle: "italic" }}>
+                        {(roadmap as any).premium_tier_content.resumes[selectedResumeIdx].description}
+                      </p>
+                      
+                      {/* Resume Content */}
+                      <p style={{ color: "var(--text-primary)", padding: "1rem", backgroundColor: "var(--bg-primary)", borderRadius: "0.5rem", borderLeft: "4px solid #d4af37" }}>
+                        {(roadmap as any).premium_tier_content.resumes[selectedResumeIdx].content}
+                      </p>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             <div style={{ marginBottom: "1.5rem" }}>

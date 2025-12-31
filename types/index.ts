@@ -69,6 +69,23 @@ export interface RecommendedRole {
 }
 
 /**
+ * Certification with ROI ranking for premium tier.
+ * Shows return on investment, cost, salary impact, and time to complete.
+ */
+export interface CertificationWithROI {
+  /** Certification name (e.g., "AWS Solutions Architect") */
+  cert: string;
+  /** ROI score 0-100 (higher = better return on investment) */
+  roi: number;
+  /** Cost in dollars */
+  cost: number;
+  /** Expected salary increase (e.g., "+$15K") */
+  salary_impact: string;
+  /** Estimated time to complete in months */
+  time_months: number;
+}
+
+/**
  * Learning resources organized by category and difficulty.
  * Includes courses, certifications, and communities.
  */
@@ -79,8 +96,8 @@ export interface ResourceCategories {
     /** Advanced courses for deeper expertise */
     advanced: string[];
   };
-  /** Industry-recognized certifications */
-  certifications: string[];
+  /** Industry-recognized certifications (free tier) or objects with ROI (premium) */
+  certifications: (string | CertificationWithROI)[];
   /** Online communities and networking resources */
   communities: string[];
 }
@@ -95,10 +112,24 @@ export interface ProfessionalTierContent {
 }
 
 /**
+ * Resume variant with type, description, and content.
+ * Premium tier users get 4 different resume versions for different job types.
+ */
+export interface ResumeVariant {
+  /** Resume type (e.g., "Tech-Focused", "General/Versatile", "Startup-Focused", "Enterprise-Focused") */
+  type: string;
+  /** Description of what this version emphasizes */
+  description: string;
+  /** The actual resume content rewritten for this type */
+  content: string;
+}
+
+/**
  * Premium tier exclusive content (AI resume rewrite, LinkedIn optimization, coaching insights)
  */
 export interface PremiumTierContent {
-  ai_resume_rewrite: string;
+  /** Array of 3-4 resume variants for different job types */
+  resumes: ResumeVariant[];
   linkedin_optimization: string[];
   career_coaching_insights: string[];
 }

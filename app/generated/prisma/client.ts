@@ -69,3 +69,8 @@ export type Roadmap = Prisma.RoadmapModel
  * 
  */
 export type Payment = Prisma.PaymentModel
+/**
+ * Model RevisionRequest
+ * 
+ */
+export type RevisionRequest = Prisma.RevisionRequestModel
