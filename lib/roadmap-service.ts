@@ -3,12 +3,12 @@
  * Handles roadmap database operations and access control
  */
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma"
 
 /**
  * Save a generated roadmap to the database
  * @param userId - User ID who created the roadmap
- * @param data - Roadmap data (currentRole, targetRole, experience, skills)
+ * @param data - Roadmap data (currentRole, targetRole, experience, skills, goals, education)
  * @param content - Generated roadmap content (JSON string)
  * @param title - Optional title for the roadmap
  * @returns Saved roadmap object
@@ -16,10 +16,12 @@ import { prisma } from "@/lib/prisma";
 export async function saveRoadmap(
   userId: string,
   data: {
-    currentRole: string;
-    targetRole: string;
-    experience: number;
-    skills: string[]; // Array of skills
+    currentRole: string
+    targetRole: string
+    experience: number
+    skills: string[] // Array of skills
+    goals?: string // Original career goals from user input
+    education?: string // Education level/background
   },
   content: string,
   title?: string
@@ -28,16 +30,19 @@ export async function saveRoadmap(
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { id: true, email: true },
-  });
+  })
 
   if (!user) {
-    console.error(`Roadmap save failed: User ${userId} does not exist in database`);
-    throw new Error(`User ${userId} not found in database`);
+    console.error(
+      `Roadmap save failed: User ${userId} does not exist in database`
+    )
+    throw new Error(`User ${userId} not found in database`)
   }
 
-  console.log(`Saving roadmap for user ${user.email} (ID: ${userId})`);
+  console.log(`Saving roadmap for user ${user.email} (ID: ${userId})`)
 
-  return prisma.roadmap.create({
+  // Use Prisma for standard fields, raw SQL for goals/education
+  const result = await prisma.roadmap.create({
     data: {
       userId,
       currentRole: data.currentRole,
@@ -47,7 +52,18 @@ export async function saveRoadmap(
       content,
       title: title || `${data.currentRole} → ${data.targetRole}`,
     },
-  });
+  })
+
+  // Save goals and education with raw SQL if provided
+  if (data.goals || data.education) {
+    await prisma.$executeRaw`
+      UPDATE "Roadmap" 
+      SET goals = ${data.goals || null}, education = ${data.education || null}
+      WHERE id = ${result.id}
+    `
+  }
+
+  return result
 }
 
 /**
@@ -57,19 +73,32 @@ export async function saveRoadmap(
  * @returns Array of user's roadmaps
  */
 export async function getUserRoadmaps(userId: string, limit: number = 10) {
-  return prisma.roadmap.findMany({
-    where: { userId },
-    orderBy: { createdAt: "desc" },
-    take: limit,
-    select: {
-      id: true,
-      title: true,
-      currentRole: true,
-      targetRole: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  });
+  // Use raw SQL to fetch goals and education columns that Prisma doesn't know about
+  const roadmaps = await prisma.$queryRaw<
+    Array<{
+      id: string
+      userId: string
+      currentRole: string
+      targetRole: string
+      experience: number
+      skills: string
+      content: string
+      title: string | null
+      description: string | null
+      isPublic: boolean
+      goals: string | null
+      education: string | null
+      createdAt: Date
+      updatedAt: Date
+    }>
+  >`
+    SELECT * FROM "Roadmap"
+    WHERE "userId" = ${userId}
+    ORDER BY "createdAt" DESC
+    LIMIT ${limit}
+  `
+
+  return roadmaps
 }
 
 /**
@@ -79,12 +108,31 @@ export async function getUserRoadmaps(userId: string, limit: number = 10) {
  * @returns Full roadmap object or null if not found or unauthorized
  */
 export async function getRoadmapById(roadmapId: string, userId: string) {
-  return prisma.roadmap.findFirst({
-    where: {
-      id: roadmapId,
-      userId, // Ensure user can only see their own roadmaps
-    },
-  });
+  // Use raw SQL to fetch goals and education columns
+  const roadmap = await prisma.$queryRaw<
+    Array<{
+      id: string
+      userId: string
+      currentRole: string
+      targetRole: string
+      experience: number
+      skills: string
+      content: string
+      title: string | null
+      description: string | null
+      isPublic: boolean
+      goals: string | null
+      education: string | null
+      createdAt: Date
+      updatedAt: Date
+    }>
+  >`
+    SELECT * FROM "Roadmap"
+    WHERE id = ${roadmapId} AND "userId" = ${userId}
+    LIMIT 1
+  `
+
+  return roadmap && roadmap.length > 0 ? roadmap[0] : null
 }
 
 /**
@@ -98,23 +146,23 @@ export async function updateRoadmap(
   roadmapId: string,
   userId: string,
   updates: {
-    title?: string;
-    isPublic?: boolean;
+    title?: string
+    isPublic?: boolean
   }
 ) {
   // Verify ownership
   const roadmap = await prisma.roadmap.findFirst({
     where: { id: roadmapId, userId },
-  });
+  })
 
   if (!roadmap) {
-    throw new Error("Roadmap not found or access denied");
+    throw new Error("Roadmap not found or access denied")
   }
 
   return prisma.roadmap.update({
     where: { id: roadmapId },
     data: updates,
-  });
+  })
 }
 
 /**
@@ -125,15 +173,15 @@ export async function updateRoadmap(
 export async function deleteRoadmap(roadmapId: string, userId: string) {
   const roadmap = await prisma.roadmap.findFirst({
     where: { id: roadmapId, userId },
-  });
+  })
 
   if (!roadmap) {
-    throw new Error("Roadmap not found or access denied");
+    throw new Error("Roadmap not found or access denied")
   }
 
   return prisma.roadmap.delete({
     where: { id: roadmapId },
-  });
+  })
 }
 
 /**
@@ -144,5 +192,5 @@ export async function deleteRoadmap(roadmapId: string, userId: string) {
 export async function getRoadmapCount(userId: string) {
   return prisma.roadmap.count({
     where: { userId },
-  });
+  })
 }

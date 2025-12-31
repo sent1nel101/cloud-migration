@@ -11,7 +11,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { CareerInput } from "@/types/index";
 
 interface InputFormProps {
@@ -32,6 +32,19 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
     skills: initialValues?.skills || [],
     educationLevel: initialValues?.educationLevel || "Bachelor's",
   });
+
+  // Update form when initialValues change (for prefilling from URL params)
+  useEffect(() => {
+    if (initialValues) {
+      setFormData({
+        currentRole: initialValues.currentRole || "",
+        yearsExperience: initialValues.yearsExperience || 0,
+        goals: initialValues.goals || "",
+        skills: initialValues.skills || [],
+        educationLevel: initialValues.educationLevel || "Bachelor's",
+      });
+    }
+  }, [initialValues]);
 
   // Temporary input for adding skills (separate from formData array)
   const [skillInput, setSkillInput] = useState("");

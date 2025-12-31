@@ -16,7 +16,8 @@
 
 import { useState, useEffect, Suspense } from "react";
 import * as React from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Header from "@/components/Header";
 import InputForm from "@/components/InputForm";
 import RoadmapDisplay from "@/components/RoadmapDisplay";
@@ -25,6 +26,9 @@ import Footer from "@/components/Footer";
 import type { CareerInput, Roadmap } from "@/types/index";
 
 function HomeContent() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  
   // Track whether user has submitted the initial form
   const [formSubmitted, setFormSubmitted] = useState(false);
   // Stores the AI-generated roadmap object
@@ -36,6 +40,13 @@ function HomeContent() {
   // Ref to form section for scroll-to functionality
   const formSectionRef = React.useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
+
+  // Redirect logged-in users to dashboard
+  useEffect(() => {
+    if (status === "authenticated" && session?.user) {
+      router.push("/dashboard");
+    }
+  }, [status, session, router]);
 
   // Extract prefill values from URL params on mount
   useEffect(() => {
@@ -102,6 +113,29 @@ function HomeContent() {
       setLoading(false);
     }
   };
+
+  // Show loading state while checking auth status
+  if (status === "loading") {
+    return (
+      <div className="app-container">
+        <Header />
+        <main className="main-content" style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{
+              display: "inline-block",
+              animation: "spin 1s linear infinite",
+              borderRadius: "50%",
+              width: "3rem",
+              height: "3rem",
+              borderBottom: "2px solid var(--primary-color)"
+            }}></div>
+            <p style={{ marginTop: "1rem" }}>Loading...</p>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">

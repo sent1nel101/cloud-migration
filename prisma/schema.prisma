@@ -91,11 +91,12 @@ model Roadmap {
   id            String   @id @default(cuid())
   userId        String
   
-  // Input data saved with roadmap
+  // Input data saved with roadmap (original user inputs for editing)
   currentRole   String
   targetRole    String
   experience    Int       // Years of experience
   skills        String    // JSON array stored as text
+  // NOTE: goals and education fetched via raw SQL in roadmap-service.ts (getUserRoadmaps)
   
   // Generated roadmap content
   content       String    @db.Text // JSON format: phases, milestones, resources

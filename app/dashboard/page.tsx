@@ -15,6 +15,8 @@ interface Roadmap {
   targetRole?: string
   experience?: number
   skills?: string
+  goals?: string
+  education?: string
 }
 
 export default function DashboardPage() {
@@ -73,7 +75,10 @@ export default function DashboardPage() {
     
     if (roadmap.currentRole) params.append("role", roadmap.currentRole)
     if (roadmap.experience) params.append("years", roadmap.experience.toString())
-    if (roadmap.targetRole) params.append("goals", roadmap.targetRole)
+    // Include original goals from saved roadmap
+    if (roadmap.goals) params.append("goals", roadmap.goals)
+    // Include education level if saved
+    if (roadmap.education) params.append("education", roadmap.education)
     if (roadmap.skills) {
       try {
         const parsedSkills = JSON.parse(roadmap.skills)
@@ -86,7 +91,7 @@ export default function DashboardPage() {
       }
     }
     
-    return `/?${params.toString()}`
+    return `/roadmap-generator?${params.toString()}`
   }
 
   const handleDelete = async (roadmapId: string, roadmapTitle: string) => {
@@ -180,7 +185,7 @@ export default function DashboardPage() {
               <Link href="/features-pricing" className="nav-link">
                 🚀 Upgrade Plan
               </Link>
-              <Link href="/" className="nav-link">
+              <Link href="/roadmap-generator" className="nav-link">
                 ➕ New Roadmap
               </Link>
             </nav>
@@ -202,7 +207,7 @@ export default function DashboardPage() {
               <div className="dashboard-empty">
                 <h2>No roadmaps yet</h2>
                 <p>Create your first AI career roadmap to get started</p>
-                <Link href="/" className="empty-button">
+                <Link href="/roadmap-generator" className="empty-button">
                   Generate My First Roadmap
                 </Link>
               </div>

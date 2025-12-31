@@ -271,13 +271,63 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
             </h2>
             
             <div style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Curated Courses for Your Background</h3>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Real Courses & Learning Resources</h3>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                {(roadmap as any).professional_tier_content.curated_courses.map((course: string, idx: number) => (
-                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                    • {course}
-                  </li>
-                ))}
+                {(roadmap as any).professional_tier_content.courses && Array.isArray((roadmap as any).professional_tier_content.courses) ? (
+                  (roadmap as any).professional_tier_content.courses.map((course: any, idx: number) => (
+                    <li key={idx} style={{ padding: "0.75rem 0", color: "var(--text-primary)" }}>
+                      <a 
+                        href={course.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{ 
+                          color: "var(--primary-color)",
+                          textDecoration: "none",
+                          fontWeight: "600",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.5rem"
+                        }}
+                      >
+                        🔗 {course.name}
+                      </a>
+                      {course.platform && <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginLeft: "0.5rem" }}>({course.platform})</span>}
+                    </li>
+                  ))
+                ) : (
+                  (roadmap as any).professional_tier_content.curated_courses?.map((course: string, idx: number) => (
+                    <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
+                      • {course}
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Industry Certifications</h3>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                {(roadmap as any).professional_tier_content.certifications && Array.isArray((roadmap as any).professional_tier_content.certifications) && (
+                  (roadmap as any).professional_tier_content.certifications.map((cert: any, idx: number) => (
+                    <li key={idx} style={{ padding: "0.75rem 0", color: "var(--text-primary)" }}>
+                      <a 
+                        href={cert.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{ 
+                          color: "var(--primary-color)",
+                          textDecoration: "none",
+                          fontWeight: "600",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.5rem"
+                        }}
+                      >
+                        🏅 {cert.name}
+                      </a>
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
 
@@ -369,12 +419,37 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
               </ul>
             </div>
 
-            <div>
+            <div style={{ marginBottom: "1.5rem" }}>
               <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>1-on-1 Career Coaching Insights</h3>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                 {(roadmap as any).premium_tier_content.career_coaching_insights.map((insight: string, idx: number) => (
                   <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
                     • {insight}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Communities & Networking Groups</h3>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                {(roadmap as any).premium_tier_content.communities && Array.isArray((roadmap as any).premium_tier_content.communities) && (roadmap as any).premium_tier_content.communities.map((community: any, idx: number) => (
+                  <li key={idx} style={{ padding: "0.75rem 0", color: "var(--text-primary)" }}>
+                    <a 
+                      href={community.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ 
+                        color: "#d4af37",
+                        textDecoration: "none",
+                        fontWeight: "600",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.5rem"
+                      }}
+                    >
+                      🔗 {community.name}
+                    </a>
                   </li>
                 ))}
               </ul>

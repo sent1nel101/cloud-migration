@@ -103,10 +103,21 @@ export interface ResourceCategories {
 }
 
 /**
+ * Resource link with name and URL
+ */
+export interface ResourceLink {
+  name: string;
+  url: string;
+  platform?: string;
+}
+
+/**
  * Professional tier exclusive content (curated courses, resume suggestions, portfolio ideas)
  */
 export interface ProfessionalTierContent {
-  curated_courses: string[];
+  curated_courses?: string[];
+  courses?: ResourceLink[];
+  certifications?: ResourceLink[];
   resume_suggestions: string[];
   portfolio_ideas: string[];
 }
@@ -132,6 +143,8 @@ export interface PremiumTierContent {
   resumes: ResumeVariant[];
   linkedin_optimization: string[];
   career_coaching_insights: string[];
+  /** Communities and networking groups with links */
+  communities?: ResourceLink[];
 }
 
 /**

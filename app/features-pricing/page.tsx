@@ -5,17 +5,38 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import {
+  canUpgradeToTier,
+  getTierButtonText,
+  shouldDisableTierButton,
+  type TierLevel,
+} from "@/lib/tier-constants"
 
 export default function FeaturesPricing() {
   const { data: session } = useSession()
   const router = useRouter()
+  const userTier = (session?.user as any)?.tier || undefined
 
-  const handleUpgrade = (tier: "PROFESSIONAL" | "PREMIUM") => {
-    if (!session) {
+  const handleUpgrade = (tier: TierLevel) => {
+    // Free tier - no payment needed
+    if (tier === "FREE") {
+      router.push("/")
+      return
+    }
+
+    // Not logged in - redirect to signin
+    if (!userTier) {
       router.push("/auth/signin")
       return
     }
-    const amount = tier === "PROFESSIONAL" ? 3900 : 12900
+
+    // Check if user can upgrade to this tier
+    if (!canUpgradeToTier(userTier, tier)) {
+      alert("You cannot downgrade to a lower tier. Please contact support if you need to modify your plan.")
+      return
+    }
+
+    // Proceed to checkout
     router.push(`/checkout?tier=${tier}`)
   }
   return (
@@ -38,7 +59,7 @@ export default function FeaturesPricing() {
 
             <div className="pricing-grid">
               <div className="pricing-card">
-                {session?.user && (session.user as any)?.tier === "FREE" && (
+                {userTier === "FREE" && (
                   <div className="current-plan-badge">✓ Current Plan</div>
                 )}
                 <div className="pricing-header">
@@ -62,17 +83,21 @@ export default function FeaturesPricing() {
                     <li>✗ Resume optimization</li>
                   </ul>
                 </div>
-                <Link href="/" className="pricing-button">
-                  Get Started Free
-                </Link>
+                <button
+                  onClick={() => handleUpgrade("FREE")}
+                  className="pricing-button"
+                  disabled={shouldDisableTierButton(userTier, "FREE")}
+                  style={shouldDisableTierButton(userTier, "FREE") ? { opacity: 0.6, cursor: "not-allowed" } : {}}
+                >
+                  {getTierButtonText(userTier, "FREE")}
+                </button>
               </div>
 
               <div className="pricing-card featured">
                 <div className="popular-badge">Most Popular</div>
-                {session?.user &&
-                  (session.user as any)?.tier === "PROFESSIONAL" && (
-                    <div className="current-plan-badge">✓ Current Plan</div>
-                  )}
+                {userTier === "PROFESSIONAL" && (
+                  <div className="current-plan-badge">✓ Current Plan</div>
+                )}
                 <div className="pricing-header">
                   <h3>Professional</h3>
                   <div className="price">
@@ -96,16 +121,17 @@ export default function FeaturesPricing() {
                 <button
                   onClick={() => handleUpgrade("PROFESSIONAL")}
                   className="pricing-button pricing-button-primary"
+                  disabled={shouldDisableTierButton(userTier, "PROFESSIONAL")}
+                  style={shouldDisableTierButton(userTier, "PROFESSIONAL") ? { opacity: 0.6, cursor: "not-allowed" } : {}}
                 >
-                  {session ? "Upgrade to Professional" : "Sign In to Upgrade"}
+                  {getTierButtonText(userTier, "PROFESSIONAL")}
                 </button>
               </div>
 
               <div className="pricing-card">
-                {session?.user &&
-                  (session.user as any)?.tier === "PREMIUM" && (
-                    <div className="current-plan-badge">✓ Current Plan</div>
-                  )}
+                {userTier === "PREMIUM" && (
+                  <div className="current-plan-badge">✓ Current Plan</div>
+                )}
                 <div className="pricing-header">
                   <h3>Premium</h3>
                   <div className="price">
@@ -132,8 +158,10 @@ export default function FeaturesPricing() {
                 <button
                   onClick={() => handleUpgrade("PREMIUM")}
                   className="pricing-button"
+                  disabled={shouldDisableTierButton(userTier, "PREMIUM")}
+                  style={shouldDisableTierButton(userTier, "PREMIUM") ? { opacity: 0.6, cursor: "not-allowed" } : {}}
                 >
-                  {session ? "Get Premium" : "Sign In to Upgrade"}
+                  {getTierButtonText(userTier, "PREMIUM")}
                 </button>
               </div>
             </div>

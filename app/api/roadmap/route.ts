@@ -21,6 +21,7 @@ import {
   getRateLimitIdentifier,
   getClientIp,
 } from "@/lib/rate-limiter"
+import { getResourcesForRole } from "@/lib/resources"
 import type { CareerInput, Roadmap } from "@/types/index"
 
 // Initialize Anthropic client with API key from environment
@@ -463,6 +464,9 @@ ${roadmapJSON}`
       premiumContent = tierSpecificContent.premium
     }
 
+    // Get real resources for this role (for PROFESSIONAL+ tiers)
+    const resources = getResourcesForRole(targetRole)
+
     // Ensure all required fields exist with defaults
     const roadmap: Roadmap = {
       title: parsed.title || "Career Roadmap",
@@ -485,8 +489,19 @@ ${roadmapJSON}`
         communities: [],
       },
       next_steps: parsed.next_steps || [],
-      ...(professionalContent && { professional_tier_content: professionalContent }),
-      ...(premiumContent && { premium_tier_content: premiumContent }),
+      ...(professionalContent && { 
+        professional_tier_content: {
+          ...professionalContent,
+          courses: resources.courses,
+          certifications: resources.certifications,
+        }
+      }),
+      ...(premiumContent && { 
+        premium_tier_content: {
+          ...premiumContent,
+          communities: resources.communities,
+        }
+      }),
     }
 
     console.log("Roadmap structure ensured")
@@ -618,6 +633,8 @@ export async function POST(request: NextRequest) {
             targetRole: roadmap.title, // Use title as target role reference
             experience: body.yearsExperience,
             skills: body.skills || [],
+            goals: body.goals || "", // Save original goals for later editing
+            education: body.educationLevel || undefined, // Save education for later editing
           },
           roadmapContent,
           `${body.currentRole} → AI Role`

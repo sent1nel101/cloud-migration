@@ -6,7 +6,33 @@
  * Professional and Premium tiers unlock enhanced features with one-time payments.
  */
 
+"use client"
+
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+
 export default function PricingSection() {
+  const { data: session } = useSession()
+  const router = useRouter()
+  
+  const handleUpgrade = (tier: "PROFESSIONAL" | "PREMIUM") => {
+    if (!session) {
+      router.push("/auth/signin")
+      return
+    }
+    
+    const userTier = (session.user as any)?.tier || "FREE"
+    
+    // Prevent re-purchasing same tier
+    if (userTier === tier) {
+      alert("You already have this plan!")
+      return
+    }
+    
+    const amount = tier === "PROFESSIONAL" ? 3900 : 12900
+    router.push(`/checkout?tier=${tier}`)
+  }
+  
   return (
     <section className="pricing-section">
       <div className="container">
@@ -55,8 +81,8 @@ export default function PricingSection() {
                 </li>
               </ul>
               <button className="pricing-button" style={{ backgroundColor: "#6b7280" }} disabled>
-                You're using this
-              </button>
+                 {session && (session.user as any)?.tier === "FREE" ? "You're using this" : "Start Free"}
+               </button>
             </div>
           </div>
 
@@ -100,9 +126,19 @@ export default function PricingSection() {
                   <span style={{ color: "var(--text-secondary)" }}>AI-powered resume rewrite</span>
                 </li>
               </ul>
-              <button className="pricing-button" style={{ backgroundColor: "var(--primary-color)" }} onClick={() => window.location.href = '/checkout?tier=PROFESSIONAL'}>
-                Upgrade to Professional
-              </button>
+              <button 
+                className="pricing-button" 
+                style={{ 
+                  backgroundColor: "var(--primary-color)",
+                  ...(session && (session.user as any)?.tier === "PROFESSIONAL" ? { opacity: 0.6, cursor: "not-allowed" } : {})
+                }} 
+                onClick={() => handleUpgrade("PROFESSIONAL")}
+                disabled={!!(session && (session.user as any)?.tier === "PROFESSIONAL")}
+              >
+                {session && (session.user as any)?.tier === "PROFESSIONAL" 
+                  ? "Current Plan" 
+                  : "Upgrade to Professional"}
+               </button>
             </div>
           </div>
 
@@ -145,9 +181,19 @@ export default function PricingSection() {
                   <span>One revision/update (3 months)</span>
                 </li>
               </ul>
-              <button className="pricing-button" style={{ backgroundColor: "#a855f7" }} onClick={() => window.location.href = '/checkout?tier=PREMIUM'}>
-                Get Premium
-              </button>
+              <button 
+                className="pricing-button" 
+                style={{ 
+                  backgroundColor: "#a855f7",
+                  ...(session && (session.user as any)?.tier === "PREMIUM" ? { opacity: 0.6, cursor: "not-allowed" } : {})
+                }} 
+                onClick={() => handleUpgrade("PREMIUM")}
+                disabled={!!(session && (session.user as any)?.tier === "PREMIUM")}
+              >
+                {session && (session.user as any)?.tier === "PREMIUM" 
+                  ? "Current Plan" 
+                  : "Get Premium"}
+               </button>
             </div>
           </div>
         </div>
