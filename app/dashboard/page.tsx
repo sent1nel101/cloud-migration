@@ -182,11 +182,14 @@ export default function DashboardPage() {
                   ✏️ My Revisions
                 </Link>
               )}
-              <Link href="/features-pricing" className="nav-link">
-                🚀 Upgrade Plan
+              <Link href="/resume-upload" className="nav-link">
+                📄 Upload Resume
               </Link>
               <Link href="/roadmap-generator" className="nav-link">
                 ➕ New Roadmap
+              </Link>
+              <Link href="/features-pricing" className="nav-link">
+                🚀 Upgrade Plan
               </Link>
             </nav>
 

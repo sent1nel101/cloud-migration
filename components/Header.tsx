@@ -1,9 +1,9 @@
 /**
  * Header Component
- * 
+ *
  * Displays responsive navigation bar with logo, main navigation links, and theme toggle.
  * Persists theme preference to localStorage for consistent experience across sessions.
- * 
+ *
  * Features:
  * - Responsive navigation (hamburger menu on mobile, full nav on desktop)
  * - Light/dark mode toggle with localStorage persistence
@@ -58,28 +58,67 @@ export default function Header() {
     <header className="header">
       <div className="header-content">
         <div className="header-logo">
-          <a href="/">Cloud Designs</a>
+          <a href="/">Chart Your Path</a>
         </div>
-        
+
         {/* Main navigation - hidden on mobile unless menu is open */}
-         <nav className={`header-nav ${mobileMenuOpen ? "mobile-open" : ""}`}>
-           <a href="/" onClick={handleNavClick}>Home</a>
-           <a href="/features-pricing" onClick={handleNavClick}>Features & Pricing</a>
-           <a href="/about" onClick={handleNavClick}>About</a>
-           <a href="/blog" onClick={handleNavClick}>Blog</a>
-           <a href="/faq" onClick={handleNavClick}>FAQ</a>
-           <a href="/contact" onClick={handleNavClick}>Contact</a>
-           
-           {/* Auth links */}
-           {!session ? (
-             <>
-               <Link href="/auth/signin" className="nav-auth-link" onClick={handleNavClick}>Sign In</Link>
-               <Link href="/auth/signup" className="nav-auth-signup" onClick={handleNavClick}>Sign Up</Link>
-             </>
-           ) : (
-             <Link href="/dashboard" className="nav-dashboard-link" onClick={handleNavClick}>Dashboard</Link>
-           )}
-         </nav>
+        <nav className={`header-nav ${mobileMenuOpen ? "mobile-open" : ""}`}>
+          <a href="/" onClick={handleNavClick}>
+            Home
+          </a>
+          <a href="/features-pricing" onClick={handleNavClick}>
+            Features & Pricing
+          </a>
+          <a href="/about" onClick={handleNavClick}>
+            About
+          </a>
+          <a href="/blog" onClick={handleNavClick}>
+            Blog
+          </a>
+          <a href="/faq" onClick={handleNavClick}>
+            FAQ
+          </a>
+          <a href="/contact" onClick={handleNavClick}>
+            Contact
+          </a>
+
+          {/* Auth links */}
+          {!session ? (
+            <>
+              <Link
+                href="/auth/signin"
+                className="nav-auth-link"
+                onClick={handleNavClick}
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="nav-auth-signup"
+                onClick={handleNavClick}
+              >
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/resume-upload"
+                className="nav-upload-link"
+                onClick={handleNavClick}
+              >
+                Upload Resume
+              </Link>
+              <Link
+                href="/dashboard"
+                className="nav-dashboard-link"
+                onClick={handleNavClick}
+              >
+                Dashboard
+              </Link>
+            </>
+          )}
+        </nav>
 
         {/* Theme toggle button - always visible, outside hamburger menu */}
         <button
@@ -89,7 +128,7 @@ export default function Header() {
         >
           {theme === "light" ? "🌙" : "☀️"}
         </button>
-        
+
         {/* Hamburger menu button - visible on mobile */}
         <button
           className="header-hamburger"
@@ -101,10 +140,6 @@ export default function Header() {
           <span></span>
         </button>
       </div>
-      <nav className="header-nav-footer">
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-      </nav>
     </header>
   )
 }

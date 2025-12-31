@@ -14,7 +14,10 @@ export async function POST(request: NextRequest) {
   try {
     // Check authentication
     const session = await getServerSession(authOptions)
+    console.log("[RESUME PARSE API] Session check - user:", session?.user?.email)
+    
     if (!session) {
+      console.log("[RESUME PARSE API] No session found - returning 401")
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -52,15 +55,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse resume
+    console.log(`[RESUME PARSE API] Parsing ${fileType} file - ${file.name} (${file.size} bytes)`)
     const bufferData = Buffer.from(buffer)
     const parsedData = await parseResume(
       bufferData,
       fileType as "pdf" | "docx" | "txt"
     )
 
+    console.log("[RESUME PARSE API] Parse successful, returning data")
     return NextResponse.json(parsedData)
   } catch (error) {
-    console.error("Resume parsing error:", error)
+    console.error("[RESUME PARSE API] Error:", error)
     const message = error instanceof Error ? error.message : "Resume parsing failed"
     return NextResponse.json(
       { error: message },

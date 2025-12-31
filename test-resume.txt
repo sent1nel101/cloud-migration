@@ -1,0 +1,27 @@
+JOHN DOE
+john.doe@example.com | (555) 123-4567
+San Francisco, CA
+
+PROFESSIONAL SUMMARY
+Senior software engineer with 5 years of experience in cloud infrastructure and full-stack development. Skilled in building scalable systems and mentoring junior engineers.
+
+WORK EXPERIENCE
+Senior Software Engineer, TechCorp Inc (2020-Present)
+- Lead development of microservices architecture using Node.js and AWS
+- Mentored 3 junior engineers and improved code quality standards
+- Increased API performance by 40% through optimization
+- 5+ years total experience in software development
+
+Senior Developer, CloudBase Solutions (2019-2020)
+- Developed customer-facing APIs serving 1M+ requests daily
+- Implemented CI/CD pipelines reducing deployment time by 50%
+
+Junior Developer, StartupXYZ (2018-2019)
+- Built web applications using React and Node.js
+- Collaborated with product team on feature development
+
+EDUCATION
+B.S. in Computer Science, State University (2018)
+
+SKILLS
+Python, JavaScript, TypeScript, React, Node.js, Express, AWS, Docker, Kubernetes, PostgreSQL, MongoDB, Git, REST APIs, GraphQL, CI/CD, Linux

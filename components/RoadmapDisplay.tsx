@@ -133,13 +133,13 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
                   <div className="role-meta-item">
                     <label>Demand</label>
                     <div style={{ display: "block", fontSize: "0.95rem", color: "var(--primary-color)", fontWeight: "600", marginTop: "0.25rem" }}>
-                      {role.demand}
+                      {role.demand || "High"}
                     </div>
                   </div>
                   <div className="role-meta-item">
                     <label>Salary Range</label>
                     <div style={{ display: "block", fontSize: "0.95rem", color: "var(--primary-color)", fontWeight: "600", marginTop: "0.25rem" }}>
-                      {role.salary_range}
+                      {role.salary_range || "Varies by experience"}
                     </div>
                   </div>
                 </div>
@@ -149,126 +149,15 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
           </section>
         )}
 
-        {/* Resources */}
-        {roadmap.resource_categories && (
-          <section style={{ margin: "2rem 0" }}>
-            <h2 style={{ fontSize: "1.875rem", fontWeight: "bold", marginBottom: "1.5rem" }}>Learning Resources</h2>
-
-            {/* Courses */}
-            {roadmap.resource_categories.courses?.essential && (
-              <div style={{ marginBottom: "2rem" }}>
-                <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
-                  Courses
-                </h3>
-                <div style={{ marginBottom: "1rem" }}>
-                  <h4 style={{ fontSize: "0.95rem", fontWeight: "600", marginBottom: "0.5rem" }}>Essential</h4>
-                  <ul style={{ listStyle: "none", paddingLeft: 0, marginBottom: "1rem" }}>
-                    {roadmap.resource_categories.courses.essential.map((course, idx) => (
-                      <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                        • {course}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                {roadmap.resource_categories.courses.advanced && (
-                  <div>
-                    <h4 style={{ fontSize: "0.95rem", fontWeight: "600", marginBottom: "0.5rem" }}>Advanced</h4>
-                    <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                      {roadmap.resource_categories.courses.advanced.map((course, idx) => (
-                        <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                          • {course}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Certifications */}
-            {roadmap.resource_categories.certifications && (
-              <div style={{ marginBottom: "2rem" }}>
-                <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
-                  Certifications
-                </h3>
-                <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                  {roadmap.resource_categories.certifications.map((cert, idx) => {
-                    // Handle both string (FREE/PROFESSIONAL) and object (PREMIUM with ROI) formats
-                    if (typeof cert === "string") {
-                      return (
-                        <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                          • {cert}
-                        </li>
-                      );
-                    } else {
-                      // Premium tier: show cert with ROI, cost, salary impact
-                      return (
-                        <li
-                          key={idx}
-                          style={{
-                            padding: "0.75rem",
-                            marginBottom: "0.75rem",
-                            backgroundColor: "var(--bg-tertiary)",
-                            borderRadius: "0.375rem",
-                            borderLeft: "4px solid var(--primary-color)",
-                            color: "var(--text-primary)",
-                          }}
-                        >
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", gap: "1rem" }}>
-                            <div>
-                              <p style={{ fontWeight: "600", marginBottom: "0.25rem" }}>• {cert.cert}</p>
-                              <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                                <span>⭐ ROI: {cert.roi}/100</span>
-                                <span>💰 Cost: ${cert.cost}</span>
-                                <span>⏱️ Time: {cert.time_months} months</span>
-                              </div>
-                            </div>
-                            <div
-                              style={{
-                                backgroundColor: "var(--primary-color)",
-                                color: "white",
-                                padding: "0.25rem 0.75rem",
-                                borderRadius: "0.25rem",
-                                fontSize: "0.85rem",
-                                fontWeight: "600",
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {cert.salary_impact}
-                            </div>
-                          </div>
-                        </li>
-                      );
-                    }
-                  })}
-                </ul>
-              </div>
-            )}
-
-            {/* Communities */}
-            {roadmap.resource_categories.communities && (
-              <div>
-                <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "1rem", color: "var(--primary-color)" }}>
-                  Communities
-                </h3>
-                <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                  {roadmap.resource_categories.communities.map((community, idx) => (
-                    <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                      • {community}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </section>
-        )}
-
-        {/* Professional Tier Content */}
+        {/* Premium Resources Section - Only for PROFESSIONAL and PREMIUM tiers */}
         {(roadmap as any).professional_tier_content && (
-          <section style={{ margin: "2rem 0", padding: "2rem", backgroundColor: "var(--bg-secondary)", borderRadius: "0.5rem", border: "2px solid var(--primary-color)" }}>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem", color: "var(--primary-color)" }}>
-              ✓ Professional Tier Content
-            </h2>
+          <>
+            <h2 style={{ fontSize: "1.875rem", fontWeight: "bold", marginBottom: "1.5rem", marginTop: "2rem" }}>Professional Resources</h2>
+            
+            <section style={{ margin: "1rem 0 2rem", padding: "2rem", backgroundColor: "var(--bg-secondary)", borderRadius: "0.5rem", border: "2px solid var(--primary-color)" }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem", color: "var(--primary-color)" }}>
+                ✓ Professional Tier Content
+              </h3>
             
             <div style={{ marginBottom: "1.5rem" }}>
               <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Real Courses & Learning Resources</h3>
@@ -331,36 +220,75 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
               </ul>
             </div>
 
-            <div style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Resume Enhancement Suggestions</h3>
-              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+            {/* Resume Enhancement - Professional Feature Card */}
+            <div style={{ 
+              marginBottom: "1.5rem", 
+              padding: "1.5rem", 
+              background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%)",
+              borderRadius: "0.75rem",
+              border: "1px solid rgba(59, 130, 246, 0.3)"
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                <span style={{ fontSize: "1.75rem" }}>📄</span>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: "700", margin: 0, color: "var(--primary-color)" }}>Resume Enhancement Suggestions</h3>
+              </div>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "1rem", fontStyle: "italic" }}>
+                Tailored improvements to make your resume stand out
+              </p>
+              <ul style={{ listStyle: "none", paddingLeft: 0, margin: 0 }}>
                 {(roadmap as any).professional_tier_content.resume_suggestions.map((suggestion: string, idx: number) => (
-                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                    • {suggestion}
+                  <li key={idx} style={{ 
+                    padding: "0.75rem 1rem", 
+                    marginBottom: "0.5rem",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "0.5rem",
+                    borderLeft: "3px solid var(--primary-color)",
+                    color: "var(--text-primary)" 
+                  }}>
+                    ✓ {suggestion}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Portfolio Project Ideas</h3>
-              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+            {/* Portfolio Project Ideas - Professional Feature Card */}
+            <div style={{ 
+              marginBottom: "1.5rem", 
+              padding: "1.5rem", 
+              background: "linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%)",
+              borderRadius: "0.75rem",
+              border: "1px solid rgba(16, 185, 129, 0.3)"
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                <span style={{ fontSize: "1.75rem" }}>🚀</span>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: "700", margin: 0, color: "#10b981" }}>Portfolio Project Ideas</h3>
+              </div>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "1rem", fontStyle: "italic" }}>
+                Build these projects to demonstrate your skills to employers
+              </p>
+              <ul style={{ listStyle: "none", paddingLeft: 0, margin: 0 }}>
                 {(roadmap as any).professional_tier_content.portfolio_ideas.map((idea: string, idx: number) => (
-                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                    • {idea}
+                  <li key={idx} style={{ 
+                    padding: "0.75rem 1rem", 
+                    marginBottom: "0.5rem",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "0.5rem",
+                    borderLeft: "3px solid #10b981",
+                    color: "var(--text-primary)" 
+                  }}>
+                    🛠️ {idea}
                   </li>
                 ))}
               </ul>
             </div>
-          </section>
-        )}
+            </section>
 
-        {/* Premium Tier Content */}
-        {(roadmap as any).premium_tier_content && (
-          <section style={{ margin: "2rem 0", padding: "2rem", backgroundColor: "var(--bg-secondary)", borderRadius: "0.5rem", border: "2px solid #d4af37" }}>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem", color: "#d4af37" }}>
-              ⭐ Premium Tier Content (Exclusive Career Coaching)
-            </h2>
+            {/* Premium Tier Content */}
+            {(roadmap as any).premium_tier_content && (
+              <section style={{ margin: "1rem 0 2rem", padding: "2rem", backgroundColor: "var(--bg-secondary)", borderRadius: "0.5rem", border: "2px solid #d4af37" }}>
+                <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "1rem", color: "#d4af37" }}>
+                  ⭐ Premium Tier Content (Exclusive Career Coaching)
+                </h3>
             
             <div style={{ marginBottom: "1.5rem" }}>
               <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>AI-Powered Resume Rewrites (4 Versions)</h3>
@@ -408,23 +336,63 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
               )}
             </div>
 
-            <div style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>LinkedIn Optimization Strategy</h3>
-              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+            {/* LinkedIn Optimization - Premium Feature Card */}
+            <div style={{ 
+              marginBottom: "1.5rem", 
+              padding: "1.5rem", 
+              background: "linear-gradient(135deg, rgba(0, 119, 181, 0.1) 0%, rgba(212, 175, 55, 0.1) 100%)",
+              borderRadius: "0.75rem",
+              border: "1px solid rgba(0, 119, 181, 0.3)"
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                <span style={{ fontSize: "1.75rem" }}>💼</span>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: "700", margin: 0, color: "#0077b5" }}>LinkedIn Optimization Strategy</h3>
+              </div>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "1rem", fontStyle: "italic" }}>
+                Stand out to recruiters with these personalized profile enhancements
+              </p>
+              <ul style={{ listStyle: "none", paddingLeft: 0, margin: 0 }}>
                 {(roadmap as any).premium_tier_content.linkedin_optimization.map((tip: string, idx: number) => (
-                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                    • {tip}
+                  <li key={idx} style={{ 
+                    padding: "0.75rem 1rem", 
+                    marginBottom: "0.5rem",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "0.5rem",
+                    borderLeft: "3px solid #0077b5",
+                    color: "var(--text-primary)" 
+                  }}>
+                    ✓ {tip}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>1-on-1 Career Coaching Insights</h3>
-              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+            {/* Career Coaching Insights - Premium Feature Card */}
+            <div style={{ 
+              marginBottom: "1.5rem", 
+              padding: "1.5rem", 
+              background: "linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(139, 90, 43, 0.1) 100%)",
+              borderRadius: "0.75rem",
+              border: "1px solid rgba(212, 175, 55, 0.4)"
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+                <span style={{ fontSize: "1.75rem" }}>🎯</span>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: "700", margin: 0, color: "#d4af37" }}>1-on-1 Career Coaching Insights</h3>
+              </div>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "1rem", fontStyle: "italic" }}>
+                Expert advice tailored to your unique career transition
+              </p>
+              <ul style={{ listStyle: "none", paddingLeft: 0, margin: 0 }}>
                 {(roadmap as any).premium_tier_content.career_coaching_insights.map((insight: string, idx: number) => (
-                  <li key={idx} style={{ padding: "0.5rem 0", color: "var(--text-primary)" }}>
-                    • {insight}
+                  <li key={idx} style={{ 
+                    padding: "0.75rem 1rem", 
+                    marginBottom: "0.5rem",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: "0.5rem",
+                    borderLeft: "3px solid #d4af37",
+                    color: "var(--text-primary)" 
+                  }}>
+                    💡 {insight}
                   </li>
                 ))}
               </ul>
@@ -454,7 +422,9 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
                 ))}
               </ul>
             </div>
-          </section>
+              </section>
+            )}
+          </>
         )}
 
         {/* Next Steps */}

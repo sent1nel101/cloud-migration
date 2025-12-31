@@ -8,10 +8,90 @@ These tracking files are your project memory across sessions:
 
 Always read all three before starting work. Update them immediately after completing tasks, not just at session end.
 
-Last Session: **Session 37** (December 31, 2024)  
-Current Status: **ALL FEATURES INTEGRATED - PRODUCTION READY** ✅  
-Build: **✅ Passing (0 errors)**  
-Next Session: **Session 38** - Resume Upload & Parsing
+Last Session: **Session 40** (December 31, 2024)  
+Current Status: **MERGED TO MAIN - PRODUCTION READY** ✅  
+Build: **✅ Passing (0 errors, 35 pages)**  
+Next Steps: Deploy to production
+
+---
+
+## 🟢 SESSION 40: Parser Improvements & UI Polish [COMPLETE] ✅
+
+**What Was Done**:
+1. ✅ **Parser Testing & Fixes**
+   - Tested resume upload flow end-to-end
+   - Fixed goals extraction (only explicit goals/objectives, not summaries)
+   - Fixed URL param mismatch (role/years/education)
+   - Location regex supports multi-word city names
+   - Added 8 degree abbreviations (B.S., M.S., B.A., M.A., etc.)
+
+2. ✅ **Bug Fixes**
+   - Added demand value fallback ("High") for recommended career paths
+   - Removed confusing generic Learning Resources section
+   - Hide resources section for FREE tier users
+
+3. ✅ **UI Polish - Premium Feature Cards**
+   - Added "Professional Resources" header for paid tier content
+   - Beautified Resume Enhancement Suggestions (blue gradient, 📄 icon)
+   - Beautified Portfolio Project Ideas (green gradient, 🚀 icon)
+   - Beautified LinkedIn Optimization Strategy (LinkedIn blue, 💼 icon)
+   - Beautified Career Coaching Insights (gold gradient, 🎯 icon)
+   - Removed Privacy/Terms from Header (kept in Footer)
+
+4. ✅ **Build Status**
+   - 0 TypeScript errors
+   - All 35 pages compile successfully
+   - Full workflow tested and working
+
+**Files Modified**:
+- `lib/resume-parser.ts` - Parser improvements (goals extraction fix)
+- `app/resume-review/page.tsx` - Fixed URL param names
+- `components/RoadmapDisplay.tsx` - UI polish, resource hiding, demand fallback
+- `components/Header.tsx` - Removed Privacy/Terms links
+- `ACTIONS.md`, `SUMMARY.md`, `TODO.md` - Tracking updated
+
+**Result**: Merged to main, production ready
+
+---
+
+## 🟢 SESSION 39: Resume Upload & Parsing Workflow - Phases 1-4 ✅
+
+**What Got Built**:
+1. ✅ **Phase 1**: Resume upload component (`/resume-upload`)
+   - Drag-and-drop file upload interface
+   - File type validation (PDF, DOCX, TXT)
+   - File size validation (max 5MB)
+   - Progress indicator and error messages
+   - Dark mode styling, mobile responsive
+
+2. ✅ **Phase 2**: Resume parsing service (`/api/resume/parse`)
+   - Extracts: name, email, phone, location
+   - Extracts: current role, years experience, skills, education, goals
+   - Multi-format support (PDF, DOCX, TXT)
+   - Authentication required
+   - SessionStorage persistence
+   - Debug logging for troubleshooting
+
+3. ✅ **Phase 3**: Resume review form (`/resume-review`)
+   - Displays all parsed fields editable
+   - Form validation for required fields
+   - Yellow ⚠️ warnings for missing required data
+   - Skill tag management (add/remove)
+   - Education dropdown select
+   - Status indicator
+
+4. ✅ **Phase 4**: Navigation integration
+   - Added "Upload Resume" link to Header (authenticated users)
+   - Added "Upload Resume" to Dashboard sidebar
+   - Full workflow: Upload → Review → Generate
+   - URL parameter prefilling for roadmap generator
+
+5. ✅ **Documentation**: Created 3 comprehensive guides
+   - SESSION_39_FIX_GUIDE.md - Troubleshooting
+   - SESSION_39_TESTING_CHECKLIST.md - Test procedures
+   - SESSION_39_QUICK_REFERENCE.md - Architecture reference
+
+**Status**: Build passing (0 errors, 35+ pages compile), awaiting manual user testing
 
 ---
 
@@ -1158,31 +1238,34 @@ PHASE_2B_STRIPE.md               (270 lines)
 
 ---
 
-## Session 38: Resume Upload & Parsing [PLANNING] 🟡
+## 🟡 SESSION 38: Resume Upload & Parsing [IN PROGRESS - Phase 1 Complete]
 
-**Goal**: Enable users to upload resumes, automatically extract career data, and prefill the roadmap generation form
+**Phase 1: COMPLETE** ✅
+- ✅ Created `/resume-upload` page with authenticated access
+- ✅ Built `ResumeUploadForm` component (drag-drop, validation, 5MB limit)
+- ✅ Implemented `resume-parser.ts` service:
+  - Extracts: name, email, phone, location, role, experience, skills, education, goals
+  - Supports: PDF (text extraction), DOCX (as text), TXT (direct)
+  - Uses regex patterns for field extraction
+- ✅ Created `/api/resume/parse` endpoint with auth check
+- ✅ Build passes: 34 pages, 0 errors
+- ✅ Committed: `feature/session38-resume-upload`
 
-**Planned Work**:
-1. Create `/resume-upload` page with drag-and-drop file upload
-2. Build resume parser service (supports PDF, DOCX, TXT)
-3. Create `/resume-review` page to show parsed data + fill missing fields
-4. Add "Upload Resume" buttons to Header and Dashboard
-5. Create workflow: Upload → Parse → Review → Generate
+**Phase 2-5: PENDING**
+- [ ] Create `/resume-review` page with form prefilling
+- [ ] Show parsed data + highlight missing required fields
+- [ ] Allow user to edit all fields before generating
+- [ ] Add "Upload Resume" links to Header/Dashboard
+- [ ] Test with sample resumes
 
-**Technologies**: 
-- `pdf-parse` for PDF extraction
-- `docx` for DOCX extraction
-- Regex patterns for plain text parsing
-- React form state for review step
+**Current Issue**:
+- Signup returning 409 (email conflict) despite empty pgAdmin User table
+- Likely: Prisma cache issue (regenerated, need dev server restart)
 
-**Estimated Duration**: 8 hours (5 phases)
-
-**Success Criteria**:
-- Parse 90%+ of resume data correctly
-- Auto-detect missing required fields
-- Allow editing before roadmap generation
-- Build passes with 0 errors
-- All file formats tested
+**Next Session Focus**:
+1. Test signup after dev server restart
+2. Complete Phase 2: `/resume-review` page
+3. Integrate with roadmap generator workflow
 
 ---
 

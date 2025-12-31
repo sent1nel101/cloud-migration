@@ -86,6 +86,19 @@ function structureData(text: string): ParsedResumeData {
     rawText: "",
   }
 
+  // Debug logging
+  console.log("[RESUME PARSER] Extracted data:", {
+    name: data.name || "(not found)",
+    email: data.email || "(not found)",
+    phone: data.phone || "(not found)",
+    location: data.location || "(not found)",
+    currentRole: data.currentRole || "(not found)",
+    yearsExperience: data.yearsExperience || "(not found)",
+    skillsCount: data.skills?.length || 0,
+    educationLevel: data.educationLevel || "(not found)",
+    goalsLength: data.goals?.length || 0,
+  })
+
   return data
 }
 
@@ -134,7 +147,8 @@ function extractPhone(text: string): string | undefined {
  */
 function extractLocation(text: string): string | undefined {
   // Look for patterns like "City, State" or "City, Country"
-  const locationRegex = /\b([A-Z][a-z]+),\s*([A-Z]{2})\b/
+  // Support multi-word city names (e.g., "San Francisco, CA")
+  const locationRegex = /\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*),\s*([A-Z]{2})\b/
   const matches = text.match(locationRegex)
   return matches ? `${matches[1]}, ${matches[2]}` : undefined
 }
@@ -183,19 +197,39 @@ function extractCurrentRole(text: string): string | undefined {
  * Extract years of experience from resume text
  */
 function extractYearsExperience(text: string): number | undefined {
-  // Look for patterns like "5 years", "5+ years", "10-year"
-  const yearsRegex = /(\d+)\+?\s*(?:years|year)\s*(?:of\s*)?(?:experience|exp)/i
+  // Look for patterns like "5 years", "5+ years", "10-year", "with 3 years"
+  const yearsRegex = /(\d+)\+?\s*(?:years?|yrs?)\s*(?:of\s*)?(?:experience|exp|professional|industry)?/i
   const matches = text.match(yearsRegex)
 
-  if (matches) {
-    return parseInt(matches[1])
+  if (matches && matches[1]) {
+    const years = parseInt(matches[1])
+    // Validate years are reasonable (1-70)
+    if (years >= 1 && years <= 70) {
+      return years
+    }
   }
 
-  // Alternative: Count job entries (each ~1-2 years on average)
-  const jobDateRegex = /\d{4}\s*[-–]\s*(?:present|current|\d{4})/gi
+  // Alternative: Extract from job dates (e.g., "2020-Present" means ~4 years)
+  const jobDateRegex = /(\d{4})\s*[-–—]\s*(?:present|current|today|\d{4})/gi
   const jobMatches = text.match(jobDateRegex)
   if (jobMatches && jobMatches.length > 0) {
-    return Math.max(jobMatches.length, 1)
+    // Calculate experience from dates
+    const currentYear = new Date().getFullYear()
+    let totalYears = 0
+    
+    for (const match of jobMatches) {
+      const yearMatch = match.match(/(\d{4})/)
+      if (yearMatch) {
+        const startYear = parseInt(yearMatch[1])
+        const isPresent = /present|current|today/i.test(match)
+        const endYear = isPresent ? currentYear : parseInt(match.split(/-–—/)[1].trim()) || currentYear
+        totalYears += (endYear - startYear)
+      }
+    }
+    
+    if (totalYears > 0) {
+      return Math.max(totalYears, 1)
+    }
   }
 
   return undefined
@@ -205,19 +239,45 @@ function extractYearsExperience(text: string): number | undefined {
  * Extract skills from resume text
  */
 function extractSkills(text: string): string[] | undefined {
+  // Try to find dedicated skills section
   const skillsRegex =
-    /(?:skills?|competencies|technical\s*skills)[\s:]*\n?([\s\S]*?)(?=\n(?:education|experience|certifications|projects|awards|references|\n\n))/i
+    /(?:skills?|competencies|technical\s*skills|technical\s*expertise|core\s*competencies)[\s:]*\n?([\s\S]*?)(?=\n(?:education|experience|certifications|projects|awards|references|professional|summary|\n\n|$))/i
 
   const matches = text.match(skillsRegex)
-  if (!matches) return undefined
+  if (!matches) {
+    // If no skills section, try to extract from experience section (look for words in parentheses or after dashes)
+    const experienceText = text.toLowerCase()
+    const commonSkills = [
+      'python', 'javascript', 'java', 'c++', 'c#', 'typescript', 'react', 'node', 'angular', 'vue',
+      'sql', 'mongodb', 'postgresql', 'mysql', 'aws', 'azure', 'gcp', 'docker', 'kubernetes',
+      'git', 'linux', 'windows', 'html', 'css', 'bootstrap', 'tailwind',
+      'machine learning', 'ai', 'data analysis', 'analytics', 'excel', 'tableau', 'power bi',
+      'sales', 'marketing', 'project management', 'agile', 'scrum', 'leadership',
+      'communication', 'problem solving', 'teamwork', 'collaboration'
+    ]
+    
+    const foundSkills = commonSkills.filter(skill => experienceText.includes(skill.toLowerCase()))
+    return foundSkills.length > 0 ? foundSkills : undefined
+  }
 
   const skillsText = matches[1]
-  // Split by common delimiters
+  // Split by common delimiters (comma, bullet, newline, pipe)
   const skills = skillsText
     .split(/[,•·|]|\n/)
     .map((s) => s.trim())
-    .filter((s) => s.length > 0 && s.length < 50)
-    .slice(0, 20) // Limit to 20 skills
+    .filter((s) => {
+      // Filter out:
+      // - Empty strings
+      // - Section headers (all caps words)
+      // - Numbers only
+      // - Common section names
+      // - Strings longer than 60 chars
+      const isNumeric = s.match(/^\d+$/)
+      const isAllCaps = s === s.toUpperCase() && s.length > 2
+      const isSectionHeader = /^(WORK|EDUCATION|EXPERIENCE|PROFESSIONAL|SUMMARY|OBJECTIVE|CERTIFICATIONS|PROJECTS|AWARDS|REFERENCES)/.test(s)
+      return s.length > 0 && s.length < 60 && !isNumeric && !isAllCaps && !isSectionHeader
+    })
+    .slice(0, 30) // Limit to 30 skills
 
   return skills.length > 0 ? skills : undefined
 }
@@ -228,15 +288,29 @@ function extractSkills(text: string): string[] | undefined {
 function extractEducationLevel(text: string): string | undefined {
   const educationMap: Record<string, string> = {
     "high school": "High School",
+    "h.s.": "High School",
     "associate": "Associate's",
+    "a.s.": "Associate's",
     "bachelor": "Bachelor's",
+    "b.s.": "Bachelor's",
+    "b.a.": "Bachelor's",
     "master": "Master's",
+    "m.s.": "Master's",
+    "m.a.": "Master's",
+    "m.b.a.": "Master's",
     "phd": "PhD",
+    "ph.d.": "PhD",
     "doctorate": "PhD",
+    "d.phil": "PhD",
   }
 
+  // Look in EDUCATION section specifically to avoid false matches
+  const educationSectionRegex = /(?:education|academic)[\s:]*\n?([\s\S]*?)(?=\n(?:experience|skills|certifications|projects|awards|references|\n\n|$))/i
+  const educationSectionMatches = text.match(educationSectionRegex)
+  const searchText = educationSectionMatches ? educationSectionMatches[1] : text
+
   for (const [key, level] of Object.entries(educationMap)) {
-    if (text.toLowerCase().includes(key)) {
+    if (searchText.toLowerCase().includes(key)) {
       return level
     }
   }
@@ -245,20 +319,34 @@ function extractEducationLevel(text: string): string | undefined {
 }
 
 /**
- * Extract career goals/summary from resume text
+ * Extract career goals from resume text
+ * 
+ * Only extracts from explicit "Goals", "Objective", or "Career Objective" sections.
+ * Professional summaries describe current experience, not future goals,
+ * so we leave this field empty for user input if no explicit goals section exists.
  */
 function extractGoals(text: string): string | undefined {
-  // Look for professional summary section
-  const summaryRegex =
-    /(?:professional\s*summary|summary|objective|profile)[\s:]*\n?([\s\S]*?)(?=\n(?:experience|education|skills))/i
+  // Only look for explicit goals/objective sections (NOT professional summary)
+  const goalsRegex =
+    /(?:career\s*goals?|goals?|career\s*objective|objective)[\s:]*\n?([\s\S]*?)(?=\n(?:experience|education|skills|work|projects|certifications|professional|summary|\n\n))/i
 
-  const matches = text.match(summaryRegex)
-  if (!matches) return undefined
+  const matches = text.match(goalsRegex)
+  if (matches) {
+    const goalsText = matches[1]
+      .split("\n")
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .slice(0, 2)
+      .join(" ")
+      .substring(0, 250)
 
-  const summary = matches[1]
-    .split("\n")[0]
-    .trim()
-    .substring(0, 200) // First line, max 200 chars
+    // Only return if it sounds like a goal (contains future-oriented language)
+    const futureIndicators = /\b(become|transition|grow|advance|move into|pursue|seeking|looking for|aspire|goal|aim|want to)\b/i
+    if (goalsText.length > 0 && futureIndicators.test(goalsText)) {
+      return goalsText
+    }
+  }
 
-  return summary.length > 0 ? summary : undefined
+  // Don't prefill with professional summary - let user enter their own goals
+  return undefined
 }

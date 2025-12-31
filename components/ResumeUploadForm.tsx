@@ -115,11 +115,15 @@ export default function ResumeUploadForm({ onSuccess }: ResumeUploadFormProps) {
 
       formData.append("fileType", fileType)
 
+      console.log(`[RESUME UPLOAD] Sending ${fileType} file to API`, file.name)
+
       // Upload and parse resume
       const response = await fetch("/api/resume/parse", {
         method: "POST",
         body: formData,
       })
+
+      console.log(`[RESUME UPLOAD] API response status: ${response.status}`)
 
       if (!response.ok) {
         const errorData = await response.json()
