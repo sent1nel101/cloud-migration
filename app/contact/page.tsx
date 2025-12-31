@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BugReportForm from "@/components/BugReportForm";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,9 @@ export default function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [bugReportOpen, setBugReportOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -24,13 +28,34 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, send this to your backend
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setFormData({ name: "", email: "", company: "", subject: "", message: "", type: "general" });
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setSubmitted(true);
+      setFormData({ name: "", email: "", company: "", subject: "", message: "", type: "general" });
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,6 +78,12 @@ export default function Contact() {
           {submitted && (
             <div className="success-message">
               ✓ Thanks for reaching out! We'll get back to you soon.
+            </div>
+          )}
+
+          {error && (
+            <div className="error-message">
+              ✗ {error}
             </div>
           )}
 
@@ -137,7 +168,9 @@ export default function Contact() {
               />
             </div>
 
-            <button type="submit" className="cta-button">Send Message</button>
+            <button type="submit" className="cta-button" disabled={loading}>
+              {loading ? "Sending..." : "Send Message"}
+            </button>
           </form>
         </section>
 
@@ -152,37 +185,18 @@ export default function Contact() {
             </p>
           </div>
 
-
-
-          <div className="contact-method">
-            <h3>📱 Social Media</h3>
-            <p>
-              Find us on{" "}
-              <a href="https://twitter.com/clouddesigns" target="_blank" rel="noopener noreferrer">
-                Twitter
-              </a>
-              ,{" "}
-              <a href="https://linkedin.com/company/clouddesigns" target="_blank" rel="noopener noreferrer">
-                LinkedIn
-              </a>
-              , and{" "}
-              <a href="https://instagram.com/clouddesigns" target="_blank" rel="noopener noreferrer">
-                Instagram
-              </a>
-              .
-            </p>
-          </div>
-
-
-
           <div className="contact-method">
             <h3>🐛 Report a Bug</h3>
             <p>
-              Found an issue? Help us improve by reporting it. Include browser, device, and steps to reproduce.
+              Found an issue? Help us improve by reporting it. We'll automatically detect your browser and the time of the report.
             </p>
-            <a href="mailto:darec@darecmcdaniel.info" className="link-button">
+            <button 
+              className="link-button"
+              onClick={() => setBugReportOpen(true)}
+              aria-label="Report a bug"
+            >
               Report Bug
-            </a>
+            </button>
           </div>
         </section>
       </div>
@@ -216,6 +230,7 @@ export default function Contact() {
       </section>
       </div>
       </main>
+      <BugReportForm isOpen={bugReportOpen} onClose={() => setBugReportOpen(false)} />
       <Footer />
     </div>
   );
