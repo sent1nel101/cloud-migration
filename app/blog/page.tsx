@@ -136,19 +136,34 @@ export default function Blog() {
         <h2>Popular Resources</h2>
         <div className="resources-grid">
           <div className="resource-card">
-            <h3>Career Change Checklist</h3>
-            <p>Download our step-by-step checklist for planning and executing a successful career transition.</p>
-            <button className="resource-button">Download Free PDF</button>
+            <h3>Free Learning Platforms</h3>
+            <p>Discover Coursera, edX, Khan Academy, and freeCodeCamp for skill-building during career transitions. Thousands of free courses across tech, data, business, and more.</p>
+            <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer" className="resource-button">Explore Courses</a>
           </div>
           <div className="resource-card">
-            <h3>Salary Negotiation Guide</h3>
-            <p>Proven strategies for negotiating your first salary in a new career. Real salary ranges included.</p>
-            <button className="resource-button">Download Free PDF</button>
+            <h3>Salary Research Tools</h3>
+            <p>Use Glassdoor, Levels.fyi, Payscale, and PaycheckCity to research salaries by role, location, and experience level for informed career decisions.</p>
+            <a href="https://www.glassdoor.com" target="_blank" rel="noopener noreferrer" className="resource-button">Check Salaries</a>
           </div>
           <div className="resource-card">
-            <h3>Resume Templates</h3>
-            <p>Resume templates optimized for career changers. Includes ATS-friendly formats for every industry.</p>
-            <button className="resource-button">Download Free Templates</button>
+            <h3>Free Resume & LinkedIn Resources</h3>
+            <p>Leverage Novoresume, Canva, LinkedIn's own tools, and Indeed's resume builder to create ATS-friendly resumes optimized for career transitions.</p>
+            <a href="https://www.novoresume.com" target="_blank" rel="noopener noreferrer" className="resource-button">Build Resume</a>
+          </div>
+          <div className="resource-card">
+            <h3>Skill Development Paths</h3>
+            <p>Follow structured roadmaps for tech careers at Roadmap.sh, or explore industry-specific learning paths on LinkedIn Learning and YouTube for free.</p>
+            <a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer" className="resource-button">View Roadmaps</a>
+          </div>
+          <div className="resource-card">
+            <h3>Networking & Community</h3>
+            <p>Join career-focused communities on Reddit (r/careerchange), Discord servers, and local meetup groups. Network with professionals making similar transitions.</p>
+            <a href="https://reddit.com/r/careerchange" target="_blank" rel="noopener noreferrer" className="resource-button">Join Community</a>
+          </div>
+          <div className="resource-card">
+            <h3>Interview Preparation</h3>
+            <p>Prepare with LeetCode, HackerRank, InterviewBit for technical interviews, or practice behavioral interviews on YouTube and Pramp for free mock interviews.</p>
+            <a href="https://www.leetcode.com" target="_blank" rel="noopener noreferrer" className="resource-button">Practice Interviews</a>
           </div>
         </div>
       </section>

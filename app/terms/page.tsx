@@ -11,10 +11,10 @@ export default function Terms() {
 
       <div className="legal-notice">
         <p>
-          <strong>Last Updated:</strong> December 29, 2024
+          <strong>Last Updated:</strong> December 30, 2024
         </p>
         <p>
-          These Terms of Service ("Terms") govern your use of Cloud Designs' website, mobile applications, and services (collectively, the "Services"). By accessing or using our Services, you agree to be bound by these Terms. If you do not agree, please do not use our Services.
+          These Terms of Service ("Terms") govern your use of Cloud Designs' website and services (collectively, the "Services"). Cloud Designs is operated by Darec McDaniel as a solo business. By accessing or using our Services, you agree to be bound by these Terms. If you do not agree, please do not use our Services.
         </p>
       </div>
 
@@ -23,10 +23,10 @@ export default function Terms() {
 
         <ul>
           <li>
-            <strong>"Company":</strong> Cloud Designs, Inc.
+            <strong>"Company":</strong> Cloud Designs, operated by Darec McDaniel
           </li>
           <li>
-            <strong>"Services":</strong> Our website, mobile apps, API, and all features and content
+            <strong>"Services":</strong> Our website and AI-powered career roadmap generation service
           </li>
           <li>
             <strong>"User":</strong> You, the person accessing or using our Services
@@ -150,13 +150,10 @@ export default function Terms() {
             <strong>Fraud:</strong> Misrepresenting your identity or submitting false information
           </li>
           <li>
-            <strong>Malware:</strong> Uploading viruses, malware, or harmful code
-          </li>
-          <li>
             <strong>Hacking:</strong> Unauthorized access to systems or accounts
           </li>
           <li>
-            <strong>Spam:</strong> Unsolicited commercial messages
+            <strong>Spam:</strong> Unsolicited commercial messages or abuse of service
           </li>
           <li>
             <strong>Impersonation:</strong> Pretending to be someone else
@@ -172,32 +169,58 @@ export default function Terms() {
       </section>
 
       <section className="policy-section">
+        <h2>5A. Rate Limiting & Abuse Prevention</h2>
+
+        <p>
+          To ensure service availability and prevent abuse, Cloud Designs implements rate limiting on our API:
+        </p>
+
+        <ul>
+          <li>
+            <strong>Unauthenticated users:</strong> 5 roadmap generation requests per hour
+          </li>
+          <li>
+            <strong>Authenticated users:</strong> 20 roadmap generation requests per hour
+          </li>
+          <li>
+            <strong>Rate limit enforcement:</strong> Requests exceeding these limits will be rejected with a 429 status code
+          </li>
+          <li>
+            <strong>Limits reset hourly</strong> based on a rolling window
+          </li>
+        </ul>
+
+        <p>
+          These limits are in place to protect service quality for all users and prevent abuse. Attempting to circumvent rate limits (such as through automated scripts or distributed requests) is prohibited.
+        </p>
+      </section>
+
+      <section className="policy-section">
         <h2>6. Fees & Payment</h2>
 
         <h3>Pricing</h3>
         <p>
-          Free tier is free forever. Paid tiers require payment. All prices are in USD unless otherwise stated. We may change prices with 30 days' notice for new purchases.
+          Free tier is free forever with no credit card required. Paid tiers (Professional and Premium) are one-time payments. All prices are in USD. We may change prices for future purchases with 30 days' notice.
         </p>
 
-        <h3>Subscription Terms</h3>
+        <h3>One-Time Payment Terms</h3>
         <ul>
-          <li>Subscriptions auto-renew on the anniversary date unless canceled</li>
-          <li>You can cancel anytime before the renewal date</li>
-          <li>No refunds for partial months (except for our 30-day money-back guarantee)</li>
-          <li>Cancellation takes effect at the end of your billing period</li>
+          <li>Professional tier ($39) and Premium tier ($129) are one-time payments</li>
+          <li>No recurring charges or auto-renewal</li>
+          <li>Paid tiers grant permanent access to enhanced features</li>
         </ul>
 
         <h3>Money-Back Guarantee</h3>
         <p>
-          If you upgrade to a paid tier and aren't satisfied within 30 days, we'll refund your payment in full. No questions asked.
+          If you upgrade to a paid tier and aren't satisfied within 30 days, we'll refund your payment in full. No questions asked. Contact <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a> to request a refund.
         </p>
 
         <h3>Billing</h3>
         <ul>
-          <li>We charge on the date you started your subscription</li>
-          <li>All charges are non-refundable except per our money-back guarantee</li>
-          <li>Overdue accounts may be suspended</li>
-          <li>Failed payments may result in account termination</li>
+          <li>Payment is processed immediately upon upgrade</li>
+          <li>All charges for paid tiers are non-refundable except per our 30-day money-back guarantee</li>
+          <li>Failed payments will prevent tier upgrade</li>
+          <li>Paid access is permanent (no subscription renewal to manage)</li>
         </ul>
       </section>
 

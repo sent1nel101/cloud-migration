@@ -2042,11 +2042,14 @@ input, select, textarea {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-block;
+  text-decoration: none;
 }
 
 .resource-button:hover {
   background-color: var(--primary-dark);
   transform: translateY(-2px);
+  text-decoration: none;
 }
 
 .blog-newsletter {

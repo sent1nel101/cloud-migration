@@ -11,10 +11,10 @@ export default function Privacy() {
 
       <div className="legal-notice">
         <p>
-          <strong>Last Updated:</strong> December 29, 2024
+          <strong>Last Updated:</strong> December 30, 2024
         </p>
         <p>
-          This Privacy Policy explains how Cloud Designs ("Company," "we," "us," or "our") collects, uses, discloses, and otherwise processes your personal information through our website, mobile applications, and related services (collectively, the "Services").
+          This Privacy Policy explains how Cloud Designs, operated by Darec McDaniel ("Company," "we," "us," or "our"), collects, uses, discloses, and otherwise processes your personal information through our website and related services (collectively, the "Services").
         </p>
       </div>
 
@@ -33,7 +33,7 @@ export default function Privacy() {
             <strong>Communication:</strong> When you contact us via email, chat, or other means, we collect the content of your communications.
           </li>
           <li>
-            <strong>Payment Information:</strong> For paid subscriptions, we collect billing address, payment method, and transaction history (processed securely by Stripe).
+            <strong>Payment Information:</strong> For paid tier upgrades, we collect billing address, payment method, and transaction history (processed securely by Stripe). We do not store full credit card details.
           </li>
         </ul>
 
@@ -83,12 +83,12 @@ export default function Privacy() {
         <p>We may share your information with:</p>
 
         <ul>
-          <li>
-            <strong>Service Providers:</strong> Payment processors (Stripe), email services, hosting providers, analytics services. All bound by confidentiality agreements.
-          </li>
-          <li>
-            <strong>Business Partners:</strong> For Enterprise customers, with HR/HRIS integrations you explicitly authorize.
-          </li>
+           <li>
+             <strong>Service Providers:</strong> Payment processors (Stripe), hosting providers (Vercel, Supabase), email services, analytics services. All bound by confidentiality agreements.
+           </li>
+           <li>
+             <strong>Business Partners:</strong> If you explicitly authorize integrations or third-party connections to your account.
+           </li>
           <li>
             <strong>Legal Requirements:</strong> If required by law, court order, or government request.
           </li>
@@ -194,7 +194,7 @@ export default function Privacy() {
 
         <ul>
           <li>
-            <strong>Active Accounts:</strong> Kept for the duration of your subscription
+            <strong>Active Accounts:</strong> Kept for as long as your account is active
           </li>
           <li>
             <strong>Deleted Accounts:</strong> Data deleted within 30 days (some data may persist in backups for 90 days)
@@ -212,7 +212,7 @@ export default function Privacy() {
         <h2>8. Children's Privacy</h2>
 
         <p>
-          Our Services are not intended for children under 13 (or the applicable age of digital consent in your jurisdiction). We do not knowingly collect information from children under 13. If we learn we have collected such information, we will delete it promptly. If you believe a child has provided us information, please contact us at <a href="mailto:privacy@clouddesigns.ai">privacy@clouddesigns.ai</a>.
+          Our Services are not intended for children under 13 (or the applicable age of digital consent in your jurisdiction). We do not knowingly collect information from children under 13. If we learn we have collected such information, we will delete it promptly. If you believe a child has provided us information, please contact us at <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a>.
         </p>
       </section>
 

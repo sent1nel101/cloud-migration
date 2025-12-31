@@ -14,6 +14,12 @@ import { getServerSession } from "next-auth"
 import Anthropic from "@anthropic-ai/sdk"
 import { saveRoadmap } from "@/lib/roadmap-service"
 import { authOptions } from "@/lib/auth"
+import {
+  checkRateLimit,
+  ROADMAP_RATE_LIMITS,
+  getRateLimitIdentifier,
+  getClientIp,
+} from "@/lib/rate-limiter"
 import type { CareerInput, Roadmap } from "@/types/index"
 
 // Initialize Anthropic client with API key from environment
@@ -387,6 +393,36 @@ ${roadmapJSON}`
  */
 export async function POST(request: NextRequest) {
   try {
+    // Get session for authentication
+    const session = await getServerSession(authOptions)
+    const userId = session?.user?.id
+    const ipAddress = getClientIp(request)
+
+    // Apply rate limiting
+    const identifier = getRateLimitIdentifier(userId, ipAddress)
+    const config = userId
+      ? ROADMAP_RATE_LIMITS.authenticated
+      : ROADMAP_RATE_LIMITS.unauthenticated
+    const rateLimitResult = checkRateLimit(identifier, config)
+
+    // Return 429 if rate limited
+    if (!rateLimitResult.allowed) {
+      console.log(
+        `Rate limit exceeded for ${identifier}: ${rateLimitResult.resetIn}ms remaining`
+      )
+      return NextResponse.json(
+        {
+          error: "Too many requests. Please try again later.",
+          retryAfter: Math.ceil(rateLimitResult.resetIn / 1000),
+        },
+        { status: 429, headers: { "Retry-After": rateLimitResult.resetIn.toString() } }
+      )
+    }
+
+    console.log(
+      `Rate limit check passed for ${identifier}: ${rateLimitResult.remaining} requests remaining`
+    )
+
     // Parse request body as CareerInput type
     const body = (await request.json()) as CareerInput
 
@@ -410,9 +446,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get user session (optional - if not logged in, roadmap is generated but not saved)
-    const session = await getServerSession(authOptions)
-    const userId = session?.user?.id
+    // Get user tier (session already fetched for rate limiting)
     const userTier = (session?.user as any)?.tier || "FREE"
 
     console.log("Session user:", session?.user)

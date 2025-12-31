@@ -190,13 +190,28 @@ Generates a personalized career roadmap using AI.
 
 ### Run Tests
 ```bash
-npm test
+npm test              # Run all tests
+npm run test:watch   # Watch mode for development
+npm run test:coverage # Generate coverage report
 ```
 
-### Test Coverage
+### Test Coverage (82 tests passing)
+- **rate-limiter.test.ts** - Rate limiting functionality (25 tests)
+  - Limit enforcement, remaining requests, reset functionality
+  - IP-based and user-based tracking
+  - Real-world scenario testing
+- **validation.test.ts** - Input validation (40+ tests)
+  - Email validation
+  - Password strength checking
+  - Career input validation
+  - XSS prevention patterns
+  - SQL injection prevention patterns
+- **api-logic.test.ts** - API business logic (20 tests)
+  - Roadmap structure validation
+  - Timeline calculations
+  - Error handling and JSON parsing
+  - Response status codes
 - **types.test.ts** - TypeScript interface validation
-- **validation.test.ts** - Form input validation
-- **api-logic.test.ts** - API business logic
 
 ## 🚢 Deployment
 
@@ -222,15 +237,23 @@ npm test
 ## 🔐 Security
 
 - ✅ API keys in environment variables (never exposed)
-- ✅ Server-side input validation
+- ✅ Server-side input validation with Zod
+- ✅ Rate limiting (5 req/hr unauthenticated, 20 req/hr authenticated)
+- ✅ Password hashing with bcryptjs
 - ✅ HTTPS enforced (Vercel default)
+- ✅ SQL injection prevention via Prisma ORM
 - ✅ GDPR-compliant privacy policy
-- ✅ Legal terms of service included
+- ✅ Legal terms of service with rate limiting clause
+- ✅ 82 unit tests covering rate limiting and validation
+- ✅ Zero npm audit vulnerabilities
+
+**For detailed security documentation, see [SECURITY.md](./SECURITY.md)**
 
 ## 📚 Documentation
 
 - **[QUICK_START.md](./QUICK_START.md)** - 5-minute setup guide
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System design and flow diagrams
+- **[SECURITY.md](./SECURITY.md)** - Security measures and compliance (NEW)
 - **[AI_INTEGRATION.md](./AI_INTEGRATION.md)** - Claude API setup details
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Production deployment guide
 - **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Common issues and fixes

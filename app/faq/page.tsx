@@ -58,28 +58,23 @@ export default function FAQ() {
           </div>
 
           <div className="faq-item">
-            <h3>What does the Pro tier include?</h3>
-            <p>Pro includes real course links, detailed portfolio projects, resume optimization, AI career coaching, multiple roadmaps, priority support, and an ad-free experience for $29/month.</p>
+            <h3>What does the Professional tier include?</h3>
+            <p>Professional ($39 one-time) includes curated course links by phase, portfolio project ideas, skills prioritized by market demand, and resume tailoring suggestions.</p>
           </div>
 
           <div className="faq-item">
-            <h3>Can I try Pro before paying?</h3>
-            <p>Yes. All new users get a 14-day free trial of Pro features. No credit card required. If you don't upgrade, your account simply reverts to Free.</p>
-          </div>
-
-          <div className="faq-item">
-            <h3>What's the Enterprise plan?</h3>
-            <p>Enterprise is designed for organizations managing career development for multiple employees. It includes team management, advanced analytics, API access, custom training, SSO, and dedicated support. Pricing is custom based on team size.</p>
-          </div>
-
-          <div className="faq-item">
-            <h3>Do you offer discounts for annual billing?</h3>
-            <p>Yes. Pro annual billing (paying yearly instead of monthly) includes a 16% discount. Contact our sales team for Enterprise annual pricing.</p>
+            <h3>What does the Premium tier include?</h3>
+            <p>Premium ($129 one-time) includes everything in Professional, plus AI-powered resume rewrite, multiple resume versions, LinkedIn profile optimization, and certification roadmap ranked by ROI.</p>
           </div>
 
           <div className="faq-item">
             <h3>What if I'm not satisfied?</h3>
-            <p>We offer a 30-day money-back guarantee. If you upgrade to Pro and aren't satisfied for any reason, we'll refund you 100% with no questions asked.</p>
+            <p>We offer a 30-day money-back guarantee. If you upgrade to Professional or Premium and aren't satisfied for any reason, we'll refund you 100% with no questions asked. Just email darec@darecmcdaniel.info.</p>
+          </div>
+
+          <div className="faq-item">
+            <h3>Are these one-time payments or recurring?</h3>
+            <p>One-time payments. Professional ($39) and Premium ($129) are charged once and give you permanent access to those features. No recurring charges or subscriptions.</p>
           </div>
         </div>
 
@@ -102,27 +97,22 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>Can I save my roadmap?</h3>
-            <p>Free users can export their roadmap as PDF. Pro users can save unlimited roadmaps to their account and access them anytime.</p>
+            <p>Create an account to save multiple roadmaps to your dashboard. Logged-in users can save unlimited roadmaps and regenerate them anytime.</p>
           </div>
 
           <div className="faq-item">
             <h3>Can I generate multiple roadmaps?</h3>
-            <p>Free tier: one roadmap. Pro tier: unlimited roadmaps. You can explore different career paths and compare options.</p>
+            <p>Yes. Create an account and generate as many roadmaps as you want to explore different career paths and compare options.</p>
           </div>
 
           <div className="faq-item">
             <h3>Does Cloud Designs recommend specific courses?</h3>
-            <p>The Free tier includes general course categories. Pro users get direct links to actual courses on Coursera, Udemy, LinkedIn Learning, A Cloud Guru, and other platforms.</p>
+            <p>Free tier includes general course suggestions. Professional and Premium tiers include curated course links to real courses on Coursera, Udemy, LinkedIn Learning, and other platforms, organized by phase.</p>
           </div>
 
           <div className="faq-item">
             <h3>Can I print or download my roadmap?</h3>
-            <p>Yes. All users can download roadmaps as PDF files. Pro users also get additional export formats and can embed roadmaps on personal websites.</p>
-          </div>
-
-          <div className="faq-item">
-            <h3>What is the AI Career Coach feature?</h3>
-            <p>Pro users get monthly consultations with our AI-powered career advisors. You can ask specific questions about your transition, get resume reviews, and receive personalized guidance.</p>
+            <p>Yes. All users can download roadmaps as PDF files for offline reference and printing.</p>
           </div>
         </div>
 
@@ -155,12 +145,17 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>How do I get help?</h3>
-            <p>Email support@clouddesigns.ai with any questions. Free users get standard support (3-5 days). Pro users get priority support (24 hours). Enterprise customers have 24/7 phone support.</p>
+            <p>Email darec@darecmcdaniel.info with any questions or issues. I aim to respond within 2-3 business days.</p>
           </div>
 
           <div className="faq-item">
             <h3>What if the AI roadmap doesn't match my goals?</h3>
-            <p>You can generate new roadmaps with different inputs. Pro users can request personalized modifications from our career advisors through the AI Coach feature.</p>
+            <p>You can generate new roadmaps with different inputs to explore alternative paths. Try adjusting your target role, skills, or timeline.</p>
+          </div>
+
+          <div className="faq-item">
+            <h3>Is there a rate limit on roadmap generation?</h3>
+            <p>Yes, to prevent abuse and ensure quality service for everyone: unauthenticated users get 5 requests per hour, authenticated users get 20 per hour. Limits reset hourly.</p>
           </div>
 
           <div className="faq-item">
@@ -180,26 +175,21 @@ export default function FAQ() {
         </div>
 
         <div className="faq-section">
-          <h2>Enterprise & Integration</h2>
+          <h2>Account & Security</h2>
 
           <div className="faq-item">
-            <h3>Can my company use Cloud Designs for employee development?</h3>
-            <p>Yes. Our Enterprise plan is designed for HR teams and organizations. You can manage multiple employees, track progress, and generate team reports.</p>
+            <h3>How is my data secured?</h3>
+            <p>We use enterprise-grade encryption for data in transit and at rest. Your password is hashed with bcryptjs. All data is stored securely on Supabase PostgreSQL.</p>
           </div>
 
           <div className="faq-item">
-            <h3>Do you offer API access?</h3>
-            <p>Yes. Enterprise customers get API access to integrate Cloud Designs with their HR systems, HRIS platforms, or custom applications.</p>
+            <h3>Can I delete my account?</h3>
+            <p>Yes. You can delete your account anytime from your dashboard settings. All your data will be removed from our servers.</p>
           </div>
 
           <div className="faq-item">
-            <h3>Can you customize the roadmap content for my company?</h3>
-            <p>Yes. Enterprise customers can customize skills, roles, and recommendations based on their company's needs. We can also train custom AI models.</p>
-          </div>
-
-          <div className="faq-item">
-            <h3>What kind of SLA does Enterprise include?</h3>
-            <p>Enterprise customers get a 99.9% uptime SLA, dedicated account manager, 1-hour response times, and 24/7 phone support.</p>
+            <h3>Is Cloud Designs free to use?</h3>
+            <p>Yes. The Free tier is completely free forever. Professional ($39) and Premium ($129) are optional for advanced features. No credit card needed for Free tier.</p>
           </div>
         </div>
       </section>

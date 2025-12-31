@@ -110,7 +110,8 @@ export default function About() {
             </div>
           </section>
 
-          <section className="about-stats">
+          {/* Hidden until real metrics are available */}
+          <section className="about-stats" style={{ display: "none" }}>
             <h2>By The Numbers</h2>
             <div className="stats-grid">
               <div className="stat">
@@ -173,9 +174,8 @@ export default function About() {
             <div className="difference-item">
               <h3>💰 Honest Pricing</h3>
               <p>
-                Free tier is genuinely free forever. Pro tier is $29/month with
-                no hidden fees. Enterprise pricing is transparent and
-                customized, not opaque.
+                Free tier is genuinely free forever. Professional ($39) and Premium ($129) are one-time payments with
+                no hidden fees or recurring charges.
               </p>
             </div>
 
@@ -208,7 +208,7 @@ export default function About() {
               <p>
                 <strong>Email:</strong>{" "}
                 <a href="mailto:darec@darecmcdaniel.info">
-                  contact@darecmcdaniel.info
+                  darec@darecmcdaniel.info
                 </a>
               </p>
             </div>

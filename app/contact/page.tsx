@@ -42,7 +42,7 @@ export default function Contact() {
 
       <section className="contact-intro">
         <p>
-          Have questions? Want to discuss Enterprise? Found a bug? We'd love to hear from you. Average response time: 24 hours.
+          Have questions? Want to discuss Enterprise? Found a bug? We'd love to hear from you. Response time: typically within 2-3 business days.
         </p>
       </section>
 
@@ -152,12 +152,7 @@ export default function Contact() {
             </p>
           </div>
 
-          <div className="contact-method">
-            <h3>💬 Live Chat</h3>
-            <p>
-              Questions? Start a live chat on our website. Available Monday-Friday, 9 AM - 6 PM EST.
-            </p>
-          </div>
+
 
           <div className="contact-method">
             <h3>📱 Social Media</h3>
@@ -178,13 +173,7 @@ export default function Contact() {
             </p>
           </div>
 
-          <div className="contact-method">
-            <h3>🎓 Onboarding Call</h3>
-            <p>
-              Want to see how Cloud Designs works? Schedule a free 30-min walkthrough with our team.
-            </p>
-            <button className="schedule-button">Schedule a Call</button>
-          </div>
+
 
           <div className="contact-method">
             <h3>🐛 Report a Bug</h3>
@@ -218,9 +207,9 @@ export default function Contact() {
             <p>Cloud Designs is run by Darec McDaniel.</p>
           </div>
           <div className="qa-item">
-            <h3>Are you hiring?</h3>
+            <h3>Do you offer live chat support?</h3>
             <p>
-              Yes! Check our <a href="/careers">careers page</a> for open positions in engineering, product, and more.
+              For efficiency and faster responses, we handle all inquiries via email. Email us anytime at darec@darecmcdaniel.info.
             </p>
           </div>
         </div>

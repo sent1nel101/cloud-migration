@@ -90,7 +90,6 @@ export default function FeaturesPricing() {
                     <li>✓ Portfolio project ideas</li>
                     <li>✓ Skills gap prioritized by demand</li>
                     <li>✓ Resume tailoring suggestions</li>
-                    <li>✓ Email support</li>
                     <li>✗ AI-powered resume rewrite</li>
                   </ul>
                 </div>
@@ -226,13 +225,7 @@ export default function FeaturesPricing() {
                       role
                     </p>
                   </div>
-                  <div className="feature-item">
-                    <h4>Email Support</h4>
-                    <p>
-                      Support team ready to help with your career transition
-                      questions
-                    </p>
-                  </div>
+
                 </div>
               </div>
 
@@ -268,12 +261,7 @@ export default function FeaturesPricing() {
                       Recommended certifications ranked by return on investment
                     </p>
                   </div>
-                  <div className="feature-item">
-                    <h4>One Revision/Update</h4>
-                    <p>
-                      One revision or update of your roadmap within 3 months
-                    </p>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -365,12 +353,7 @@ export default function FeaturesPricing() {
                     <td></td>
                     <td>✓</td>
                   </tr>
-                  <tr>
-                    <td>One Revision/Update (3 months)</td>
-                    <td></td>
-                    <td></td>
-                    <td>✓</td>
-                  </tr>
+
                 </tbody>
               </table>
             </div>

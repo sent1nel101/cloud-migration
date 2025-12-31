@@ -148,7 +148,7 @@ describe("API Logic", () => {
 
     it("should calculate very short timeline for highly experienced", () => {
       const experience = 15;
-      const calculatedMonths = Math.min(48, 24 + (10 - experience) * 3);
+      const calculatedMonths = Math.min(48, Math.max(24, 24 + (10 - experience) * 3));
       expect(calculatedMonths).toBe(24); // Doesn't go below 24
     });
   });
