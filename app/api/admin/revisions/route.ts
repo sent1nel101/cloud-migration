@@ -20,12 +20,13 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { getPendingRevisions } from "@/lib/revision-service"
 
-// Simple admin check - can be enhanced with a proper admin role
+// Admin check using environment variable
 async function isAdmin(userId: string): Promise<boolean> {
-  // For now: only the account owner (darec@darecmcdaniel.info) can be admin
-  // In production, use a proper admin role in the database
+  // Get admin emails from environment variable (comma-separated)
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map(e => e.trim()).filter(Boolean)
+  
   const session = await getServerSession(authOptions)
-  return session?.user?.email === "darec@darecmcdaniel.info"
+  return session?.user?.email ? adminEmails.includes(session.user.email) : false
 }
 
 export async function GET(request: NextRequest) {

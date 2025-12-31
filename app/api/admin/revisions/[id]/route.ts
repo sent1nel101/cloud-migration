@@ -2,7 +2,7 @@
  * API Route: PATCH /api/admin/revisions/[id]
  * 
  * Admin endpoint to approve or reject a revision request
- * Only accessible by admin (darec@darecmcdaniel.info)
+ * Only accessible by users with emails listed in ADMIN_EMAILS environment variable
  * 
  * Request body:
  * - action: "approve" or "reject"
@@ -22,10 +22,13 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { approveRevision, rejectRevision, getRevision } from "@/lib/revision-service"
 
-// Simple admin check
+// Admin check using environment variable
 async function isAdmin(userId: string): Promise<boolean> {
+  // Get admin emails from environment variable (comma-separated)
+  const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map(e => e.trim()).filter(Boolean)
+  
   const session = await getServerSession(authOptions)
-  return session?.user?.email === "darec@darecmcdaniel.info"
+  return session?.user?.email ? adminEmails.includes(session.user.email) : false
 }
 
 export async function PATCH(
