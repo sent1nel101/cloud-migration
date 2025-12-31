@@ -24,6 +24,19 @@ export async function saveRoadmap(
   content: string,
   title?: string
 ) {
+  // Verify user exists before saving roadmap
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, email: true },
+  });
+
+  if (!user) {
+    console.error(`Roadmap save failed: User ${userId} does not exist in database`);
+    throw new Error(`User ${userId} not found in database`);
+  }
+
+  console.log(`Saving roadmap for user ${user.email} (ID: ${userId})`);
+
   return prisma.roadmap.create({
     data: {
       userId,

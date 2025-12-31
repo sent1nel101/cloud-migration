@@ -13,6 +13,8 @@ interface Roadmap {
   createdAt: string
   currentRole?: string
   targetRole?: string
+  experience?: number
+  skills?: string
 }
 
 export default function DashboardPage() {
@@ -35,6 +37,7 @@ export default function DashboardPage() {
 
   const fetchRoadmaps = async () => {
     try {
+      console.log("Fetching roadmaps from /api/roadmaps")
       const res = await fetch("/api/roadmaps")
       console.log("Fetch response status:", res.status)
 
@@ -46,7 +49,11 @@ export default function DashboardPage() {
 
       const data = await res.json()
       console.log("Roadmaps data received:", data)
-      setRoadmaps(Array.isArray(data) ? data : data.roadmaps || [])
+      console.log("Number of roadmaps:", Array.isArray(data) ? data.length : data.roadmaps?.length || 0)
+      
+      const roadmapList = Array.isArray(data) ? data : data.roadmaps || []
+      console.log("Roadmaps to display:", roadmapList)
+      setRoadmaps(roadmapList)
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to load roadmaps"
@@ -59,6 +66,57 @@ export default function DashboardPage() {
 
   const handleLogout = async () => {
     await signOut({ redirect: true, callbackUrl: "/" })
+  }
+
+  const buildPrefillUrl = (roadmap: Roadmap): string => {
+    const params = new URLSearchParams()
+    
+    if (roadmap.currentRole) params.append("role", roadmap.currentRole)
+    if (roadmap.experience) params.append("years", roadmap.experience.toString())
+    if (roadmap.targetRole) params.append("goals", roadmap.targetRole)
+    if (roadmap.skills) {
+      try {
+        const parsedSkills = JSON.parse(roadmap.skills)
+        if (Array.isArray(parsedSkills)) {
+          params.append("skills", parsedSkills.join(","))
+        }
+      } catch (e) {
+        // If skills is already a string, use it as-is
+        params.append("skills", roadmap.skills)
+      }
+    }
+    
+    return `/?${params.toString()}`
+  }
+
+  const handleDelete = async (roadmapId: string, roadmapTitle: string) => {
+    // Confirm deletion
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${roadmapTitle}"? This action cannot be undone.`
+    )
+
+    if (!confirmed) return
+
+    try {
+      const res = await fetch("/api/roadmaps/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roadmapId }),
+      })
+
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.error || "Failed to delete roadmap")
+      }
+
+      // Remove from local state
+      setRoadmaps((prev) => prev.filter((r) => r.id !== roadmapId))
+      console.log(`✅ Roadmap deleted: ${roadmapId}`)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to delete"
+      setError(message)
+      console.error("Delete error:", err)
+    }
   }
 
   const formatDate = (dateString: string) => {
@@ -184,7 +242,16 @@ export default function DashboardPage() {
                       >
                         View
                       </Link>
-                      <button className="action-button action-delete">
+                      <Link
+                        href={buildPrefillUrl(roadmap)}
+                        className="action-button"
+                      >
+                        Edit Inputs
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(roadmap.id, roadmap.title || "Roadmap")}
+                        className="action-button action-delete"
+                      >
                         Delete
                       </button>
                     </div>

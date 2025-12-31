@@ -19,16 +19,18 @@ interface InputFormProps {
   onSubmit: (data: CareerInput) => void;
   /** Whether the form is disabled (during API call) */
   loading: boolean;
+  /** Optional initial values to prefill the form */
+  initialValues?: Partial<CareerInput>;
 }
 
-export default function InputForm({ onSubmit, loading }: InputFormProps) {
+export default function InputForm({ onSubmit, loading, initialValues }: InputFormProps) {
   // Main form state - mirrors CareerInput interface
   const [formData, setFormData] = useState<CareerInput>({
-    currentRole: "",
-    yearsExperience: 0,
-    goals: "",
-    skills: [],
-    educationLevel: "Bachelor's",
+    currentRole: initialValues?.currentRole || "",
+    yearsExperience: initialValues?.yearsExperience || 0,
+    goals: initialValues?.goals || "",
+    skills: initialValues?.skills || [],
+    educationLevel: initialValues?.educationLevel || "Bachelor's",
   });
 
   // Temporary input for adding skills (separate from formData array)

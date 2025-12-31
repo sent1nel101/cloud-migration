@@ -22,9 +22,23 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
+    console.log("Payment API - Session:", {
+      user: session?.user?.email,
+      userId: session?.user?.id,
+      tier: session?.user?.tier,
+    });
+
     if (!session?.user?.email) {
       return NextResponse.json(
         { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    if (!session?.user?.id) {
+      console.error("Payment API - Missing userId in session");
+      return NextResponse.json(
+        { error: 'User ID missing from session' },
         { status: 401 }
       );
     }
@@ -57,12 +71,23 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    console.log("=== PAYMENT INTENT CREATED ===");
+    console.log("Payment Intent ID:", paymentIntent.id);
+    console.log("Amount:", amount);
+    console.log("Tier:", tier);
+    console.log("User ID:", session.user.id);
+
     // Record payment in database
     const payment = await createPayment(
       session.user.id!,
       tier as 'PROFESSIONAL' | 'PREMIUM',
       paymentIntent.id
     );
+
+    console.log("=== PAYMENT SAVED TO DATABASE ===");
+    console.log("Database Payment ID:", payment.id);
+    console.log("Stripe ID in DB:", payment.stripePaymentId);
+    console.log("Tier in DB:", payment.tier);
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,

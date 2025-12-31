@@ -41,12 +41,18 @@ export async function POST(req: NextRequest) {
           (paymentIntent.metadata?.tier as "PROFESSIONAL" | "PREMIUM") ||
           "PROFESSIONAL"
 
+        console.log("=== STRIPE WEBHOOK: payment_intent.succeeded ===")
+        console.log("Stripe Payment ID:", stripePaymentId)
+        console.log("Tier:", tier)
+        console.log("Metadata:", paymentIntent.metadata)
+
         try {
           // Confirm payment in database and upgrade user tier
-          await confirmPayment(stripePaymentId)
-          console.log(`Payment ${stripePaymentId} succeeded, user upgraded`)
+          const result = await confirmPayment(stripePaymentId)
+          console.log(`✅ Payment ${stripePaymentId} confirmed, user upgraded to tier:`, result)
+          console.log("User ID that was upgraded:", result.userId)
         } catch (error) {
-          console.error(`Failed to confirm payment ${stripePaymentId}:`, error)
+          console.error(`❌ Failed to confirm payment ${stripePaymentId}:`, error)
           throw error
         }
         break

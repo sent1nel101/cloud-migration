@@ -348,10 +348,10 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
                         {(roadmap as any).premium_tier_content.resumes[selectedResumeIdx].description}
                       </p>
                       
-                      {/* Resume Content */}
-                      <p style={{ color: "var(--text-primary)", padding: "1rem", backgroundColor: "var(--bg-primary)", borderRadius: "0.5rem", borderLeft: "4px solid #d4af37" }}>
+                      {/* Resume Content - render with whitespace preserved for bullets */}
+                      <div style={{ color: "var(--text-primary)", padding: "1rem", backgroundColor: "var(--bg-primary)", borderRadius: "0.5rem", borderLeft: "4px solid #d4af37", whiteSpace: "pre-wrap", fontFamily: "inherit" }}>
                         {(roadmap as any).premium_tier_content.resumes[selectedResumeIdx].content}
-                      </p>
+                      </div>
                     </>
                   )}
                 </div>
