@@ -196,7 +196,6 @@ function HomeContent() {
                   <h3>Share Your Profile</h3>
                   <p>
                     Tell us about your current role, skills, and career goals.
-                    Or upload your resume and let us extract the details automatically.
                   </p>
                 </div>
                 <div className="info-card">
