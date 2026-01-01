@@ -217,8 +217,58 @@ function HomeContent() {
             </div>
           </section>
 
+          {/* Sign Up Benefits Section */}
+          <section className="info-section" style={{ background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(79, 172, 254, 0.08) 100%)", borderTop: "1px solid rgba(59, 130, 246, 0.2)" }}>
+            <div className="container-md">
+              <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+                <h2>Save Your Progress & Unlock More Features</h2>
+                <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)" }}>
+                  Create a free account to get the most out of Cloud Designs
+                </p>
+              </div>
+              <div className="info-grid" style={{ marginBottom: "2rem" }}>
+                <div className="info-card" style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
+                  <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>💾</div>
+                  <h3>Save Multiple Roadmaps</h3>
+                  <p>
+                    Generate and save unlimited career roadmaps. Compare different career paths and come back to them anytime.
+                  </p>
+                </div>
+                <div className="info-card" style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
+                  <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>📊</div>
+                  <h3>Track Your Progress</h3>
+                  <p>
+                    Monitor your career transition with a personal dashboard. Check off completed milestones and stay motivated.
+                  </p>
+                </div>
+                <div className="info-card" style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
+                  <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>🚀</div>
+                  <h3>Upgrade When Ready</h3>
+                  <p>
+                    Start free and upgrade to Professional or Premium later for AI-powered resume rewrites and advanced recommendations.
+                  </p>
+                </div>
+              </div>
+              <div style={{ textAlign: "center", padding: "1rem 0" }}>
+                <button
+                  onClick={() => router.push("/auth/signup")}
+                  className="cta-button"
+                  style={{
+                    fontSize: "1.1rem",
+                    padding: "14px 32px",
+                  }}
+                >
+                  Create Free Account
+                </button>
+                <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginTop: "1rem" }}>
+                  No credit card required • Takes 2 minutes • Free forever tier available
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* Resume Upload CTA Section - HIDDEN FOR NOW */}
-          {false && <section className="info-section" style={{ background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(79, 172, 254, 0.05) 100%)" }}>
+           {false && <section className="info-section" style={{ background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(79, 172, 254, 0.05) 100%)" }}>
             <div className="container-md">
               <div style={{ textAlign: "center", padding: "2rem 0" }}>
                 <h2>Fast Track Your Roadmap</h2>
