@@ -91,55 +91,110 @@ async function extractPDF(buffer: Buffer): Promise<string> {
  */
 async function extractDOCX(buffer: Buffer): Promise<string> {
   try {
-    // Dynamic import for jszip (ESM module)
-    const JSZip = (await import("jszip")).default
+    // Dynamic import for jszip
+    let JSZip: any
+    try {
+      JSZip = (await import("jszip")).default
+    } catch (importError) {
+      console.error("[RESUME PARSER] Failed to import jszip:", importError)
+      throw new Error("DOCX parsing library not available")
+    }
+
     const zip = new JSZip()
-    const loaded = await zip.loadAsync(buffer)
+    
+    // Load the DOCX file (which is a ZIP archive)
+    let loaded: any
+    try {
+      loaded = await zip.loadAsync(buffer)
+    } catch (loadError) {
+      console.error("[RESUME PARSER] Failed to load DOCX as ZIP:", loadError)
+      throw new Error("Invalid DOCX file format")
+    }
     
     // Get the main document XML
     const documentFile = loaded.file("word/document.xml")
     if (!documentFile) {
+      console.error("[RESUME PARSER] word/document.xml not found in DOCX")
       throw new Error("Could not find document.xml in DOCX file")
     }
     
-    const documentXml = await documentFile.async("string")
-    
-    // Extract text from XML
-    // This regex captures text between XML tags
+    let documentXml: string
+    try {
+      documentXml = await documentFile.async("string")
+    } catch (readError) {
+      console.error("[RESUME PARSER] Failed to read document.xml:", readError)
+      throw new Error("Could not read content from DOCX")
+    }
+
+    if (!documentXml || documentXml.length === 0) {
+      throw new Error("DOCX document.xml is empty")
+    }
+
+    // Extract text from XML - look for <w:t> tags
     const textMatches = documentXml.match(/<w:t[^>]*>([^<]+)<\/w:t>/g)
     
-    if (!textMatches || textMatches.length === 0) {
-      // Fallback: try alternative extraction method
-      const altMatches = documentXml.match(/>([^<]*[a-zA-Z0-9]+[^<]*)</g)
-      if (!altMatches || altMatches.length === 0) {
-        throw new Error("No text found in DOCX document")
-      }
-      
-      let text = altMatches
+    if (textMatches && textMatches.length > 0) {
+      // Primary method: extract w:t tag contents
+      let text = textMatches
         .map((match: string) => {
-          return match.replace(/^>/, "").replace(/<$/, "").trim()
+          const content = match.replace(/<w:t[^>]*>/, "").replace(/<\/w:t>/, "")
+          return content
         })
-        .filter((s) => s.length > 0)
         .join(" ")
       
       text = text.replace(/\s+/g, " ").trim()
-      return text
+      
+      if (text.length > 0) {
+        console.log("[RESUME PARSER] DOCX text extracted successfully via w:t tags")
+        return text
+      }
     }
-    
-    let text = textMatches
-      .map((match: string) => {
-        // Extract content between tags
-        const content = match.replace(/<w:t[^>]*>/, "").replace(/<\/w:t>/, "")
-        return content
-      })
-      .join(" ")
-    
-    text = text.replace(/\s+/g, " ").trim()
-    
-    return text
+
+    // Fallback 1: try paragraph tags
+    const paragraphMatches = documentXml.match(/<w:p[^>]*>([\s\S]*?)<\/w:p>/g)
+    if (paragraphMatches && paragraphMatches.length > 0) {
+      console.log("[RESUME PARSER] Using fallback 1: paragraph tag extraction")
+      let text = paragraphMatches
+        .map((para: string) => {
+          // Extract all text from this paragraph
+          const runs = para.match(/<w:t[^>]*>([^<]+)<\/w:t>/g) || []
+          return runs
+            .map((run: string) => run.replace(/<w:t[^>]*>/, "").replace(/<\/w:t>/, ""))
+            .join("")
+        })
+        .filter((s: string) => s.trim().length > 0)
+        .join(" ")
+      
+      text = text.replace(/\s+/g, " ").trim()
+      
+      if (text.length > 0) {
+        return text
+      }
+    }
+
+    // Fallback 2: extract any text-like content
+    console.log("[RESUME PARSER] Using fallback 2: generic XML text extraction")
+    const allTextMatches = documentXml.match(/>[^<]*[a-zA-Z0-9]+[^<]*</g)
+    if (allTextMatches && allTextMatches.length > 0) {
+      let text = allTextMatches
+        .map((match: string) => {
+          return match.replace(/^>/, "").replace(/<$/, "").trim()
+        })
+        .filter((s: string) => s.length > 0 && !s.match(/^[0-9]+$/) && !s.match(/^[\s\t]*$/))
+        .join(" ")
+      
+      text = text.replace(/\s+/g, " ").trim()
+      
+      if (text.length > 0) {
+        return text
+      }
+    }
+
+    throw new Error("No readable text found in DOCX file")
   } catch (error) {
     console.error("[RESUME PARSER] DOCX parsing error:", error)
-    throw new Error("Failed to parse DOCX file. Please ensure it's a valid Word document.")
+    const message = error instanceof Error ? error.message : "Unknown DOCX parsing error"
+    throw new Error(`Failed to parse DOCX: ${message}`)
   }
 }
 
