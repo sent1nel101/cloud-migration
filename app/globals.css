@@ -143,13 +143,13 @@ textarea:focus-visible {
 
 /* Responsive Padding */
 .px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
+   padding-left: 0.75rem;
+   padding-right: 0.75rem;
 }
 
 .px-6 {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+   padding-left: 0.75rem;
+   padding-right: 0.75rem;
 }
 
 @media (min-width: 640px) {
@@ -1430,11 +1430,17 @@ textarea:focus-visible {
 
 /* ==================== PAGE CONTAINER ==================== */
 .page-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+   max-width: 1000px;
+   margin: 0 auto;
+   padding: 3rem 0.75rem;
+   background-color: var(--bg-primary);
+   color: var(--text-primary);
+}
+
+@media (min-width: 640px) {
+   .page-container {
+      padding: 3rem 1.5rem;
+   }
 }
 
 .page-container h1 {
