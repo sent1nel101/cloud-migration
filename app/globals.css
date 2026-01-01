@@ -1037,15 +1037,27 @@ textarea:focus-visible {
 
 /* Roadmap Display */
 .roadmap-container {
-  padding: 4rem 1.5rem;
-  background-color: var(--bg-primary);
+   padding: 2rem 0.5rem;
+   background-color: var(--bg-primary);
+}
+
+@media (min-width: 640px) {
+   .roadmap-container {
+      padding: 4rem 1.5rem;
+   }
 }
 
 .roadmap-card {
-  background-color: var(--bg-primary);
-  border-radius: 0.5rem;
-  box-shadow: var(--shadow-lg);
-  padding: 2rem;
+   background-color: var(--bg-primary);
+   border-radius: 0.5rem;
+   box-shadow: var(--shadow-lg);
+   padding: 1rem;
+}
+
+@media (min-width: 640px) {
+   .roadmap-card {
+      padding: 2rem;
+   }
 }
 
 .roadmap-header {
@@ -1073,14 +1085,22 @@ textarea:focus-visible {
 }
 
 .timeline-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 2rem;
-  background-color: #dbeafe;
-  border: 1px solid #bfdbfe;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+   gap: 1rem;
+   background-color: #dbeafe;
+   border: 1px solid #bfdbfe;
+   border-radius: 0.5rem;
+   padding: 0.75rem;
+   margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+   .timeline-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
+      padding: 1.5rem;
+   }
 }
 
 [data-theme="dark"] .timeline-grid {
