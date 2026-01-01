@@ -225,7 +225,26 @@ export default function Terms() {
       </section>
 
       <section className="policy-section">
-        <h2>7. Disclaimers & Limitations</h2>
+        <h2>7. No Professional Advice</h2>
+
+        <p>
+          <strong>THE SERVICES DO NOT CONSTITUTE PROFESSIONAL ADVICE.</strong> Cloud Designs is not a licensed career counselor, employment agency, educational institution, or professional advisor. The information provided through our Services is for general informational purposes only and should not be construed as:
+        </p>
+
+        <ul>
+          <li>Professional career counseling or employment advice</li>
+          <li>Legal, financial, or tax advice</li>
+          <li>Educational or academic guidance</li>
+          <li>A guarantee or promise of employment, income, or career advancement</li>
+        </ul>
+
+        <p>
+          You should consult with qualified professionals before making any career, educational, or financial decisions. Cloud Designs expressly disclaims any responsibility for decisions made based on information provided through our Services.
+        </p>
+      </section>
+
+      <section className="policy-section">
+        <h2>8. Disclaimers & Limitations</h2>
 
         <h3>As-Is Services</h3>
         <p>
@@ -241,18 +260,29 @@ export default function Terms() {
 
         <h3>AI Roadmap Disclaimer</h3>
         <p>
-          AI-generated roadmaps are not guarantees of career success. They are suggestions based on patterns and data. Career outcomes depend on many factors beyond our Service. We recommend:
+          <strong>IMPORTANT:</strong> AI-generated roadmaps are for informational and educational purposes only. They are NOT professional career advice, employment counseling, or guarantees of career success, income, or job placement. Roadmaps are suggestions based on patterns and data that may not reflect current market conditions in your specific location or industry.
         </p>
 
+        <p>Career outcomes depend on many factors beyond our Service, including but not limited to:</p>
+
         <ul>
-          <li>Consulting with career coaches and mentors</li>
-          <li>Researching actual job market data for your location</li>
-          <li>Validating recommendations with industry professionals</li>
-          <li>Considering your unique circumstances and constraints</li>
+          <li>Economic conditions and job market fluctuations</li>
+          <li>Your individual skills, effort, and circumstances</li>
+          <li>Geographic location and industry demand</li>
+          <li>Employer hiring decisions beyond our control</li>
+        </ul>
+
+        <p>We strongly recommend:</p>
+
+        <ul>
+          <li>Consulting with licensed career counselors or coaches</li>
+          <li>Researching actual job market data for your specific location</li>
+          <li>Validating all recommendations with industry professionals</li>
+          <li>Conducting your own due diligence before making career decisions</li>
         </ul>
 
         <p>
-          Cloud Designs is not liable for career decisions based on our roadmaps.
+          <strong>Cloud Designs expressly disclaims all liability for any career decisions, job applications, resignations, educational investments, or financial decisions made in reliance on our roadmaps. You assume full responsibility for all decisions made using our Services.</strong>
         </p>
 
         <h3>Third-Party Content</h3>
@@ -262,40 +292,64 @@ export default function Terms() {
       </section>
 
       <section className="policy-section">
-        <h2>8. Limitation of Liability</h2>
+        <h2>9. Limitation of Liability</h2>
 
         <p>
           <strong>
-            TO THE MAXIMUM EXTENT PERMITTED BY LAW, CLOUD DESIGNS WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOST PROFITS, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+            TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL CLOUD DESIGNS, ITS OWNER DAREC MCDANIEL, OR ANY OF ITS AFFILIATES, LICENSORS, SERVICE PROVIDERS, EMPLOYEES, AGENTS, OFFICERS, OR DIRECTORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO:
           </strong>
         </p>
 
+        <ul>
+          <li>Loss of revenue, profits, or business</li>
+          <li>Loss of anticipated savings</li>
+          <li>Loss of data or data corruption</li>
+          <li>Loss of goodwill or reputation</li>
+          <li>Career outcomes, job loss, or employment decisions</li>
+          <li>Educational expenses or course purchases</li>
+          <li>Any other pecuniary or non-pecuniary loss</li>
+        </ul>
+
         <p>
-          Our total liability for any claim arising from these Terms or your use of Services is limited to the amount you paid us in the 12 months preceding the claim (or $100 if you haven't paid).
+          <strong>REGARDLESS OF WHETHER SUCH DAMAGES WERE FORESEEABLE OR WHETHER CLOUD DESIGNS WAS ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</strong>
         </p>
 
         <p>
-          Some jurisdictions don't allow liability limitations, so this may not apply to you.
+          <strong>AGGREGATE LIABILITY CAP:</strong> Our total cumulative liability for any and all claims arising from these Terms or your use of Services shall not exceed the greater of: (a) the amount you actually paid us in the 12 months preceding the claim, or (b) one hundred U.S. dollars ($100.00).
+        </p>
+
+        <p>
+          <strong>ESSENTIAL PURPOSE:</strong> The limitations set forth in this section shall apply even if any limited remedy fails of its essential purpose.
+        </p>
+
+        <p>
+          Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages, so the above limitations may not apply to you. In such jurisdictions, our liability shall be limited to the maximum extent permitted by law.
         </p>
       </section>
 
       <section className="policy-section">
-        <h2>9. Indemnification</h2>
+        <h2>10. Indemnification</h2>
 
         <p>
-          You agree to indemnify, defend, and hold harmless Cloud Designs from any claims, damages, costs, or expenses (including attorneys' fees) arising from:
+          You agree to indemnify, defend, and hold harmless Cloud Designs, its owner Darec McDaniel, and any affiliates, licensors, service providers, employees, agents, officers, and directors (collectively, "Indemnified Parties") from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including but not limited to reasonable attorneys' fees and court costs) arising from or related to:
         </p>
 
         <ul>
-          <li>Your use of our Services</li>
-          <li>Your violation of these Terms</li>
-          <li>Your User Content</li>
-          <li>Your infringement of third-party rights</li>
+          <li>Your access to or use of our Services</li>
+          <li>Your violation of these Terms or any applicable law</li>
+          <li>Your User Content or any content you submit, post, or transmit</li>
+          <li>Your infringement or misappropriation of any third-party intellectual property, privacy, or other rights</li>
+          <li>Any career decisions, job applications, or professional actions taken based on our Services</li>
+          <li>Any dispute between you and a third party arising from your use of our Services</li>
         </ul>
+
+        <p>
+          This indemnification obligation shall survive the termination of these Terms and your use of our Services.
+        </p>
       </section>
 
       <section className="policy-section">
-        <h2>10. Modifications to Terms</h2>
+        <h2>11. Modifications to Terms</h2>
 
         <p>
           We may modify these Terms anytime. Material changes will be notified by email or prominent website notice. Continued use of Services constitutes acceptance of updated Terms.
@@ -303,7 +357,7 @@ export default function Terms() {
       </section>
 
       <section className="policy-section">
-        <h2>11. Modifications to Services</h2>
+        <h2>12. Modifications to Services</h2>
 
         <p>
           Cloud Designs reserves the right to:
@@ -321,7 +375,7 @@ export default function Terms() {
       </section>
 
       <section className="policy-section">
-        <h2>12. Dispute Resolution</h2>
+        <h2>13. Dispute Resolution</h2>
 
         <h3>Informal Resolution</h3>
         <p>
@@ -344,7 +398,7 @@ export default function Terms() {
       </section>
 
       <section className="policy-section">
-        <h2>13. Governing Law</h2>
+        <h2>14. Governing Law</h2>
 
         <p>
           These Terms are governed by the laws of California, without regard to conflict of law principles. Arbitration venue is San Francisco, California.
@@ -352,7 +406,7 @@ export default function Terms() {
       </section>
 
       <section className="policy-section">
-        <h2>14. Severability</h2>
+        <h2>15. Severability</h2>
 
         <p>
           If any provision of these Terms is invalid or unenforceable, the remaining provisions remain in effect. Unenforceable provisions will be modified to the minimum extent necessary to make them enforceable.
@@ -360,7 +414,15 @@ export default function Terms() {
       </section>
 
       <section className="policy-section">
-        <h2>15. Contact Us</h2>
+        <h2>16. Entire Agreement</h2>
+
+        <p>
+          These Terms, together with our Privacy Policy and any other legal notices published by us on the Services, constitute the entire agreement between you and Cloud Designs concerning your use of the Services. These Terms supersede all prior or contemporaneous communications, whether electronic, oral, or written, between you and Cloud Designs.
+        </p>
+      </section>
+
+      <section className="policy-section">
+        <h2>17. Contact Us</h2>
 
         <p>
           For questions about these Terms, contact us at:

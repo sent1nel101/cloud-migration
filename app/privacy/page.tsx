@@ -118,7 +118,11 @@ export default function Privacy() {
         </ul>
 
         <p>
-          However, no method of transmission over the internet is 100% secure. While we take reasonable precautions, we cannot guarantee absolute security.
+          <strong>DISCLAIMER:</strong> Despite our security measures, no method of electronic storage or transmission over the Internet is 100% secure. While we strive to use commercially acceptable means to protect your personal information, we cannot guarantee its absolute security. You acknowledge that you provide your personal information at your own risk.
+        </p>
+
+        <p>
+          In the event of a data breach, we will notify affected users and relevant authorities as required by applicable law.
         </p>
       </section>
 
