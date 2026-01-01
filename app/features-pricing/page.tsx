@@ -136,7 +136,7 @@ export default function FeaturesPricing() {
                   <h3>Premium</h3>
                   <div className="price">
                     <span className="currency">$</span>
-                    <span className="amount">129</span>
+                    <span className="amount">59</span>
                     <span className="period">one-time</span>
                   </div>
                 </div>
@@ -150,7 +150,6 @@ export default function FeaturesPricing() {
                     <li>✓ AI-powered resume rewrite</li>
                     <li>✓ Multiple resume versions</li>
                     <li>✓ LinkedIn profile optimization</li>
-                    <li>✓ Specific copy suggestions</li>
                     <li>✓ Certification roadmap by ROI</li>
                     <li>✓ One revision/update (3 months)</li>
                   </ul>
@@ -412,8 +411,15 @@ export default function FeaturesPricing() {
             <div className="faq-item">
               <h3>Do you offer refunds?</h3>
               <p>
-                We offer a 30-day money-back guarantee on paid tiers. If you're
-                not satisfied, we'll refund you in full, no questions asked.
+                We offer a 30-day refund window with the following structure:
+              </p>
+              <ul style={{ marginLeft: "20px" }}>
+                <li><strong>Before Processing (100%):</strong> No work has been done yet</li>
+                <li><strong>Technical Error (100%):</strong> Your system failed to deliver</li>
+                <li><strong>Content Delivered (0-15%):</strong> We keep the bulk to cover usage and processing fees</li>
+              </ul>
+              <p>
+                To request a refund, email support@clouddesigns.com with your reason. Our team will review your request and arrange the refund accordingly.
               </p>
             </div>
 

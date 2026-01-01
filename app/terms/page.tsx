@@ -210,15 +210,23 @@ export default function Terms() {
           <li>Paid tiers grant permanent access to enhanced features</li>
         </ul>
 
-        <h3>Money-Back Guarantee</h3>
+        <h3>Refund Policy</h3>
         <p>
-          If you upgrade to a paid tier and aren't satisfied within 30 days, we'll refund your payment in full. No questions asked. Contact <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a> to request a refund.
+          We offer a 30-day refund window with the following structure:
+        </p>
+        <ul>
+          <li><strong>Before Processing (100%):</strong> No work has been done yet</li>
+          <li><strong>Technical Error (100%):</strong> Your system failed to deliver</li>
+          <li><strong>Content Delivered (0-15%):</strong> We keep the bulk to cover usage and processing fees</li>
+        </ul>
+        <p>
+          To request a refund within 30 days of purchase, email <a href="mailto:support@clouddesigns.com">support@clouddesigns.com</a> with your order details and refund reason. Our team will review your request and arrange the refund accordingly.
         </p>
 
         <h3>Billing</h3>
         <ul>
           <li>Payment is processed immediately upon upgrade</li>
-          <li>All charges for paid tiers are non-refundable except per our 30-day money-back guarantee</li>
+          <li>Refunds are available within 30 days per our refund policy above</li>
           <li>Failed payments will prevent tier upgrade</li>
           <li>Paid access is permanent (no subscription renewal to manage)</li>
         </ul>
