@@ -62,34 +62,45 @@ export async function parseResume(
  */
 async function extractPDF(buffer: Buffer): Promise<string> {
   try {
-    console.log("[RESUME PARSER] Starting PDF extraction...")
+    console.log("[RESUME PARSER] Starting PDF extraction with pdfjs-dist...")
     
-    // Use pdf-text-extract library
-    // @ts-ignore - pdf-text-extract doesn't have types
-    const extract = (await import("pdf-text-extract")).default || (await import("pdf-text-extract"))
+    // Import pdfjs
+    const pdfjs = await import("pdfjs-dist")
+    const pdf = pdfjs.default || pdfjs
     
-    console.log("[RESUME PARSER] pdf-text-extract loaded")
+    // Set worker source
+    if (pdf.GlobalWorkerOptions) {
+      pdf.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdf.version}/pdf.worker.min.js`
+    }
     
-    // Extract text from PDF
-    const text = await new Promise<string>((resolve, reject) => {
-      extract(buffer, {}, (err: any, pages: string[]) => {
-        if (err) {
-          console.error("[RESUME PARSER] pdf-text-extract error:", err)
-          reject(new Error(`PDF extraction failed: ${err.message}`))
-        } else {
-          const fullText = (pages || []).join(" ")
-          console.log(`[RESUME PARSER] Extracted ${fullText.length} chars from PDF`)
-          resolve(fullText)
-        }
-      })
-    })
+    console.log("[RESUME PARSER] Parsing PDF document...")
     
-    if (!text || text.trim().length === 0) {
+    // Parse PDF
+    const doc = await pdf.getDocument({ data: new Uint8Array(buffer) }).promise
+    console.log(`[RESUME PARSER] PDF loaded with ${doc.numPages} pages`)
+    
+    let fullText = ""
+    
+    // Extract text from each page
+    for (let i = 1; i <= doc.numPages; i++) {
+      try {
+        const page = await doc.getPage(i)
+        const textContent = await page.getTextContent()
+        const pageText = textContent.items
+          .map((item: any) => item.str || "")
+          .join(" ")
+        fullText += pageText + " "
+      } catch (pageError) {
+        console.warn(`[RESUME PARSER] Error extracting page ${i}:`, pageError)
+      }
+    }
+    
+    if (!fullText || fullText.trim().length === 0) {
       throw new Error("PDF contains no extractable text")
     }
     
-    const cleanText = text.replace(/\s+/g, " ").trim()
-    console.log(`[RESUME PARSER] Cleaned text length: ${cleanText.length} chars`)
+    const cleanText = fullText.replace(/\s+/g, " ").trim()
+    console.log(`[RESUME PARSER] PDF extraction successful: ${cleanText.length} chars`)
     console.log(`[RESUME PARSER] First 100 chars: ${cleanText.substring(0, 100)}`)
     
     return cleanText
@@ -110,120 +121,72 @@ async function extractDOCX(buffer: Buffer): Promise<string> {
     console.log("[RESUME PARSER] Starting DOCX extraction...")
     console.log(`[RESUME PARSER] Buffer size: ${buffer.length} bytes`)
     
-    // Dynamic import for jszip
-    let JSZip: any
-    try {
-      JSZip = (await import("jszip")).default
-      console.log("[RESUME PARSER] jszip library loaded successfully")
-    } catch (importError) {
-      console.error("[RESUME PARSER] Failed to import jszip:", importError)
-      throw new Error("DOCX parsing library not available")
-    }
+    // Import JSZip
+    const JSZip = (await import("jszip")).default
+    console.log("[RESUME PARSER] jszip library loaded")
 
+    // Load DOCX as ZIP
     const zip = new JSZip()
+    const loaded = await zip.loadAsync(buffer)
+    console.log("[RESUME PARSER] DOCX loaded as ZIP archive")
     
-    // Load the DOCX file (which is a ZIP archive)
-    let loaded: any
-    try {
-      loaded = await zip.loadAsync(buffer)
-      console.log("[RESUME PARSER] DOCX loaded as ZIP successfully")
-    } catch (loadError) {
-      console.error("[RESUME PARSER] Failed to load DOCX as ZIP:", loadError)
-      throw new Error("Invalid DOCX file format")
-    }
-    
-    // Get the main document XML
+    // Extract document.xml
     const documentFile = loaded.file("word/document.xml")
     if (!documentFile) {
-      console.error("[RESUME PARSER] word/document.xml not found in DOCX")
-      throw new Error("Could not find document.xml in DOCX file")
+      throw new Error("Invalid DOCX: No word/document.xml found")
     }
     
-    let documentXml: string
-    try {
-      documentXml = await documentFile.async("string")
-      console.log(`[RESUME PARSER] document.xml read successfully, size: ${documentXml.length} bytes`)
-    } catch (readError) {
-      console.error("[RESUME PARSER] Failed to read document.xml:", readError)
-      throw new Error("Could not read content from DOCX")
-    }
-
-    if (!documentXml || documentXml.length === 0) {
-      throw new Error("DOCX document.xml is empty")
-    }
-
-    // Extract text from XML - look for <w:t> tags
-    const textMatches = documentXml.match(/<w:t[^>]*>([^<]+)<\/w:t>/g)
-    console.log(`[RESUME PARSER] Found ${textMatches?.length || 0} w:t tags`)
+    const documentXml = await documentFile.async("string")
+    console.log(`[RESUME PARSER] Extracted document.xml (${documentXml.length} bytes)`)
     
-    if (textMatches && textMatches.length > 0) {
-      // Primary method: extract w:t tag contents
-      let text = textMatches
-        .map((match: string) => {
-          const content = match.replace(/<w:t[^>]*>/, "").replace(/<\/w:t>/, "")
-          return content
+    // Extract all text content from w:t tags (most reliable method)
+    const textMatches = documentXml.match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || []
+    console.log(`[RESUME PARSER] Found ${textMatches.length} text elements`)
+    
+    if (textMatches.length > 0) {
+      const text = textMatches
+        .map((m: string) => {
+          const match = m.match(/<w:t[^>]*>([^<]*)<\/w:t>/)
+          return match ? match[1] : ""
         })
+        .filter((s: string) => s.length > 0)
         .join(" ")
+        .replace(/\s+/g, " ")
+        .trim()
       
-      text = text.replace(/\s+/g, " ").trim()
+      console.log(`[RESUME PARSER] Extracted text length: ${text.length} chars`)
+      console.log(`[RESUME PARSER] First 100 chars: ${text.substring(0, 100)}`)
       
       if (text.length > 0) {
-        console.log(`[RESUME PARSER] DOCX text extracted via w:t tags, length: ${text.length}`)
-        console.log(`[RESUME PARSER] First 100 chars: ${text.substring(0, 100)}`)
         return text
       }
     }
-
-    // Fallback 1: try paragraph tags
-    const paragraphMatches = documentXml.match(/<w:p[^>]*>([\s\S]*?)<\/w:p>/g)
-    console.log(`[RESUME PARSER] Found ${paragraphMatches?.length || 0} paragraph tags (fallback 1)`)
     
-    if (paragraphMatches && paragraphMatches.length > 0) {
-      console.log("[RESUME PARSER] Using fallback 1: paragraph tag extraction")
-      let text = paragraphMatches
-        .map((para: string) => {
-          // Extract all text from this paragraph
-          const runs = para.match(/<w:t[^>]*>([^<]+)<\/w:t>/g) || []
-          return runs
-            .map((run: string) => run.replace(/<w:t[^>]*>/, "").replace(/<\/w:t>/, ""))
-            .join("")
-        })
-        .filter((s: string) => s.trim().length > 0)
-        .join(" ")
-      
-      text = text.replace(/\s+/g, " ").trim()
-      
-      if (text.length > 0) {
-        console.log(`[RESUME PARSER] Text extracted via fallback 1, length: ${text.length}`)
-        return text
-      }
+    // Fallback: extract from paragraph tags
+    console.log("[RESUME PARSER] Fallback: Extracting from paragraph tags...")
+    const paragraphs = documentXml.match(/<w:p[^>]*>.*?<\/w:p>/gs) || []
+    
+    const paragraphTexts = paragraphs
+      .map((para: string) => {
+        const runs = para.match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || []
+        return runs
+          .map((r: string) => r.replace(/<[^>]*>/g, ""))
+          .join("")
+      })
+      .filter((s: string) => s.trim().length > 0)
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim()
+    
+    if (paragraphTexts.length > 0) {
+      console.log(`[RESUME PARSER] Fallback extracted: ${paragraphTexts.length} chars`)
+      return paragraphTexts
     }
 
-    // Fallback 2: extract any text-like content
-    console.log("[RESUME PARSER] Using fallback 2: generic XML text extraction")
-    const allTextMatches = documentXml.match(/>[^<]*[a-zA-Z0-9]+[^<]*</g)
-    console.log(`[RESUME PARSER] Found ${allTextMatches?.length || 0} text-like content chunks (fallback 2)`)
-    
-    if (allTextMatches && allTextMatches.length > 0) {
-      let text = allTextMatches
-        .map((match: string) => {
-          return match.replace(/^>/, "").replace(/<$/, "").trim()
-        })
-        .filter((s: string) => s.length > 0 && !s.match(/^[0-9]+$/) && !s.match(/^[\s\t]*$/))
-        .join(" ")
-      
-      text = text.replace(/\s+/g, " ").trim()
-      
-      if (text.length > 0) {
-        console.log(`[RESUME PARSER] Text extracted via fallback 2, length: ${text.length}`)
-        return text
-      }
-    }
-
-    throw new Error("No readable text found in DOCX file - all fallback methods failed")
+    throw new Error("Could not extract text from DOCX file")
   } catch (error) {
-    console.error("[RESUME PARSER] DOCX parsing error:", error)
-    const message = error instanceof Error ? error.message : "Unknown DOCX parsing error"
+    console.error("[RESUME PARSER] DOCX extraction error:", error)
+    const message = error instanceof Error ? error.message : String(error)
     throw new Error(`Failed to parse DOCX: ${message}`)
   }
 }
