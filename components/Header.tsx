@@ -111,13 +111,7 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link
-                href="/resume-upload"
-                className="nav-upload-link"
-                onClick={handleNavClick}
-              >
-                Upload Resume
-              </Link>
+              {/* Resume Upload - Hidden for now */}
               <Link
                 href="/dashboard"
                 className="nav-dashboard-link"

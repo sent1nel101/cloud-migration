@@ -182,9 +182,7 @@ export default function DashboardPage() {
                   ✏️ My Revisions
                 </Link>
               )}
-              <Link href="/resume-upload" className="nav-link">
-                📄 Upload Resume
-              </Link>
+              {/* Resume Upload - Hidden for now */}
               <Link href="/roadmap-generator" className="nav-link">
                 ➕ New Roadmap
               </Link>

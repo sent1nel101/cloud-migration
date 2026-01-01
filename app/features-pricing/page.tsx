@@ -79,7 +79,7 @@ export default function FeaturesPricing() {
                     <li>✓ Recommended career paths</li>
                     <li>✓ Personalized timeline</li>
                     <li>✓ Printable PDF roadmap</li>
-                    <li>✓ Resume upload & parsing<span style={{fontSize: "0.85rem", marginLeft: "0.5rem", color: "var(--primary-color)", fontWeight: "600"}}>(Premium feature)</span></li>
+                    {/* Resume upload hidden for now */}
                     <li>✗ Curated course recommendations</li>
                     <li>✗ Resume optimization</li>
                   </ul>
@@ -217,14 +217,8 @@ export default function FeaturesPricing() {
                       reference
                     </p>
                   </div>
-                  <div className="feature-item">
-                    <h4>Resume Upload & Parsing</h4>
-                    <p>
-                      Upload your resume and auto-fill your profile. Skip manual data entry and get your roadmap in seconds
-                    </p>
-                  </div>
-                  </div>
-                  </div>
+                </div>
+              </div>
 
               <div className="feature-tier featured">
                 <div className="tier-badge">Most Popular</div>
@@ -345,12 +339,7 @@ export default function FeaturesPricing() {
                      <td>✓</td>
                      <td>✓</td>
                    </tr>
-                   <tr>
-                     <td>Resume Upload & Parsing</td>
-                     <td>✓</td>
-                     <td>✓</td>
-                     <td>✓</td>
-                   </tr>
+
                    <tr>
                      <td>Curated Course Links</td>
                     <td></td>

@@ -217,8 +217,8 @@ function HomeContent() {
             </div>
           </section>
 
-          {/* Resume Upload CTA Section */}
-          <section className="info-section" style={{ background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(79, 172, 254, 0.05) 100%)" }}>
+          {/* Resume Upload CTA Section - HIDDEN FOR NOW */}
+          {false && <section className="info-section" style={{ background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(79, 172, 254, 0.05) 100%)" }}>
             <div className="container-md">
               <div style={{ textAlign: "center", padding: "2rem 0" }}>
                 <h2>Fast Track Your Roadmap</h2>
@@ -253,7 +253,7 @@ function HomeContent() {
                 </button>
               </div>
             </div>
-          </section>
+          </section>}
         </main>
       ) : (
         <main className="main-content" style={{ padding: "1.5rem" }}>
