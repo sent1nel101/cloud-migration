@@ -196,6 +196,7 @@ function HomeContent() {
                   <h3>Share Your Profile</h3>
                   <p>
                     Tell us about your current role, skills, and career goals.
+                    Or upload your resume and let us extract the details automatically.
                   </p>
                 </div>
                 <div className="info-card">
@@ -212,6 +213,44 @@ function HomeContent() {
                     Get actionable steps, timelines, and skill recommendations.
                   </p>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Resume Upload CTA Section */}
+          <section className="info-section" style={{ background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(79, 172, 254, 0.05) 100%)" }}>
+            <div className="container-md">
+              <div style={{ textAlign: "center", padding: "2rem 0" }}>
+                <h2>Fast Track Your Roadmap</h2>
+                <p style={{ fontSize: "1.1rem", marginBottom: "1.5rem" }}>
+                  Upload your resume to auto-fill your profile details. Skip manual data entry and get your personalized career roadmap in seconds.
+                </p>
+                <p style={{ fontSize: "0.95rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+                  Resume upload is available to registered users. Create a free account to get started.
+                </p>
+                <button
+                  onClick={() => router.push("/auth/signup")}
+                  className="hero-badge"
+                  style={{
+                    cursor: "pointer",
+                    border: "2px solid var(--primary-color)",
+                    background: "var(--primary-color)",
+                    color: "white",
+                    padding: "12px 24px",
+                    borderRadius: "8px",
+                    fontSize: "1rem",
+                    fontWeight: "600",
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = "0.9";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = "1";
+                  }}
+                >
+                  Sign Up Free
+                </button>
               </div>
             </div>
           </section>

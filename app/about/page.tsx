@@ -196,6 +196,13 @@ export default function About() {
                 complete their career transition.
               </p>
             </div>
+
+            <div className="difference-item">
+              <h3>📄 Smart Resume Upload</h3>
+              <p>
+                Registered users can upload their resume to auto-populate their profile details. Our AI parser extracts key information—current role, skills, education, experience—so you can generate your roadmap in seconds instead of minutes.
+              </p>
+            </div>
           </section>
 
           <section className="about-contact">
