@@ -16,6 +16,7 @@
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function Header() {
   // Theme state - persists to localStorage
@@ -58,7 +59,15 @@ export default function Header() {
     <header className="header">
       <div className="header-content">
         <div className="header-logo">
-          <a href="/">Chart Your Path</a>
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="Chart Your Path Logo"
+              width={150}
+              height={50}
+              priority
+            />
+          </Link>
         </div>
 
         {/* Main navigation - hidden on mobile unless menu is open */}
