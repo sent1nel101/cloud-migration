@@ -58,29 +58,45 @@ export async function parseResume(
 }
 
 /**
- * Extract text from PDF file using pdf-parse library
+ * Extract text from PDF file
  */
 async function extractPDF(buffer: Buffer): Promise<string> {
   try {
-    // Dynamic import to handle ESM module  
-    const pdfParseModule: any = await import("pdf-parse")
-    // pdf-parse exports the function directly as a named export
-    const pdfParse = pdfParseModule.pdf || pdfParseModule[Object.keys(pdfParseModule)[0]]
+    console.log("[RESUME PARSER] Starting PDF extraction...")
     
-    const pdfData = await pdfParse(buffer)
-    let text = pdfData.text || ""
+    // Use pdf-text-extract library
+    // @ts-ignore - pdf-text-extract doesn't have types
+    const extract = (await import("pdf-text-extract")).default || (await import("pdf-text-extract"))
     
-    // Clean up extracted text
-    text = text.replace(/\s+/g, " ").trim()
+    console.log("[RESUME PARSER] pdf-text-extract loaded")
     
-    if (!text || text.length === 0) {
+    // Extract text from PDF
+    const text = await new Promise<string>((resolve, reject) => {
+      extract(buffer, {}, (err: any, pages: string[]) => {
+        if (err) {
+          console.error("[RESUME PARSER] pdf-text-extract error:", err)
+          reject(new Error(`PDF extraction failed: ${err.message}`))
+        } else {
+          const fullText = (pages || []).join(" ")
+          console.log(`[RESUME PARSER] Extracted ${fullText.length} chars from PDF`)
+          resolve(fullText)
+        }
+      })
+    })
+    
+    if (!text || text.trim().length === 0) {
       throw new Error("PDF contains no extractable text")
     }
     
-    return text
+    const cleanText = text.replace(/\s+/g, " ").trim()
+    console.log(`[RESUME PARSER] Cleaned text length: ${cleanText.length} chars`)
+    console.log(`[RESUME PARSER] First 100 chars: ${cleanText.substring(0, 100)}`)
+    
+    return cleanText
   } catch (error) {
     console.error("[RESUME PARSER] PDF parsing error:", error)
-    throw new Error("Failed to parse PDF file. Please ensure it's a valid PDF with extractable text.")
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`Failed to parse PDF file: ${message}`)
   }
 }
 
@@ -91,10 +107,14 @@ async function extractPDF(buffer: Buffer): Promise<string> {
  */
 async function extractDOCX(buffer: Buffer): Promise<string> {
   try {
+    console.log("[RESUME PARSER] Starting DOCX extraction...")
+    console.log(`[RESUME PARSER] Buffer size: ${buffer.length} bytes`)
+    
     // Dynamic import for jszip
     let JSZip: any
     try {
       JSZip = (await import("jszip")).default
+      console.log("[RESUME PARSER] jszip library loaded successfully")
     } catch (importError) {
       console.error("[RESUME PARSER] Failed to import jszip:", importError)
       throw new Error("DOCX parsing library not available")
@@ -106,6 +126,7 @@ async function extractDOCX(buffer: Buffer): Promise<string> {
     let loaded: any
     try {
       loaded = await zip.loadAsync(buffer)
+      console.log("[RESUME PARSER] DOCX loaded as ZIP successfully")
     } catch (loadError) {
       console.error("[RESUME PARSER] Failed to load DOCX as ZIP:", loadError)
       throw new Error("Invalid DOCX file format")
@@ -121,6 +142,7 @@ async function extractDOCX(buffer: Buffer): Promise<string> {
     let documentXml: string
     try {
       documentXml = await documentFile.async("string")
+      console.log(`[RESUME PARSER] document.xml read successfully, size: ${documentXml.length} bytes`)
     } catch (readError) {
       console.error("[RESUME PARSER] Failed to read document.xml:", readError)
       throw new Error("Could not read content from DOCX")
@@ -132,6 +154,7 @@ async function extractDOCX(buffer: Buffer): Promise<string> {
 
     // Extract text from XML - look for <w:t> tags
     const textMatches = documentXml.match(/<w:t[^>]*>([^<]+)<\/w:t>/g)
+    console.log(`[RESUME PARSER] Found ${textMatches?.length || 0} w:t tags`)
     
     if (textMatches && textMatches.length > 0) {
       // Primary method: extract w:t tag contents
@@ -145,13 +168,16 @@ async function extractDOCX(buffer: Buffer): Promise<string> {
       text = text.replace(/\s+/g, " ").trim()
       
       if (text.length > 0) {
-        console.log("[RESUME PARSER] DOCX text extracted successfully via w:t tags")
+        console.log(`[RESUME PARSER] DOCX text extracted via w:t tags, length: ${text.length}`)
+        console.log(`[RESUME PARSER] First 100 chars: ${text.substring(0, 100)}`)
         return text
       }
     }
 
     // Fallback 1: try paragraph tags
     const paragraphMatches = documentXml.match(/<w:p[^>]*>([\s\S]*?)<\/w:p>/g)
+    console.log(`[RESUME PARSER] Found ${paragraphMatches?.length || 0} paragraph tags (fallback 1)`)
+    
     if (paragraphMatches && paragraphMatches.length > 0) {
       console.log("[RESUME PARSER] Using fallback 1: paragraph tag extraction")
       let text = paragraphMatches
@@ -168,6 +194,7 @@ async function extractDOCX(buffer: Buffer): Promise<string> {
       text = text.replace(/\s+/g, " ").trim()
       
       if (text.length > 0) {
+        console.log(`[RESUME PARSER] Text extracted via fallback 1, length: ${text.length}`)
         return text
       }
     }
@@ -175,6 +202,8 @@ async function extractDOCX(buffer: Buffer): Promise<string> {
     // Fallback 2: extract any text-like content
     console.log("[RESUME PARSER] Using fallback 2: generic XML text extraction")
     const allTextMatches = documentXml.match(/>[^<]*[a-zA-Z0-9]+[^<]*</g)
+    console.log(`[RESUME PARSER] Found ${allTextMatches?.length || 0} text-like content chunks (fallback 2)`)
+    
     if (allTextMatches && allTextMatches.length > 0) {
       let text = allTextMatches
         .map((match: string) => {
@@ -186,11 +215,12 @@ async function extractDOCX(buffer: Buffer): Promise<string> {
       text = text.replace(/\s+/g, " ").trim()
       
       if (text.length > 0) {
+        console.log(`[RESUME PARSER] Text extracted via fallback 2, length: ${text.length}`)
         return text
       }
     }
 
-    throw new Error("No readable text found in DOCX file")
+    throw new Error("No readable text found in DOCX file - all fallback methods failed")
   } catch (error) {
     console.error("[RESUME PARSER] DOCX parsing error:", error)
     const message = error instanceof Error ? error.message : "Unknown DOCX parsing error"
