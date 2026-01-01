@@ -1,9 +1,10 @@
 # Actions & Progress Tracking
 
-**Session**: Session 40 - Resume Parser & UI Polish  
-**Status**: ✅ MERGED TO MAIN - All features complete  
+**Session**: Session 40 - Resume Parser, UI Polish & Legal Updates  
+**Status**: ✅ COMPLETE - Production ready, legal docs strengthened  
 **Branch**: main  
-**Build**: 35 pages, 0 TypeScript errors, ALL PASSING
+**Build**: 35 pages, 0 TypeScript errors, ALL PASSING  
+**Handoff**: See START_SESSION_41.md
 
 ---
 
@@ -24,6 +25,15 @@
 - ✅ Beautified Portfolio Project Ideas (green gradient, 🚀 icon, 🛠️ items)
 - ✅ Beautified LinkedIn Optimization Strategy (LinkedIn blue, 💼 icon)
 - ✅ Beautified Career Coaching Insights (gold gradient, 🎯 icon, 💡 items)
+
+### Legal Updates
+- ✅ Terms of Service now 17 sections with strengthened liability protections
+- ✅ Added "No Professional Advice" disclaimer (Section 7)
+- ✅ Enhanced AI Roadmap Disclaimer (covers job decisions, resignations)
+- ✅ Expanded Limitation of Liability (career outcomes, educational expenses)
+- ✅ Strengthened Indemnification with survival clause
+- ✅ Added Entire Agreement clause (Section 16)
+- ✅ Privacy Policy enhanced security disclaimer
 
 ### Completed Work (Session 38)
 - ✅ **Phase 1**: Resume upload component + parser service
