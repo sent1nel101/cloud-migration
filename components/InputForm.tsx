@@ -210,6 +210,18 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
         {loading ? "Generating Your Roadmap..." : "Generate My Career Roadmap"}
       </button>
 
+      <div style={{ 
+        background: "rgba(59, 130, 246, 0.1)", 
+        border: "1px solid rgba(59, 130, 246, 0.3)",
+        borderRadius: "6px",
+        padding: "1rem",
+        marginTop: "1.5rem"
+      }}>
+        <p className="text-sm" style={{ color: "var(--text-secondary)", margin: 0 }}>
+          <strong>Note:</strong> You can generate your roadmap below without creating an account. However, roadmaps are only saved and available in your personal dashboard when you create a free account. This allows you to access and update your roadmaps anytime.
+        </p>
+      </div>
+
       <p className="text-center text-sm" style={{ color: "var(--text-tertiary)" }}>
         Your data is used only to generate your roadmap and is not stored.
       </p>

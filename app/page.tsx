@@ -228,21 +228,18 @@ function HomeContent() {
               </div>
               <div className="info-grid" style={{ marginBottom: "2rem" }}>
                 <div className="info-card" style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
-                  <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>💾</div>
                   <h3>Save Multiple Roadmaps</h3>
                   <p>
                     Generate and save unlimited career roadmaps. Compare different career paths and come back to them anytime.
                   </p>
                 </div>
                 <div className="info-card" style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
-                  <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>📊</div>
                   <h3>Track Your Progress</h3>
                   <p>
                     Monitor your career transition with a personal dashboard. Check off completed milestones and stay motivated.
                   </p>
                 </div>
                 <div className="info-card" style={{ background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
-                  <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>🚀</div>
                   <h3>Upgrade When Ready</h3>
                   <p>
                     Start free and upgrade to Professional or Premium later for AI-powered resume rewrites and advanced recommendations.
