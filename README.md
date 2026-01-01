@@ -1,292 +1,119 @@
 # Cloud Designs: AI Career Planner
 
-An intelligent career roadmap generator that uses AI to help professionals transition into AI-resilient roles. Built with Next.js 16, React 19, TypeScript, and Claude Haiku API.
+Transform your career path with AI-powered insights. Cloud Designs helps professionals navigate career transitions in the age of AI by generating personalized, actionable roadmaps.
 
-**Live Demo:** [Coming Soon - Deploy to Vercel](#deployment)
+**Live Demo:** [Coming Soon](#)
 
-## 🎯 Overview
+## What Cloud Designs Does
 
-Cloud Designs helps professionals navigate career transitions in the age of AI. Users input their current role, experience level, and career goals—our AI analyzes their profile and generates a personalized, actionable roadmap with:
+Input your current role, experience, and goals—our AI analyzes your profile and generates a personalized career roadmap including:
 
-- 4-phase career progression plan (18-48 months)
-- Skills gap analysis with learning resources
-- Recommended roles with salary expectations
-- Curated courses, certifications, and communities
-- Printable PDF roadmaps
+- **4-Phase Career Plan** (18-48 months): A structured progression to your target role
+- **Skills Gap Analysis**: Identify exactly what you need to learn
+- **Role Recommendations**: Explore alternative careers with salary data
+- **Learning Resources**: Curated courses, certifications, and communities
+- **Printable Roadmap**: Download and share your plan
+- **Multiple Tiers**: From free basic roadmaps to premium AI-optimized resumes
 
-## 🏗️ Technology Stack
+## Getting Started
 
-### Frontend
-- **Framework**: Next.js 16.1.1 (React 19, TypeScript 5)
-- **Styling**: Traditional CSS (2000+ lines) with CSS variables for theming
-- **Features**: 
-  - Light/dark mode with localStorage persistence
-  - Responsive design (mobile-first)
-  - Server-side rendering with Next.js App Router
-  - No CSS framework dependencies
+### Free Tier
+No credit card required. Generate your complete 4-phase career roadmap instantly.
 
-### Backend
-- **Runtime**: Node.js (Next.js API Routes)
-- **AI Model**: Claude Haiku 3.5 (Anthropic)
-- **Cost**: ~$0.01-0.02 per roadmap generation
-- **Architecture**: RESTful API with request validation
+1. Visit [Cloud Designs](https://clouddesigns.app) (coming soon)
+2. Enter your current role and career goals
+3. Get your personalized roadmap in seconds
+4. Download as PDF or explore upgrade options
 
-### Infrastructure
-- **Deployment**: Vercel (production-ready)
-- **Environment**: Node 18+ required
-- **Database**: PostgreSQL + Prisma (optional - Phase 2)
+### Professional Tier ($39)
+Perfect for serious career changers. Includes everything in Free plus:
+- Curated course links by phase
+- Portfolio project ideas
+- Skills ranked by market demand
+- Resume tailoring suggestions
 
-### Development
-- **Language**: TypeScript (strict mode)
-- **Linting**: ESLint with Next.js config
-- **Testing**: Jest-compatible test structure
-- **Version Control**: Git/GitHub
+### Premium Tier ($59)
+Complete career transformation. Includes everything in Professional plus:
+- AI-powered resume rewrite
+- Multiple resume versions for different roles
+- LinkedIn profile optimization
+- Certification roadmap by ROI
+- One free revision within 3 months
 
-## 📦 Features
+## Features
 
-### Core Features
+### Available Now
 - ✅ AI-powered career roadmap generation
 - ✅ 4-phase career transition planning
 - ✅ Skill gap identification
 - ✅ Recommended roles with salary data
-- ✅ Learning resources (courses, certifications, communities)
-- ✅ Printable roadmaps
-- ✅ Dark mode (default) + light mode toggle
-- ✅ Responsive design for all devices
+- ✅ Learning resources library
+- ✅ Printable PDF roadmaps
+- ✅ Dark/light mode toggle
+- ✅ Fully responsive (mobile, tablet, desktop)
 
-### Content Pages
-- **Home (/)** - Hero section + input form + info cards
-- **Features & Pricing (/features-pricing)** - 3 pricing tiers + comparison table
-- **About (/about)** - Mission, vision, values, team info
-- **Blog (/blog)** - Featured article + post grid
-- **FAQ (/faq)** - 15+ questions across 6 categories
-- **Contact (/contact)** - Contact form + support info
-- **Privacy Policy (/privacy)** - GDPR/CCPA compliant (2800+ words)
-- **Terms of Service (/terms)** - Industry-standard legal (2700+ words)
+### Coming Soon
+- Resume file upload and analysis
+- Email notifications for milestone reminders
+- Premium resume optimization with AI
+- Community features and peer connections
 
-## 🚀 Quick Start
+## Pages & Content
 
-### Prerequisites
-- Node.js 18+ and npm/yarn
-- Anthropic API key (free tier available at [console.anthropic.com](https://console.anthropic.com))
+- **Home** - Overview and quick start form
+- **Features & Pricing** - Detailed tier comparison and pricing information
+- **About** - Mission, vision, and values
+- **Blog** - Career transition tips and industry insights
+- **FAQ** - Common questions and detailed answers
+- **Contact** - Get in touch with our support team
+- **Privacy Policy** - How we handle your data (GDPR/CCPA compliant)
+- **Terms of Service** - Service terms and conditions
 
-### Installation
+## Refund Policy
 
-```bash
-# Clone the repository
-git clone https://github.com/sent1nel101/cloud-migration.git
-cd cloud-migration
+We offer a **30-day refund window** with the following structure:
 
-# Install dependencies
-npm install
+| Scenario | Refund | Reason |
+|----------|--------|--------|
+| Before Processing | 100% | No work has been done yet |
+| Technical Error | 100% | Our system failed to deliver |
+| Content Delivered | 0-15% | We keep the bulk to cover usage and processing fees |
 
-# Create .env.local with your API key
-echo "ANTHROPIC_API_KEY=your_key_here" > .env.local
+To request a refund, email **support@clouddesigns.com** with your order details and reason. Our team will review your request and arrange the refund accordingly.
 
-# Start development server
-npm run dev
-```
+## Payment & Billing
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+- Secure payment processing with Stripe
+- All major credit cards accepted (Visa, Mastercard, American Express)
+- One-time payments (no subscriptions or auto-renewal)
+- Paid tiers grant permanent access to features
 
-### Environment Setup
+## Privacy & Security
 
-Create a `.env.local` file in the root directory:
+Your data is important to us. We comply with:
+- **GDPR** - Your EU privacy rights
+- **CCPA** - Your California privacy rights
+- Industry-standard security practices
+- Zero sale of personal data
 
-```env
-# Required: Anthropic API key
-ANTHROPIC_API_KEY=[your-key]
+For complete details, see our [Privacy Policy](/privacy).
 
-# Optional: For production
-NEXT_PUBLIC_APP_URL=https://yoursite.com
-NEXT_PUBLIC_STRIPE_PUBLIC_KEY=[stripe-public-key]
-DATABASE_URL=postgresql://[connection-string]
-NEXTAUTH_SECRET=[generated-secret]
-```
+## Support
 
-## 🛠️ Available Commands
+Have questions? We're here to help:
+- **Email**: support@clouddesigns.com
+- **FAQ**: [Visit our FAQ page](/faq)
+- **Contact Form**: [Get in touch](/contact)
 
-```bash
-npm run dev       # Start development server (hot reload)
-npm run build     # Build for production
-npm start         # Start production server
-npm run lint      # Run ESLint checks
-npm test          # Run tests (requires Jest setup)
-```
+## Technology
 
-## 📁 Project Structure
-
-```
-cloud-migration/
-├── app/                      # Next.js App Router
-│   ├── page.tsx             # Home page (/)
-│   ├── layout.tsx           # Root layout
-│   ├── api/
-│   │   ├── roadmap/route.ts         # AI roadmap generation
-│   │   ├── roadmaps/route.ts        # Get user roadmaps
-│   │   ├── auth/signup/route.ts     # User registration
-│   │   ├── auth/[...nextauth]/      # NextAuth handlers
-│   │   └── webhooks/stripe/route.ts # Stripe webhooks
-│   ├── auth/
-│   │   ├── signin/page.tsx
-│   │   └── signup/page.tsx
-│   ├── dashboard/page.tsx   # User dashboard
-│   └── [routes]/            # Other pages
-├── components/              # Reusable React components
-│   ├── Header.tsx
-│   ├── InputForm.tsx
-│   ├── RoadmapDisplay.tsx
-│   ├── PricingSection.tsx
-│   └── Footer.tsx
-├── lib/                     # Business logic
-│   ├── auth.ts
-│   ├── prisma.ts
-│   ├── user-service.ts
-│   ├── roadmap-service.ts
-│   └── payment-service.ts
-├── types/                   # TypeScript types
-├── prisma/                  # Database schema
-├── __tests__/               # Unit tests
-├── package.json
-└── tsconfig.json
-```
-
-## 🔄 API Specification
-
-### POST /api/roadmap
-
-Generates a personalized career roadmap using AI.
-
-**Request:**
-```json
-{
-  "currentRole": "Software Engineer",
-  "yearsExperience": 5,
-  "skills": ["Python", "JavaScript", "React"],
-  "goals": "Transition to AI/ML roles",
-  "educationLevel": "Bachelor's"
-}
-```
-
-**Response (200 OK):**
-```json
-{
-  "title": "Career Migration Path: Software Engineer → AI Specialist",
-  "summary": "An 18-month transition plan leveraging your engineering background...",
-  "timeline": {
-    "total_months": 18,
-    "start_date": "2024-12-29",
-    "estimated_completion": "2026-06-29"
-  },
-  "milestones": [/* ... */],
-  "skill_gaps": ["Python for ML", "Statistics"],
-  "recommended_roles": [/* ... */],
-  "resource_categories": {/* ... */},
-  "next_steps": ["Enroll in 'AI for Everyone'"]
-}
-```
-
-## 🧪 Testing
-
-### Run Tests
-```bash
-npm test              # Run all tests
-npm run test:watch   # Watch mode for development
-npm run test:coverage # Generate coverage report
-```
-
-### Test Coverage (82 tests passing)
-- **rate-limiter.test.ts** - Rate limiting functionality (25 tests)
-  - Limit enforcement, remaining requests, reset functionality
-  - IP-based and user-based tracking
-  - Real-world scenario testing
-- **validation.test.ts** - Input validation (40+ tests)
-  - Email validation
-  - Password strength checking
-  - Career input validation
-  - XSS prevention patterns
-  - SQL injection prevention patterns
-- **api-logic.test.ts** - API business logic (20 tests)
-  - Roadmap structure validation
-  - Timeline calculations
-  - Error handling and JSON parsing
-  - Response status codes
-- **types.test.ts** - TypeScript interface validation
-
-## 🚢 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. **Push to GitHub (already done)**
-
-2. **Deploy on Vercel:**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "New Project" → Select `sent1nel101/cloud-migration` repo
-   - Add environment variables:
-     - `ANTHROPIC_API_KEY` = Your Anthropic API key
-     - `NEXT_PUBLIC_STRIPE_PUBLIC_KEY` = Your Stripe publishable key
-     - `DATABASE_URL` = Your PostgreSQL connection string (optional)
-     - `NEXTAUTH_SECRET` = Generated secret for NextAuth
-   - Click "Deploy"
-
-3. **Verify:**
-   - Test all pages load
-   - Test form submission
-   - Verify theme toggle works
-
-## 🔐 Security
-
-- ✅ API keys in environment variables (never exposed)
-- ✅ Server-side input validation with Zod
-- ✅ Rate limiting (5 req/hr unauthenticated, 20 req/hr authenticated)
-- ✅ Password hashing with bcryptjs
-- ✅ HTTPS enforced (Vercel default)
-- ✅ SQL injection prevention via Prisma ORM
-- ✅ GDPR-compliant privacy policy
-- ✅ Legal terms of service with rate limiting clause
-- ✅ 82 unit tests covering rate limiting and validation
-- ✅ Zero npm audit vulnerabilities
-
-**For detailed security documentation, see [SECURITY.md](./SECURITY.md)**
-
-## 📚 Documentation
-
-- **[QUICK_START.md](./QUICK_START.md)** - 5-minute setup guide
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System design and flow diagrams
-- **[SECURITY.md](./SECURITY.md)** - Security measures and compliance (NEW)
-- **[AI_INTEGRATION.md](./AI_INTEGRATION.md)** - Claude API setup details
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Production deployment guide
-- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Common issues and fixes
-
-## 🗺️ Roadmap
-
-### Phase 1: MVP (Complete ✅)
-- [x] AI roadmap generation
-- [x] 8 static pages
-- [x] Dark/light mode
-- [x] Responsive design
-
-### Phase 2: User Persistence (In Progress)
-- [x] User authentication (NextAuth.js)
-- [x] Database schema (PostgreSQL + Prisma)
-- [x] Save/manage roadmaps
-- [ ] Payment processing (Stripe)
-
-### Phase 3: Advanced Features (Future)
-- [ ] Resume file upload & parsing
-- [ ] Email notifications
-- [ ] Real course API integration
-- [ ] Community features
-
-## 👤 Author
-
-**Darec McDaniel**
-- Email: [darec@darecmcdaniel.info](mailto:darec@darecmcdaniel.info)
-
-## 📄 License
-
-MIT License
+Built with modern, production-ready technologies:
+- **Next.js 16** - Fast, optimized React framework
+- **TypeScript** - Type-safe code
+- **Claude Haiku AI** - Advanced AI insights
+- **PostgreSQL** - Secure data storage
+- **Vercel** - Global deployment
 
 ---
 
-**Built with ❤️ to help professionals navigate AI-driven career transitions.**
+**Cloud Designs: Navigate AI-driven career transitions with confidence.**
