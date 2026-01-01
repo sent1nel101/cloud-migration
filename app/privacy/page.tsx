@@ -160,7 +160,7 @@ export default function Privacy() {
 
         <p>
           To exercise any of these rights, contact us at{" "}
-          <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a>.
+          <a href="mailto:contact@darecmcdaniel.info">contact@darecmcdaniel.info</a>.
         </p>
       </section>
 
@@ -216,7 +216,7 @@ export default function Privacy() {
         <h2>8. Children's Privacy</h2>
 
         <p>
-          Our Services are not intended for children under 13 (or the applicable age of digital consent in your jurisdiction). We do not knowingly collect information from children under 13. If we learn we have collected such information, we will delete it promptly. If you believe a child has provided us information, please contact us at <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a>.
+          Our Services are not intended for children under 13 (or the applicable age of digital consent in your jurisdiction). We do not knowingly collect information from children under 13. If we learn we have collected such information, we will delete it promptly. If you believe a child has provided us information, please contact us at <a href="mailto:contact@darecmcdaniel.info">contact@darecmcdaniel.info</a>.
         </p>
       </section>
 
@@ -256,7 +256,7 @@ export default function Privacy() {
         <p>
           <strong>Darec McDaniel</strong>
           <br />
-          Email: <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a>
+          Email: <a href="mailto:contact@darecmcdaniel.info">contact@darecmcdaniel.info</a>
         </p>
 
         <p>

@@ -69,7 +69,7 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>What if I'm not satisfied?</h3>
-            <p>We offer a 30-day money-back guarantee. If you upgrade to Professional or Premium and aren't satisfied for any reason, we'll refund you 100% with no questions asked. Just email darec@darecmcdaniel.info.</p>
+            <p>We offer a 30-day money-back guarantee. If you upgrade to Professional or Premium and aren't satisfied for any reason, we'll refund you 100% with no questions asked. Just email contact@darecmcdaniel.info.</p>
           </div>
 
           <div className="faq-item">
@@ -145,7 +145,7 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>How do I get help?</h3>
-            <p>Email darec@darecmcdaniel.info with any questions or issues. I aim to respond within 2-3 business days.</p>
+            <p>Email contact@darecmcdaniel.info with any questions or issues. I aim to respond within 2-3 business days.</p>
           </div>
 
           <div className="faq-item">
@@ -198,7 +198,7 @@ export default function FAQ() {
         <h2>Still have questions?</h2>
         <p>
           Can't find the answer you're looking for? Email us at{' '}
-          <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a>.
+          <a href="mailto:contact@darecmcdaniel.info">contact@darecmcdaniel.info</a>.
         </p>
       </section>
       </div>

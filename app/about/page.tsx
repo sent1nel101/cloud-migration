@@ -209,8 +209,8 @@ export default function About() {
             <div className="contact-links">
               <p>
                 <strong>Email:</strong>{" "}
-                <a href="mailto:darec@darecmcdaniel.info">
-                  darec@darecmcdaniel.info
+                <a href="mailto:contact@darecmcdaniel.info">
+                  contact@darecmcdaniel.info
                 </a>
               </p>
             </div>

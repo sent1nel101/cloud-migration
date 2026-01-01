@@ -387,7 +387,7 @@ export default function Terms() {
 
         <h3>Informal Resolution</h3>
         <p>
-          Before legal action, contact us at <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a> to resolve the dispute informally.
+          Before legal action, contact us at <a href="mailto:contact@darecmcdaniel.info">contact@darecmcdaniel.info</a> to resolve the dispute informally.
         </p>
 
         <h3>Arbitration</h3>
@@ -439,7 +439,7 @@ export default function Terms() {
         <p>
           <strong>Darec McDaniel</strong>
           <br />
-          Email: <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a>
+          Email: <a href="mailto:contact@darecmcdaniel.info">contact@darecmcdaniel.info</a>
         </p>
       </section>
       </div>

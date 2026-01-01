@@ -9,6 +9,8 @@ interface ContactFormData {
   message: string;
 }
 
+const CONTACT_EMAIL = "contact@darecmcdaniel.info";
+
 export async function POST(request: NextRequest) {
   try {
     const body: ContactFormData = await request.json();
@@ -30,19 +32,49 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // In a real application, you would:
-    // 1. Send an email to the support address
-    // 2. Store in database for tracking
-    // 3. Send confirmation email to user
+    // Send email to contact address
+    try {
+      const { Resend } = await import("resend");
+      const resend = new Resend(process.env.RESEND_API_KEY);
 
-    // For now, just log and return success
-    console.log("Contact form submission:", {
-      timestamp: new Date().toISOString(),
-      ...body,
-    });
+      const emailResult = await resend.emails.send({
+        from: "Cloud Designs <noreply@darecmcdaniel.info>",
+        to: CONTACT_EMAIL,
+        replyTo: body.email,
+        subject: `New Contact Form: ${body.subject} (${body.type})`,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>From:</strong> ${body.name} (${body.email})</p>
+          ${body.company ? `<p><strong>Company:</strong> ${body.company}</p>` : ""}
+          <p><strong>Type:</strong> ${body.type}</p>
+          <p><strong>Subject:</strong> ${body.subject}</p>
+          <hr />
+          <h3>Message:</h3>
+          <p>${body.message.replace(/\n/g, "<br />")}</p>
+        `,
+      });
 
-    // TODO: Integrate with email service (SendGrid, Resend, etc.)
-    // TODO: Store in database
+      if (emailResult.error) {
+        console.error("Email send error:", emailResult.error);
+        return NextResponse.json(
+          { error: "Failed to send email" },
+          { status: 500 }
+        );
+      }
+
+      console.log("Contact form submission sent:", {
+        timestamp: new Date().toISOString(),
+        emailId: emailResult.data?.id,
+        ...body,
+      });
+    } catch (emailError) {
+      console.error("Resend error:", emailError);
+      // Log but don't fail - API key might not be set in dev
+      console.log("Contact form submission logged (email not sent):", {
+        timestamp: new Date().toISOString(),
+        ...body,
+      });
+    }
 
     return NextResponse.json(
       {

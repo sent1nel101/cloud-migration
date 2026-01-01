@@ -181,7 +181,7 @@ export default function Contact() {
             <h3>📧 Email</h3>
             <p>
               <strong>Contact:</strong>{" "}
-              <a href="mailto:darec@darecmcdaniel.info">darec@darecmcdaniel.info</a>
+              <a href="mailto:contact@darecmcdaniel.info">contact@darecmcdaniel.info</a>
             </p>
           </div>
 
@@ -213,7 +213,7 @@ export default function Contact() {
           <div className="qa-item">
             <h3>Do you have a phone number?</h3>
             <p>
-              Email is the best way to reach us at darec@darecmcdaniel.info.
+              Email is the best way to reach us at contact@darecmcdaniel.info.
             </p>
           </div>
           <div className="qa-item">
@@ -223,7 +223,7 @@ export default function Contact() {
           <div className="qa-item">
             <h3>Do you offer live chat support?</h3>
             <p>
-              For efficiency and faster responses, we handle all inquiries via email. Email us anytime at darec@darecmcdaniel.info.
+              For efficiency and faster responses, we handle all inquiries via email. Email us anytime at contact@darecmcdaniel.info.
             </p>
           </div>
         </div>
