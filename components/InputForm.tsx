@@ -1,29 +1,33 @@
 /**
  * InputForm Component
- * 
+ *
  * Collects user career information for AI roadmap generation.
  * Includes validation and skill management with tag-based interface.
- * 
+ *
  * Props:
  * - onSubmit: Callback fired when form is valid and submitted
  * - loading: Boolean to disable form during API call
  */
 
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import type { CareerInput } from "@/types/index";
+import { useState, useEffect } from "react"
+import type { CareerInput } from "@/types/index"
 
 interface InputFormProps {
   /** Callback function to handle form submission with validated data */
-  onSubmit: (data: CareerInput) => void;
+  onSubmit: (data: CareerInput) => void
   /** Whether the form is disabled (during API call) */
-  loading: boolean;
+  loading: boolean
   /** Optional initial values to prefill the form */
-  initialValues?: Partial<CareerInput>;
+  initialValues?: Partial<CareerInput>
 }
 
-export default function InputForm({ onSubmit, loading, initialValues }: InputFormProps) {
+export default function InputForm({
+  onSubmit,
+  loading,
+  initialValues,
+}: InputFormProps) {
   // Main form state - mirrors CareerInput interface
   const [formData, setFormData] = useState<CareerInput>({
     currentRole: initialValues?.currentRole || "",
@@ -31,7 +35,7 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
     goals: initialValues?.goals || "",
     skills: initialValues?.skills || [],
     educationLevel: initialValues?.educationLevel || "Bachelor's",
-  });
+  })
 
   // Update form when initialValues change (for prefilling from URL params)
   useEffect(() => {
@@ -42,12 +46,12 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
         goals: initialValues.goals || "",
         skills: initialValues.skills || [],
         educationLevel: initialValues.educationLevel || "Bachelor's",
-      });
+      })
     }
-  }, [initialValues]);
+  }, [initialValues])
 
   // Temporary input for adding skills (separate from formData array)
-  const [skillInput, setSkillInput] = useState("");
+  const [skillInput, setSkillInput] = useState("")
 
   /**
    * Handles input change for all form fields.
@@ -58,13 +62,12 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        name === "yearsExperience" ? parseInt(value) || 0 : value,
-    }));
-  };
+      [name]: name === "yearsExperience" ? parseInt(value) || 0 : value,
+    }))
+  }
 
   /**
    * Adds a skill to the skills array from the skill input field.
@@ -75,10 +78,10 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
       setFormData((prev) => ({
         ...prev,
         skills: [...(prev.skills || []), skillInput.trim()],
-      }));
-      setSkillInput(""); // Clear input after adding
+      }))
+      setSkillInput("") // Clear input after adding
     }
-  };
+  }
 
   /**
    * Removes a skill from the array by index.
@@ -87,21 +90,21 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
     setFormData((prev) => ({
       ...prev,
       skills: prev.skills?.filter((_, i) => i !== index),
-    }));
-  };
+    }))
+  }
 
   /**
    * Validates form and calls onSubmit callback.
    * Requires: currentRole and yearsExperience > 0.
    */
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!formData.currentRole || formData.yearsExperience === 0) {
-      alert("Please fill in all required fields");
-      return;
+      alert("Please fill in all required fields")
+      return
     }
-    onSubmit(formData);
-  };
+    onSubmit(formData)
+  }
 
   return (
     <form onSubmit={handleSubmit} className="form space-y-6">
@@ -162,12 +165,19 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
             type="text"
             value={skillInput}
             onChange={(e) => setSkillInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addSkill())}
+            onKeyPress={(e) =>
+              e.key === "Enter" && (e.preventDefault(), addSkill())
+            }
             placeholder="e.g., Project Management, Python"
             className="form-input"
             style={{ flex: 1 }}
           />
-          <button type="button" onClick={addSkill} className="btn btn-small btn-primary" style={{ width: "auto" }}>
+          <button
+            type="button"
+            onClick={addSkill}
+            className="btn btn-small btn-primary"
+            style={{ width: "auto" }}
+          >
             Add
           </button>
         </div>
@@ -202,29 +212,36 @@ export default function InputForm({ onSubmit, loading, initialValues }: InputFor
       </div>
 
       {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={loading}
-        className="btn btn-primary"
-      >
+      <button type="submit" disabled={loading} className="btn btn-primary">
         {loading ? "Generating Your Roadmap..." : "Generate My Career Roadmap"}
       </button>
 
-      <div style={{ 
-        background: "rgba(59, 130, 246, 0.1)", 
-        border: "1px solid rgba(59, 130, 246, 0.3)",
-        borderRadius: "6px",
-        padding: "1rem",
-        marginTop: "1.5rem"
-      }}>
-        <p className="text-sm" style={{ color: "var(--text-secondary)", margin: 0 }}>
-          <strong>Note:</strong> You can generate your roadmap below without creating an account. However, roadmaps are only saved and available in your personal dashboard when you create a free account. This allows you to access and update your roadmaps anytime.
+      <div
+        style={{
+          background: "rgba(59, 130, 246, 0.1)",
+          border: "1px solid rgba(59, 130, 246, 0.3)",
+          borderRadius: "6px",
+          padding: "1rem",
+          marginTop: "1.5rem",
+        }}
+      >
+        <p
+          className="text-sm"
+          style={{ color: "var(--text-secondary)", margin: 0 }}
+        >
+          <strong>Note:</strong> You can generate your roadmap without creating
+          an account. However, roadmaps are only saved and available in your
+          personal dashboard when you create a free account. This allows you to
+          access and update your roadmaps anytime.
         </p>
       </div>
 
-      <p className="text-center text-sm" style={{ color: "var(--text-tertiary)" }}>
+      <p
+        className="text-center text-sm"
+        style={{ color: "var(--text-tertiary)" }}
+      >
         Your data is used only to generate your roadmap and is not stored.
       </p>
     </form>
-  );
+  )
 }
