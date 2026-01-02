@@ -64,7 +64,7 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>What does the Premium tier include?</h3>
-            <p>Premium ($129 one-time) includes everything in Professional, plus AI-powered resume rewrite, multiple resume versions, LinkedIn profile optimization, and certification roadmap ranked by ROI.</p>
+            <p>Premium ($59 one-time) includes everything in Professional, plus AI-powered resume rewrite, multiple resume versions, LinkedIn profile optimization, and certification roadmap ranked by ROI.</p>
           </div>
 
           <div className="faq-item">
@@ -74,7 +74,7 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>Are these one-time payments or recurring?</h3>
-            <p>One-time payments. Professional ($39) and Premium ($129) are charged once and give you permanent access to those features. No recurring charges or subscriptions.</p>
+            <p>One-time payments. Professional ($39) and Premium ($59) are charged once and give you permanent access to those features. No recurring charges or subscriptions.</p>
           </div>
         </div>
 
@@ -189,7 +189,7 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>Is Cloud Designs free to use?</h3>
-            <p>Yes. The Free tier is completely free forever. Professional ($39) and Premium ($129) are optional for advanced features. No credit card needed for Free tier.</p>
+            <p>Yes. The Free tier is completely free forever. Professional ($39) and Premium ($59) are optional for advanced features. No credit card needed for Free tier.</p>
           </div>
         </div>
       </section>
