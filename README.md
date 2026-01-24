@@ -2,7 +2,7 @@
 
 Transform your career path with AI-powered insights. Cloud Designs helps professionals navigate career transitions in the age of AI by generating personalized, actionable roadmaps.
 
-**Live Demo:** [Coming Soon](#)
+**Live Demo:** https://futuremap.darecmcdaniel.info)
 
 ## What Cloud Designs Does
 
