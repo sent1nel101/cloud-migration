@@ -1,10 +1,10 @@
-# Cloud Designs: AI Career Planner
+# FutureMap: AI Career Planner
 
 Transform your career path with AI-powered insights. Cloud Designs helps professionals navigate career transitions in the age of AI by generating personalized, actionable roadmaps.
 
 **Live Demo:** https://futuremap.darecmcdaniel.info)
 
-## What Cloud Designs Does
+## What FutureMap Does
 
 Input your current role, experience, and goals—our AI analyzes your profile and generates a personalized career roadmap including:
 
@@ -20,7 +20,7 @@ Input your current role, experience, and goals—our AI analyzes your profile an
 ### Free Tier
 No credit card required. Generate your complete 4-phase career roadmap instantly.
 
-1. Visit [Cloud Designs](https://clouddesigns.app) (coming soon)
+1. Visit [FutureMap](https://futuremap.darecmcdaniel.info)
 2. Enter your current role and career goals
 3. Get your personalized roadmap in seconds
 4. Download as PDF or explore upgrade options
