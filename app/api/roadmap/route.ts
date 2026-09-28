@@ -74,7 +74,7 @@ Current Role: ${currentRole}
 Career Goals: ${goals}
 
 Respond with ONLY a specific job title (2-4 words max), nothing else.
-Examples: "Data Scientist", "Product Manager", "Machine Learning Engineer", "UX Designer"`,
+Examples: "Registered Nurse", "Electrician", "High School Teacher", "Financial Analyst", "Product Manager", "Social Worker"`,
         },
       ],
     })

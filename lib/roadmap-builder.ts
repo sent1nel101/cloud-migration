@@ -108,7 +108,7 @@ export const ROADMAP_CONTENT_TOOL: Anthropic.Tool = {
       },
       skill_gaps: {
         ...stringArray,
-        description: "5 specific skills/tools to learn, max 8 words each.",
+        description: "5 specific skills, tools, or credentials to gain, max 8 words each.",
       },
       recommended_roles: {
         type: "array",
@@ -135,24 +135,24 @@ export const ROADMAP_CONTENT_TOOL: Anthropic.Tool = {
         properties: {
           essential: {
             ...stringArray,
-            description: "4 real course names with provider.",
+            description: "4 real courses or training programs (online, college, apprenticeship, or employer-based) with provider.",
           },
           advanced: {
             ...stringArray,
-            description: "2 real advanced course names with provider.",
+            description: "2 real advanced courses or programs with provider.",
           },
         },
         required: ["essential", "advanced"],
       },
       certifications: {
         type: "array",
-        description: "3 real, relevant certifications.",
+        description: "3 real certifications, licenses, or credentials used in this field (e.g. professional designations, state licenses, trade certificates).",
         items: {
           type: "object",
           properties: {
             cert: { type: "string" },
             roi: { type: "number", description: "ROI score 0-100." },
-            cost: { type: "number", description: "Exam cost in USD." },
+            cost: { type: "number", description: "Typical cost in USD." },
             salary_impact: {
               type: "string",
               description: 'e.g. "+$10K".',
@@ -164,7 +164,7 @@ export const ROADMAP_CONTENT_TOOL: Anthropic.Tool = {
       },
       communities: {
         ...stringArray,
-        description: "4 real communities, forums, or groups by name.",
+        description: "4 real professional associations, communities, or groups by name.",
       },
     },
     required: SECTIONS,
@@ -180,6 +180,7 @@ export function buildContentPrompt(
   targetRole: string,
 ): string {
   return `Career transition: "${currentRole}" -> "${targetRole}".
+This can be any industry (healthcare, trades, education, business, creative, public service, tech, etc.); do not assume a tech career.
 Call submit_roadmap_content with content specific to this transition. Be concise and concrete; respect the word limits.`
 }
 
@@ -263,11 +264,11 @@ function templateAIContent(ctx: BuildContext): RoadmapAIContent {
         ],
       },
       {
-        description: `Develop technical and soft skills needed for ${targetRole} that aren't yet in your toolkit`,
+        description: `Develop the skills and knowledge needed for ${targetRole} that aren't yet in your toolkit`,
         tasks: [
           `Take 2-3 courses specifically recommended for ${currentRole} → ${targetRole} transitions`,
           `Apply your ${primarySkill} skills to ${targetRole}-related projects`,
-          `Build your first ${targetRole}-relevant portfolio project that demonstrates your ${currentRole} advantage`,
+          `Gain first hands-on ${targetRole} experience (project, volunteering, or shadowing) that shows your ${currentRole} advantage`,
           `Connect with mentors in ${targetRole} who have similar ${currentRole} backgrounds`,
           `Document and share your learning journey in your industry`,
         ],
@@ -275,10 +276,10 @@ function templateAIContent(ctx: BuildContext): RoadmapAIContent {
       {
         description: `Build specialized expertise that combines ${targetRole} knowledge with your unique ${currentRole} perspective`,
         tasks: [
-          `Complete advanced certifications in ${targetRole}`,
-          `Build 2-3 portfolio projects showcasing how your ${currentRole} expertise enhances ${targetRole} outcomes`,
-          `Write articles/posts about your unique perspective on ${targetRole} from a ${currentRole} angle`,
-          `Contribute to open-source projects in ${targetRole}`,
+          `Complete the certifications or licenses expected for ${targetRole}`,
+          `Build 2-3 examples of work showing how your ${currentRole} expertise enhances ${targetRole} outcomes`,
+          `Share your perspective on ${targetRole} from a ${currentRole} angle with peers and mentors`,
+          `Take on volunteer, part-time, or side work in ${targetRole}`,
           `Network intensively with ${targetRole} professionals, highlighting your unique background`,
         ],
       },
@@ -287,17 +288,17 @@ function templateAIContent(ctx: BuildContext): RoadmapAIContent {
         tasks: [
           `Tailor your LinkedIn profile to highlight ${targetRole} while showcasing your ${currentRole} experience as an advantage`,
           `Reframe your resume to show progression toward ${targetRole} with your ${currentRole} skills as foundation`,
-          `Target companies that need ${currentRole} professionals transitioning to ${targetRole}`,
+          `Target employers that value ${currentRole} professionals transitioning to ${targetRole}`,
           `Practice interviews emphasizing how ${currentRole} experience prepared you for ${targetRole}`,
           `Negotiate roles that value your dual expertise in ${currentRole} and ${targetRole}`,
         ],
       },
     ],
     skill_gaps: [
-      `Advanced proficiency in ${targetRole}-specific tools and platforms`,
+      `Proficiency with ${targetRole}-specific tools, methods, and practices`,
       `Deep industry knowledge specific to ${targetRole}`,
-      `Soft skills highly valued in ${targetRole} industry`,
-      `Certifications or credentials specific to ${targetRole}`,
+      `Interpersonal skills highly valued in ${targetRole} work`,
+      `Certifications, licenses, or credentials required for ${targetRole}`,
       `${years}+ years of practical experience in ${targetRole} (your ${currentRole} background helps offset this)`,
       `Understanding of how ${targetRole} applies to your current ${currentRole} domain`,
     ],
@@ -306,25 +307,25 @@ function templateAIContent(ctx: BuildContext): RoadmapAIContent {
         title: `${currentRole} + ${targetRole} Hybrid Role`,
         description: `Leverage your ${currentRole} expertise while integrating ${targetRole} skills - unique value proposition`,
         demand: "Very High",
-        salary_range: "$85K - $130K+",
+        salary_range: "Varies by region - check local salary data",
       },
       {
         title: `${targetRole} Specialist (Entry to Mid-Level)`,
         description: `Transition into dedicated ${targetRole} roles - companies value your ${currentRole} background`,
         demand: "High",
-        salary_range: "$90K - $140K",
+        salary_range: "Varies by region - check local salary data",
       },
       {
         title: `${currentRole} → ${targetRole} Bridge Role`,
         description: `Rare hybrid roles combining ${currentRole} expertise with ${targetRole} focus - highest salary potential`,
-        demand: "Very High (but rare)",
-        salary_range: "$110K - $160K+",
+        demand: "Varies",
+        salary_range: "Varies by region - check local salary data",
       },
       {
         title: `${targetRole} in Your ${currentRole} Industry`,
         description: `Apply ${targetRole} expertise to your current industry where ${currentRole} background is highly valuable`,
         demand: "High",
-        salary_range: "$95K - $145K",
+        salary_range: "Varies by region - check local salary data",
       },
     ],
     courses: {
@@ -333,34 +334,34 @@ function templateAIContent(ctx: BuildContext): RoadmapAIContent {
         `How to apply your ${primarySkill} to ${targetRole}`,
         `${targetRole}-specific training relevant to your ${currentRole} domain`,
         `Advanced ${targetRole} course leveraging your ${years} years of ${currentRole} experience`,
-        `Project-based ${targetRole} course combining ${currentRole} and ${targetRole}`,
+        `Hands-on ${targetRole} program combining ${currentRole} and ${targetRole}`,
       ],
       advanced: [
         `Advanced ${targetRole} certification for ${currentRole} professionals`,
-        `${targetRole} strategy and architecture course`,
+        `${targetRole} strategy and management course`,
         `Leadership in ${targetRole} for experienced professionals`,
       ],
     },
     certifications: [
       {
-        cert: `AWS Solutions Architect for ${targetRole}`,
+        cert: `Entry-level ${targetRole} certification or license`,
         roi: 95,
         cost: 300,
-        salary_impact: "+$15K",
+        salary_impact: "Varies",
         time_months: 6,
       },
       {
         cert: `Industry-standard ${targetRole} certification`,
         roi: 88,
         cost: 250,
-        salary_impact: "+$12K",
+        salary_impact: "Varies",
         time_months: 4,
       },
       {
         cert: `Advanced ${targetRole} Leadership certification`,
         roi: 92,
         cost: 400,
-        salary_impact: "+$18K",
+        salary_impact: "Varies",
         time_months: 8,
       },
     ],
@@ -424,7 +425,7 @@ function buildNextSteps(ctx: BuildContext): string[] {
     `Next 2 weeks: Connect with 3-5 people in ${targetRole} who have ${currentRole} backgrounds`,
     `Next month: Start your first ${targetRole} project using your ${skills}`,
     `Next month: Update LinkedIn to highlight your ${currentRole} → ${targetRole} journey`,
-    `Ongoing: Document your journey publicly (blog, social media, portfolio)`,
+    `Ongoing: Keep a record of your progress, new skills, and accomplishments`,
   ]
 }
 
@@ -446,11 +447,11 @@ function buildProfessionalContent(ctx: BuildContext) {
       `Include ${targetRole} side projects and certifications alongside ${currentRole} achievements`,
     ],
     portfolio_ideas: [
-      `Create a ${targetRole} project solving a real problem in your ${currentRole} domain`,
+      `Take on a ${targetRole} project or volunteer role that solves a real problem in your ${currentRole} domain`,
       `Build 2-3 case studies showing how ${targetRole} improves ${currentRole} workflows`,
       `Document your ${currentRole} → ${targetRole} transition journey`,
-      `Contribute to open-source ${targetRole} projects with your ${currentRole} perspective`,
-      `Create thought leadership at the intersection of ${currentRole} and ${targetRole}`,
+      `Keep work samples, logs, or references from ${targetRole} experience that show your ${currentRole} perspective`,
+      `Share what you learn at the intersection of ${currentRole} and ${targetRole}`,
     ],
   }
 }
@@ -460,10 +461,10 @@ function buildPremiumContent(ctx: BuildContext) {
   return {
     resumes: [
       {
-        type: "Tech-Focused",
+        type: "Skills-Focused",
         description:
-          "Emphasizes technical skills and projects for tech-heavy roles",
-        content: `• Transform your ${years}-year ${currentRole} background into tech-forward narrative\n• Lead with technical skills: ${skills}\n• Emphasize metrics-driven projects with quantified impact\n• Show how ${currentRole} background built foundations for ${targetRole}\n• Use examples: "Improved systems efficiency by X%", "Architected solutions for Y users"\n• Position as technically grounded ${targetRole} professional ready to contribute immediately`,
+          "Leads with hands-on skills, credentials, and measurable results",
+        content: `• Lead with the skills most relevant to ${targetRole}: ${skills}\n• Put certifications, licenses, and training near the top\n• Quantify results from ${years} years in ${currentRole} (time saved, people served, quality, revenue)\n• Show how ${currentRole} work built foundations for ${targetRole}\n• Use concrete examples: "Reduced errors by X%", "Trained Y new team members"\n• Position yourself as a ${targetRole} candidate ready to contribute immediately`,
       },
       {
         type: "General/Versatile",
@@ -471,15 +472,16 @@ function buildPremiumContent(ctx: BuildContext) {
         content: `• Position ${years} years in ${currentRole} as preparation for ${targetRole}\n• Show how ${skills} transfer across domains\n• Narrative: "My ${currentRole} background gives unique perspective on ${targetRole} challenges"\n• Include both technical achievements and soft skills\n• Demonstrate intentional growth and learning\n• Appeal to companies seeking ${targetRole} talent with your background`,
       },
       {
-        type: "Startup-Focused",
+        type: "Small Organization-Focused",
         description:
-          "Highlights adaptability and growth mindset for fast-moving companies",
-        content: `• Highlight adaptability as a ${currentRole} transitioning to ${targetRole}\n• Emphasize: side projects, learning velocity, wearing multiple hats\n• Use startup language: "Built from ground up", "Scaled processes", "Learned fast"\n• Show hunger to grow and energy to move fast\n• Demonstrate: continuous learning, rapid skill acquisition, flexibility\n• Appeal to startups valuing hustle and diverse experience`,
+          "Highlights adaptability for small businesses, nonprofits, and fast-moving teams",
+        content: `• Highlight adaptability as a ${currentRole} transitioning to ${targetRole}\n• Emphasize: learning quickly, wearing multiple hats, taking initiative\n• Use action language: "Set up", "Improved", "Took ownership of"\n• Show energy and willingness to grow with the organization\n• Demonstrate: continuous learning, new skills picked up, flexibility\n• Appeal to small employers that value versatile, experienced people`,
       },
       {
-        type: "Enterprise-Focused",
-        description: "Emphasizes leadership and structured process improvement",
-        content: `• Position ${years} years in ${currentRole} as leadership experience\n• Highlight: cross-functional collaboration, budget management, team leadership\n• Demonstrate: stakeholder communication, process improvement, change management\n• Use enterprise language: "Optimized workflows", "Managed initiatives", "Drove adoption"\n• Show how you led change in ${currentRole}\n• Appeal to enterprises seeking ${targetRole} leaders with management credibility`,
+        type: "Large Organization-Focused",
+        description:
+          "Emphasizes leadership and structured process improvement for large employers",
+        content: `• Position ${years} years in ${currentRole} as leadership experience\n• Highlight: cross-functional collaboration, budget management, team leadership\n• Demonstrate: stakeholder communication, process improvement, change management\n• Use professional language: "Optimized workflows", "Managed initiatives", "Drove adoption"\n• Show how you led change in ${currentRole}\n• Appeal to large employers seeking ${targetRole} leaders with management credibility`,
       },
     ],
     linkedin_optimization: [
@@ -487,12 +489,12 @@ function buildPremiumContent(ctx: BuildContext) {
       `• About: Explain why ${targetRole} is natural next step from ${currentRole}, your unique perspective`,
       `• Experience: Reframe ${currentRole} achievements through ${targetRole} lens`,
       `• Skills: Prioritize both ${currentRole} AND ${targetRole} to show integrated expertise`,
-      `• Featured: Showcase ${targetRole} projects alongside ${currentRole} achievements`,
+      `• Featured: Showcase ${targetRole} work, credentials, or volunteering alongside ${currentRole} achievements`,
     ],
     career_coaching_insights: [
       `• Timing: You're ready after ${years} years in ${currentRole} - you have credibility AND differentiation`,
-      `• Salary: Your ${currentRole} background adds $10-20K premium in ${targetRole} roles`,
-      `• Job search: Target companies in your current ${currentRole} industry embracing ${targetRole}`,
+      `• Salary: Use your ${currentRole} experience to negotiate above entry-level ${targetRole} pay`,
+      `• Job search: Target employers in your current ${currentRole} industry that hire for ${targetRole}`,
       `• Interviews: Lead with ${currentRole} achievements, pivot to ${targetRole} passion, emphasize fresh perspective`,
       `• Networking: Connect ${currentRole} peers with ${targetRole} professionals - become the bridge`,
     ],
@@ -535,7 +537,12 @@ export function buildRoadmap(
   const includeProfessional =
     userTier === "PROFESSIONAL" || userTier === "PREMIUM"
   const includePremium = userTier === "PREMIUM"
-  const resources = includeProfessional ? getResourcesForRole(targetRole) : null
+  const resources = includeProfessional
+    ? getResourcesForRole(
+        targetRole,
+        aiContent.certifications?.map((c) => c.cert),
+      )
+    : null
 
   return {
     title: `Career Migration Path: From ${currentRole} to ${targetRole}, emphasizing ${skills}`,

@@ -1,11 +1,10 @@
 /**
  * Resource Database
  * 
- * Maps career roles to real, curated learning resources:
- * - Courses (Coursera, Udemy, LinkedIn Learning, etc.)
- * - Certifications (industry-standard credentials)
- * - Communities (forums, Discord, Reddit, etc.)
- * 
+ * Maps career roles to learning resources:
+ * - Curated links for a small set of tech roles (ROLE_RESOURCES)
+ * - Search-based links for every other career (buildSearchResources)
+ *
  * Used by the roadmap API to populate resource links for users.
  */
 
@@ -332,27 +331,110 @@ export const ROLE_RESOURCES: Record<string, RoleResources> = {
   },
 }
 
-/**
- * Get resources for a specific role
- * Falls back to generic cloud resources if role not found
- */
-export function getResourcesForRole(roleName: string): RoleResources {
-  const normalized = roleName.toLowerCase()
+const q = (text: string) => encodeURIComponent(text.trim())
 
-  // Try exact match
+/**
+ * Builds search-based resources that work for any career.
+ * Links point at search pages, so they never go stale or 404.
+ *
+ * @param roleName - Target role (e.g., "Registered Nurse", "Electrician")
+ * @param certificationNames - Specific certifications (e.g., from Claude) to link
+ */
+export function buildSearchResources(
+  roleName: string,
+  certificationNames: string[] = [],
+): RoleResources {
+  const role = roleName.trim()
+
+  const certifications: ResourceLink[] = certificationNames.length
+    ? certificationNames.map((name) => ({
+        name,
+        url: `https://www.google.com/search?q=${q(`${name} certification requirements`)}`,
+      }))
+    : [
+        {
+          name: `Find ${role} certifications (CareerOneStop)`,
+          url: `https://www.careeronestop.org/Toolkit/Training/find-certifications.aspx?keyword=${q(role)}`,
+        },
+        {
+          name: `Find ${role} licenses (CareerOneStop)`,
+          url: `https://www.careeronestop.org/Toolkit/Training/find-licenses.aspx?keyword=${q(role)}`,
+        },
+      ]
+
+  return {
+    courses: [
+      {
+        name: `${role} courses`,
+        url: `https://www.coursera.org/search?query=${q(role)}`,
+        platform: "Coursera",
+      },
+      {
+        name: `${role} courses`,
+        url: `https://www.edx.org/search?q=${q(role)}`,
+        platform: "edX",
+      },
+      {
+        name: `${role} courses`,
+        url: `https://www.linkedin.com/learning/search?keywords=${q(role)}`,
+        platform: "LinkedIn Learning",
+      },
+      {
+        name: `${role} training programs near you`,
+        url: `https://www.careeronestop.org/Toolkit/Training/find-local-training.aspx?keyword=${q(role)}`,
+        platform: "CareerOneStop",
+      },
+    ],
+    certifications,
+    communities: [
+      {
+        name: `${role} discussions on Reddit`,
+        url: `https://www.reddit.com/search/?q=${q(role)}`,
+      },
+      {
+        name: `${role} groups on LinkedIn`,
+        url: `https://www.linkedin.com/search/results/groups/?keywords=${q(role)}`,
+      },
+      {
+        name: `${role} meetups`,
+        url: `https://www.meetup.com/find/?keywords=${q(role)}`,
+      },
+      {
+        name: `${role} professional associations`,
+        url: `https://www.google.com/search?q=${q(`${role} professional association`)}`,
+      },
+    ],
+  }
+}
+
+/**
+ * Get resources for a specific role.
+ * Uses the curated list when the role matches one of its entries; otherwise
+ * builds search-based resources so any career gets relevant links.
+ *
+ * @param roleName - Target role
+ * @param certificationNames - Certifications to link when no curated match
+ */
+export function getResourcesForRole(
+  roleName: string,
+  certificationNames: string[] = [],
+): RoleResources {
+  const normalized = roleName.toLowerCase().trim()
+
+  // Exact match
   if (ROLE_RESOURCES[normalized]) {
     return ROLE_RESOURCES[normalized]
   }
 
-  // Try partial match (e.g., "architect" in role name)
+  // Role contains a curated key (e.g., "senior cloud engineer").
+  // Only this direction: "architect" alone must not match "cloud architect".
   const partialMatch = Object.entries(ROLE_RESOURCES).find(([key]) =>
-    normalized.includes(key) || key.includes(normalized)
+    normalized.includes(key),
   )
 
   if (partialMatch) {
     return partialMatch[1]
   }
 
-  // Return generic cloud resources as fallback
-  return ROLE_RESOURCES["cloud architect"]
+  return buildSearchResources(roleName, certificationNames)
 }
