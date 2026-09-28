@@ -43,7 +43,7 @@ const client = new Anthropic({
 
 // Single place to change the model. claude-3-haiku-20240307 was retired on
 // 2026-04-19, so the default is the current Haiku.
-const MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-4-5"
+const MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-4-5-20251001"
 
 const FALLBACK_TARGET_ROLE = "Career Transition Specialist"
 
