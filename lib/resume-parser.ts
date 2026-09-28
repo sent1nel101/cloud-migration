@@ -758,52 +758,78 @@ function extractSkills(text: string): string[] | undefined {
  * Extract education level from resume text
  */
 function extractEducationLevel(text: string): string | undefined {
-  const educationMap: Record<string, string> = {
-    "high school": "High School",
-    "h.s.": "High School",
-    "hs": "High School",
-    "secondary": "High School",
-    "associate": "Associate's",
-    "a.s.": "Associate's",
-    "associate's": "Associate's",
-    "bachelor": "Bachelor's",
-    "b.s.": "Bachelor's",
-    "bs": "Bachelor's",
-    "b.a.": "Bachelor's",
-    "ba": "Bachelor's",
-    "bachelor's": "Bachelor's",
-    "undergraduate": "Bachelor's",
-    "master": "Master's",
-    "m.s.": "Master's",
-    "ms": "Master's",
-    "m.a.": "Master's",
-    "ma": "Master's",
-    "m.b.a.": "Master's",
-    "mba": "Master's",
-    "master's": "Master's",
-    "phd": "PhD",
-    "ph.d.": "PhD",
-    "ph.d": "PhD",
-    "doctorate": "PhD",
-    "d.phil": "PhD",
-    "dphil": "PhD",
-    "graduate degree": "Master's",
-    "postgraduate": "Master's",
-  }
+  // Highest level first. Patterns use word boundaries so abbreviations don't
+  // match inside words ("ms" in "systems") or phrases ("scrum master").
+  // Bare two-letter abbreviations (BA, MS, ...) are also US state codes and
+  // brand names ("Boston, MA", "MS Office"), so they only count when followed
+  // by "in"/"of" ("BS in Nursing"); dotted forms (B.S.) always count.
+  const levels: { level: string; patterns: RegExp[] }[] = [
+    {
+      level: "PhD",
+      patterns: [
+        /\bph\.?\s?d\b/i,
+        /\bdoctorate\b/i,
+        /\bdoctor of\b/i,
+        /\bd\.?phil\b/i,
+        /\bed\.?d\b/i,
+      ],
+    },
+    {
+      level: "Master's",
+      patterns: [
+        /\bmaster'?s\b/i,
+        /\bmaster of\b/i,
+        /\bm\.?b\.?a\b/i,
+        /\bm\.[sa]\./i,
+        /\bM[SA]\s+(?:in|of)\b/,
+        /\bM\.?Ed\b/,
+        /\bM\.?S\.?N\b/,
+        /\bgraduate degree\b/i,
+        /\bpostgraduate\b/i,
+      ],
+    },
+    {
+      level: "Bachelor's",
+      patterns: [
+        /\bbachelor'?s\b/i,
+        /\bbachelor of\b/i,
+        /\bb\.[sa]\./i,
+        /\bB[SA]\s+(?:in|of)\b/,
+        /\bB\.?S\.?N\b/,
+        /\bundergraduate degree\b/i,
+      ],
+    },
+    {
+      level: "Associate's",
+      patterns: [
+        /\bassociate's\b(?!\s+(?:manager|director|editor|producer|attorney|consultant))/i,
+        /\bassociates? (?:degree|of (?:arts|science|applied))\b/i,
+        /\ba\.[sa]\./i,
+        /\bA[SA]\s+(?:in|of)\b/,
+        /\bA\.?A\.?S\b/,
+      ],
+    },
+    {
+      level: "High School",
+      patterns: [
+        /\bhigh school\b/i,
+        /\bsecondary school\b/i,
+        /\bG\.?E\.?D\b/,
+        /\bh\.s\. diploma\b/i,
+      ],
+    },
+  ]
 
-  // Search in EDUCATION section first (more reliable)
+  const findHighest = (searchText: string): string | undefined =>
+    levels.find(({ patterns }) => patterns.some((p) => p.test(searchText)))
+      ?.level
+
+  // Search the EDUCATION section first (more reliable), then the full text
   const educationSectionRegex =
     /(?:education|academic|schooling)[\s:]*\n?([\s\S]*?)(?=\n(?:experience|skills|certifications|projects|awards|references|work|employment|\n\n|$))/i
-  const educationSectionMatches = text.match(educationSectionRegex)
-  const searchText = educationSectionMatches ? educationSectionMatches[1] : text
+  const educationSection = text.match(educationSectionRegex)?.[1]
 
-  for (const [key, level] of Object.entries(educationMap)) {
-    if (searchText.toLowerCase().includes(key)) {
-      return level
-    }
-  }
-
-  return undefined
+  return (educationSection && findHighest(educationSection)) || findHighest(text)
 }
 
 /**

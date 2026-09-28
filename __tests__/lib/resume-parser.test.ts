@@ -40,3 +40,38 @@ describe("parseResume keyword skills", () => {
     }
   })
 })
+
+describe("parseResume education level", () => {
+  const cases: [string, string, string | undefined][] = [
+    // Regressions: substrings, states, and job titles must not match
+    [
+      "no degree mentioned",
+      "Sam Lee\nExperience\nMaintained systems in Boston, MA. Scrum master for 3 teams. Mastered MS Office. Worked with associates daily.",
+      undefined,
+    ],
+    [
+      "state code in education section",
+      "Sam Lee\nEducation\nBoston Latin School, Boston, MA\nHigh School Diploma\n\nExperience\nCashier",
+      "High School",
+    ],
+    // Positive detection
+    ["dotted abbreviation", "Education\nB.S. Nursing, State University\n", "Bachelor's"],
+    ["bare abbreviation with 'in'", "Education\nBS in Accounting\n", "Bachelor's"],
+    ["full name", "Education\nMaster of Social Work\n", "Master's"],
+    ["MBA", "Education\nMBA, Finance\n", "Master's"],
+    ["associate degree", "Education\nAssociate of Applied Science, Welding\n", "Associate's"],
+    ["GED", "Education\nGED, 2015\n", "High School"],
+    ["doctorate", "Education\nPh.D. in Education\n", "PhD"],
+    // Highest level wins regardless of order
+    [
+      "multiple levels",
+      "Education\nHigh School Diploma, 2008\nBachelor of Arts, 2012\nMaster of Education, 2016\n",
+      "Master's",
+    ],
+  ]
+
+  it.each(cases)("%s", async (_name, text, expected) => {
+    const result = await parse(text)
+    expect(result.educationLevel).toBe(expected)
+  })
+})
