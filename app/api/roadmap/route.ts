@@ -66,7 +66,7 @@ async function extractTargetRoleFromGoals(
 ): Promise<string> {
   try {
     const response = await client.messages.create({
-      model: "claude-3-5-haiku-20241022",
+      model: "claude-3-haiku-20240307",
       max_tokens: 100,
       messages: [
         {
@@ -399,7 +399,7 @@ ${roadmapJSON}`
 
     // Call Claude Haiku API with career roadmap prompt
     const message = await client.messages.create({
-      model: "claude-3-5-haiku-20241022",
+      model: "claude-3-haiku-20240307",
       max_tokens: 2000,
       messages: [
         {
