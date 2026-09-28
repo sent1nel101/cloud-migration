@@ -14,7 +14,7 @@ export default function Privacy() {
           <strong>Last Updated:</strong> December 30, 2024
         </p>
         <p>
-          This Privacy Policy explains how Cloud Designs, operated by Darec McDaniel ("Company," "we," "us," or "our"), collects, uses, discloses, and otherwise processes your personal information through our website and related services (collectively, the "Services").
+          This Privacy Policy explains how FutureMap, operated by Darec McDaniel ("Company," "we," "us," or "our"), collects, uses, discloses, and otherwise processes your personal information through our website and related services (collectively, the "Services").
         </p>
       </div>
 
@@ -224,7 +224,7 @@ export default function Privacy() {
         <h2>9. International Data Transfers</h2>
 
         <p>
-          Cloud Designs is based in the United States. Your information may be transferred to, stored in, and processed in the United States or other countries where we operate. These countries may not have the same data protection laws as your home country.
+          FutureMap is based in the United States. Your information may be transferred to, stored in, and processed in the United States or other countries where we operate. These countries may not have the same data protection laws as your home country.
         </p>
 
         <p>

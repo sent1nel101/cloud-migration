@@ -65,7 +65,7 @@ export default function Blog() {
       <Header />
       <main className="main-content">
       <div className="page-container">
-      <h1>Cloud Designs Blog</h1>
+      <h1>FutureMap Blog</h1>
 
       <section className="blog-intro">
         <p>
@@ -152,8 +152,8 @@ export default function Blog() {
           </div>
           <div className="resource-card">
             <h3>Skill Development Paths</h3>
-            <p>Follow structured roadmaps for tech careers at Roadmap.sh, or explore industry-specific learning paths on LinkedIn Learning and YouTube for free.</p>
-            <a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer" className="resource-button">View Roadmaps</a>
+            <p>Explore training programs, apprenticeships, certifications, and licenses for any occupation on CareerOneStop, or find free industry-specific learning paths on LinkedIn Learning and YouTube.</p>
+            <a href="https://www.careeronestop.org" target="_blank" rel="noopener noreferrer" className="resource-button">Explore Careers</a>
           </div>
           <div className="resource-card">
             <h3>Networking & Community</h3>
@@ -162,8 +162,8 @@ export default function Blog() {
           </div>
           <div className="resource-card">
             <h3>Interview Preparation</h3>
-            <p>Prepare with LeetCode, HackerRank, InterviewBit for technical interviews, or practice behavioral interviews on YouTube and Pramp for free mock interviews.</p>
-            <a href="https://www.leetcode.com" target="_blank" rel="noopener noreferrer" className="resource-button">Practice Interviews</a>
+            <p>Practice common behavioral interview questions with free videos and mock interviews. Preparing for a technical role? Add LeetCode or HackerRank.</p>
+            <a href="https://www.youtube.com/results?search_query=behavioral+interview+practice" target="_blank" rel="noopener noreferrer" className="resource-button">Practice Interviews</a>
           </div>
         </div>
       </section>

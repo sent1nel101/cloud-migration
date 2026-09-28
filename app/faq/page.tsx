@@ -11,7 +11,7 @@ export default function FAQ() {
 
       <section className="faq-intro">
         <p>
-          Find answers to common questions about Cloud Designs and our AI-powered career planning platform.
+          Find answers to common questions about FutureMap and our AI-powered career planning platform.
         </p>
       </section>
 
@@ -26,7 +26,7 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>Do I need to create an account?</h3>
-            <p>You can generate one free roadmap without creating an account. To save multiple roadmaps and access Pro features, you'll need a free Cloud Designs account.</p>
+            <p>You can generate one free roadmap without creating an account. To save multiple roadmaps and access Pro features, you'll need a free FutureMap account.</p>
           </div>
 
           <div className="faq-item">
@@ -59,7 +59,7 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>What does the Professional tier include?</h3>
-            <p>Professional ($39 one-time) includes curated course links by phase, portfolio project ideas, skills prioritized by market demand, and resume tailoring suggestions.</p>
+            <p>Professional ($39 one-time) includes course and training links for your target career, experience and portfolio ideas, skills prioritized by market demand, and resume tailoring suggestions.</p>
           </div>
 
           <div className="faq-item">
@@ -106,8 +106,8 @@ export default function FAQ() {
           </div>
 
           <div className="faq-item">
-            <h3>Does Cloud Designs recommend specific courses?</h3>
-            <p>Free tier includes general course suggestions. Professional and Premium tiers include curated course links to real courses on Coursera, Udemy, LinkedIn Learning, and other platforms, organized by phase.</p>
+            <h3>Does FutureMap recommend specific courses?</h3>
+            <p>Free tier includes general course suggestions. Professional and Premium tiers add links to courses, certifications or licenses, and professional communities for your target role on Coursera, edX, LinkedIn Learning, CareerOneStop, and more, for any career.</p>
           </div>
 
           <div className="faq-item">
@@ -135,7 +135,7 @@ export default function FAQ() {
           </div>
 
           <div className="faq-item">
-            <h3>Does Cloud Designs use my data to train AI models?</h3>
+            <h3>Does FutureMap use my data to train AI models?</h3>
             <p>No. Your data is private and never used for model training unless you explicitly opt in. See our Privacy Policy for details.</p>
           </div>
         </div>
@@ -160,17 +160,17 @@ export default function FAQ() {
 
           <div className="faq-item">
             <h3>Is there a roadmap for [specific role transition]?</h3>
-            <p>Cloud Designs handles any career transition - tech, finance, healthcare, marketing, sales, and more. Our AI adapts to any source and target role.</p>
+            <p>FutureMap handles any career transition - tech, finance, healthcare, marketing, sales, and more. Our AI adapts to any source and target role.</p>
           </div>
 
           <div className="faq-item">
-            <h3>Can I use Cloud Designs for career exploration?</h3>
+            <h3>Can I use FutureMap for career exploration?</h3>
             <p>Absolutely. Many users generate multiple roadmaps to explore different career paths before deciding on a target role.</p>
           </div>
 
           <div className="faq-item">
-            <h3>What browsers does Cloud Designs support?</h3>
-            <p>Cloud Designs works on all modern browsers: Chrome, Firefox, Safari, and Edge (latest versions). It's fully mobile-responsive.</p>
+            <h3>What browsers does FutureMap support?</h3>
+            <p>FutureMap works on all modern browsers: Chrome, Firefox, Safari, and Edge (latest versions). It's fully mobile-responsive.</p>
           </div>
         </div>
 
@@ -188,7 +188,7 @@ export default function FAQ() {
           </div>
 
           <div className="faq-item">
-            <h3>Is Cloud Designs free to use?</h3>
+            <h3>Is FutureMap free to use?</h3>
             <p>Yes. The Free tier is completely free forever. Professional ($39) and Premium ($59) are optional for advanced features. No credit card needed for Free tier.</p>
           </div>
         </div>

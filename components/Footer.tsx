@@ -4,8 +4,8 @@ export default function Footer() {
       <div className="footer-content">
         <div className="footer-grid">
           <div className="footer-section">
-            <h3>Cloud Designs</h3>
-            <p>Mapping future career paths with AI.</p>
+            <h3>FutureMap</h3>
+            <p>Personalized roadmaps for any career path.</p>
           </div>
           <div className="footer-section">
             <h4>Product</h4>
@@ -49,7 +49,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-divider">
-          <p>&copy; 2025 Cloud Designs. All rights reserved.</p>
+          <p>&copy; 2025 FutureMap. All rights reserved.</p>
         </div>
       </div>
     </footer>

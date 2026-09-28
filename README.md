@@ -1,6 +1,6 @@
-# FutureMap: AI Career Planner
+# FutureMap: Career Planner for Any Career Change
 
-Transform your career path with AI-powered insights. Cloud Designs helps professionals navigate career transitions in the age of AI by generating personalized, actionable roadmaps.
+FutureMap helps people change careers in any field (healthcare, skilled trades, education, business, creative work, public service, tech, and more) by generating personalized, actionable roadmaps with AI.
 
 **Live Demo:** https://futuremap.darecmcdaniel.info)
 
@@ -11,7 +11,7 @@ Input your current role, experience, and goals—our AI analyzes your profile an
 - **4-Phase Career Plan** (18-48 months): A structured progression to your target role
 - **Skills Gap Analysis**: Identify exactly what you need to learn
 - **Role Recommendations**: Explore alternative careers with salary data
-- **Learning Resources**: Curated courses, certifications, and communities
+- **Learning Resources**: Courses, certifications or licenses, and communities for your target career
 - **Printable Roadmap**: Download and share your plan
 - **Multiple Tiers**: From free basic roadmaps to premium AI-optimized resumes
 
@@ -116,4 +116,4 @@ Built with modern, production-ready technologies:
 
 ---
 
-**Cloud Designs: Navigate AI-driven career transitions with confidence.**
+**FutureMap: Map your next career move with confidence.**

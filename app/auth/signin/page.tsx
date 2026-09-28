@@ -46,7 +46,7 @@ export default function SignInPage() {
         <div className="auth-container">
           <div className="auth-card">
             <h1>Sign In</h1>
-            <p className="auth-subtitle">Welcome back to Cloud Designs</p>
+            <p className="auth-subtitle">Welcome back to FutureMap</p>
 
             {error && <div className="auth-error">{error}</div>}
 
@@ -114,8 +114,8 @@ export default function SignInPage() {
           </div>
 
           <div className="auth-info">
-            <h3>Cloud Designs</h3>
-            <p>Your AI-powered career migration roadmap</p>
+            <h3>FutureMap</h3>
+            <p>Your personalized roadmap for any career move</p>
             <ul>
               <li>✓ Personalized career roadmap</li>
               <li>✓ Skill gap analysis</li>

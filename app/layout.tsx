@@ -3,20 +3,21 @@ import { ClientLayout } from "./client-layout" // We will create this next
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "FutureMap | AI Career Migration & Resilience",
+  title: "FutureMap | Personalized Roadmaps for Any Career Change",
   description:
-    "Navigate the AI revolution. Map your path to AI-resilient roles and future-proof your career with FutureMap.",
+    "Map your next career move. Get a personalized, step-by-step roadmap for changing careers in any field, from healthcare and the trades to business, education, and tech.",
   keywords: [
-    "AI Career",
-    "Career Migration",
-    "AI Resilience",
+    "Career Change",
+    "Career Roadmap",
+    "Career Planning",
+    "Career Transition",
     "Future of Work",
   ],
   authors: [{ name: "Dare C. McDaniel" }],
   openGraph: {
-    title: "FutureMap | AI Career Migration",
+    title: "FutureMap | Career Roadmaps for Any Field",
     description:
-      "Navigate the AI revolution and map your path to resilient roles.",
+      "A personalized, step-by-step roadmap for your next career move, in any industry.",
     url: "https://futuremap.darecmcdaniel.info",
     siteName: "FutureMap",
     locale: "en_US",
@@ -24,8 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FutureMap | AI Career Migration",
-    description: "Migrate your career into AI-resilient roles.",
+    title: "FutureMap | Career Roadmaps for Any Field",
+    description: "Map your next career move, in any industry.",
   },
   icons: {
     icon: "/favicon.ico", // Ensure you have a favicon in your /public folder

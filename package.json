@@ -1,7 +1,7 @@
 {
   "name": "amp-migration",
   "version": "1.0.0",
-  "description": "Career AI Migration - Help professionals transition into AI-resilient careers",
+  "description": "FutureMap - Personalized career roadmaps for any career change",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,7 +14,7 @@
   "keywords": [
     "AI",
     "career",
-    "migration",
+    "career-change",
     "job"
   ],
   "author": "",

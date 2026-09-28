@@ -48,7 +48,7 @@ export default function FeaturesPricing() {
 
           <section className="intro-section">
             <p>
-              Cloud Designs provides comprehensive AI-powered career planning
+              FutureMap provides comprehensive AI-powered career planning
               at every stage. Choose the plan that's right for you.
             </p>
           </section>
@@ -80,7 +80,7 @@ export default function FeaturesPricing() {
                     <li>✓ Personalized timeline</li>
                     <li>✓ Printable PDF roadmap</li>
                     {/* Resume upload hidden for now */}
-                    <li>✗ Curated course recommendations</li>
+                    <li>✗ Course &amp; training links</li>
                     <li>✗ Resume optimization</li>
                   </ul>
                 </div>
@@ -112,7 +112,7 @@ export default function FeaturesPricing() {
                   <p className="feature-intro">Detailed roadmap + resources</p>
                   <ul>
                     <li>✓ Everything in Free</li>
-                    <li>✓ Curated course links by phase</li>
+                    <li>✓ Course &amp; training links for your target career</li>
                     <li>✓ Portfolio project ideas</li>
                     <li>✓ Skills gap prioritized by demand</li>
                     <li>✓ Resume tailoring suggestions</li>
@@ -229,16 +229,17 @@ export default function FeaturesPricing() {
                     <p>All free tier features included</p>
                   </div>
                   <div className="feature-item">
-                    <h4>Curated Course Links</h4>
+                    <h4>Course &amp; Training Links</h4>
                     <p>
-                      Direct links to courses organized by phase on Coursera,
-                      Udemy, LinkedIn Learning
+                      Links to courses, training programs, and certifications
+                      for your target career on Coursera, edX, LinkedIn
+                      Learning, CareerOneStop, and more
                     </p>
                   </div>
                   <div className="feature-item">
-                    <h4>Portfolio Project Ideas</h4>
+                    <h4>Experience &amp; Portfolio Ideas</h4>
                     <p>
-                      Detailed portfolio project ideas to build during your
+                      Ideas for projects, volunteering, and work samples to build during your
                       transition
                     </p>
                   </div>
@@ -341,13 +342,13 @@ export default function FeaturesPricing() {
                    </tr>
 
                    <tr>
-                     <td>Curated Course Links</td>
+                     <td>Course &amp; Training Links</td>
                     <td></td>
                     <td>✓</td>
                     <td>✓</td>
                   </tr>
                   <tr>
-                    <td>Portfolio Project Ideas</td>
+                    <td>Experience &amp; Portfolio Ideas</td>
                     <td></td>
                     <td>✓</td>
                     <td>✓</td>

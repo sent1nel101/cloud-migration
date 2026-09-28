@@ -1,7 +1,7 @@
 /**
  * Home Page (/)
  * 
- * Main landing page for Cloud Designs. Handles the career roadmap generation flow:
+ * Main landing page for FutureMap. Handles the career roadmap generation flow:
  * 1. Show hero + form for first-time visitors
  * 2. Show loading state while generating roadmap
  * 3. Display results + pricing after generation
@@ -146,10 +146,11 @@ function HomeContent() {
           {/* Hero Section */}
           <section className="hero">
             <div className="hero-content">
-              <h1>Migrate Your Career Into AI-Proof Roles</h1>
+              <h1>Map Your Next Career Move</h1>
               <p>
-                AI is transforming the job market. Get a personalized roadmap to
-                transition into roles that thrive in the age of AI.
+                Changing fields, moving up, or starting over? Get a personalized
+                roadmap for any career, from nursing and the trades to finance,
+                teaching, and tech.
               </p>
               <button
                 onClick={scrollToForm}
@@ -200,9 +201,9 @@ function HomeContent() {
                 </div>
                 <div className="info-card">
                   <div className="info-card-number">2</div>
-                  <h3>AI Analysis</h3>
+                  <h3>Personalized Analysis</h3>
                   <p>
-                    Our AI analyzes your profile and creates a personalized path.
+                    We analyze your profile and build a path tailored to your target career.
                   </p>
                 </div>
                 <div className="info-card">
@@ -222,7 +223,7 @@ function HomeContent() {
               <div style={{ textAlign: "center", marginBottom: "2rem" }}>
                 <h2>Save Your Progress & Unlock More Features</h2>
                 <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)" }}>
-                  Create a free account to get the most out of Cloud Designs
+                  Create a free account to get the most out of FutureMap
                 </p>
               </div>
               <div className="info-grid" style={{ marginBottom: "2rem" }}>

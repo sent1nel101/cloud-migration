@@ -1,7 +1,7 @@
 /**
  * InputForm Component
  *
- * Collects user career information for AI roadmap generation.
+ * Collects user career information for roadmap generation.
  * Includes validation and skill management with tag-based interface.
  *
  * Props:
@@ -168,7 +168,7 @@ export default function InputForm({
             onKeyPress={(e) =>
               e.key === "Enter" && (e.preventDefault(), addSkill())
             }
-            placeholder="e.g., Project Management, Python"
+            placeholder="e.g., Project Management, Customer Service"
             className="form-input"
             style={{ flex: 1 }}
           />
@@ -204,7 +204,7 @@ export default function InputForm({
           name="goals"
           value={formData.goals}
           onChange={handleChange}
-          placeholder="e.g., Transition into AI/ML roles, Stay in current industry but use AI tools, Explore data science..."
+          placeholder="e.g., Become a registered nurse, Move into project management, Start a career in the skilled trades..."
           rows={4}
           className="form-textarea"
           required

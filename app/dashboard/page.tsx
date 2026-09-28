@@ -207,7 +207,7 @@ export default function DashboardPage() {
             ) : roadmaps.length === 0 ? (
               <div className="dashboard-empty">
                 <h2>No roadmaps yet</h2>
-                <p>Create your first AI career roadmap to get started</p>
+                <p>Create your first career roadmap to get started</p>
                 <Link href="/roadmap-generator" className="empty-button">
                   Generate My First Roadmap
                 </Link>
