@@ -7,7 +7,7 @@ export default function Features() {
 
       <section className="features-intro">
         <p>
-          Cloud Designs provides comprehensive AI-powered career planning and migration tools. Our platform helps professionals transition to new roles with confidence.
+          FutureMap provides comprehensive AI-powered career planning and migration tools. Our platform helps professionals transition to new roles with confidence.
         </p>
       </section>
 
@@ -52,12 +52,12 @@ export default function Features() {
               <p>All free tier features included</p>
             </div>
             <div className="feature-item">
-              <h3>Real Course Links</h3>
-              <p>Direct links to actual courses on Coursera, Udemy, LinkedIn Learning</p>
+              <h3>Course &amp; Training Links</h3>
+              <p>Links to courses, training programs, and certifications for your target career on Coursera, edX, LinkedIn Learning, CareerOneStop, and more</p>
             </div>
             <div className="feature-item">
-              <h3>Portfolio Projects</h3>
-              <p>Detailed portfolio project ideas to build during your transition</p>
+              <h3>Experience &amp; Portfolio Ideas</h3>
+              <p>Ideas for projects, volunteering, and work samples to build during your transition</p>
             </div>
             <div className="feature-item">
               <h3>AI Career Coach</h3>
@@ -141,13 +141,13 @@ export default function Features() {
                 <td>✓</td>
               </tr>
               <tr>
-                <td>Real Course Links</td>
+                <td>Course &amp; Training Links</td>
                 <td></td>
                 <td>✓</td>
                 <td>✓</td>
               </tr>
               <tr>
-                <td>Portfolio Projects</td>
+                <td>Experience &amp; Portfolio Ideas</td>
                 <td></td>
                 <td>✓</td>
                 <td>✓</td>

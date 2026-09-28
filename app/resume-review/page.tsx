@@ -277,7 +277,7 @@ export default function ResumeReviewPage() {
               <textarea
                 value={formData.goals || ""}
                 onChange={(e) => handleInputChange("goals", e.target.value)}
-                placeholder="e.g., Transition to data science, focus on machine learning applications"
+                placeholder="e.g., Move into healthcare administration, become a licensed electrician"
                 rows={4}
                 style={{
                   width: "100%",
@@ -316,7 +316,7 @@ export default function ResumeReviewPage() {
                     .filter((s) => s.length > 0)
                   handleSkillsChange(skills)
                 }}
-                placeholder="e.g., Python, Machine Learning, SQL, Data Analysis"
+                placeholder="e.g., Scheduling, Budgeting, Customer Service, Microsoft Excel"
                 rows={3}
                 style={{
                   width: "100%",

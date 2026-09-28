@@ -218,7 +218,7 @@ export default function Contact() {
           </div>
           <div className="qa-item">
             <h3>Where are you located?</h3>
-            <p>Cloud Designs is run by Darec McDaniel.</p>
+            <p>FutureMap is run by Darec McDaniel.</p>
           </div>
           <div className="qa-item">
             <h3>Do you offer live chat support?</h3>

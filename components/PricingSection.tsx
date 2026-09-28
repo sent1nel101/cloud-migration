@@ -73,7 +73,7 @@ export default function PricingSection() {
                 </li>
                 <li className="pricing-feature">
                   <span className="pricing-check">✗</span>
-                  <span style={{ color: "var(--text-secondary)" }}>Curated course recommendations</span>
+                  <span style={{ color: "var(--text-secondary)" }}>Course &amp; training links</span>
                 </li>
                 <li className="pricing-feature">
                   <span className="pricing-check">✗</span>
@@ -103,7 +103,7 @@ export default function PricingSection() {
                 </li>
                 <li className="pricing-feature">
                   <span className="pricing-check">✓</span>
-                  <span>Curated course links by phase</span>
+                  <span>Course &amp; training links for your target career</span>
                 </li>
                 <li className="pricing-feature">
                   <span className="pricing-check">✓</span>

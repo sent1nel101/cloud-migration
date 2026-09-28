@@ -52,8 +52,8 @@ export default function Pricing() {
             <p className="feature-intro">For serious career changers</p>
             <ul>
               <li>✓ Everything in Free</li>
-              <li>✓ Real Course Links (Coursera, Udemy, etc.)</li>
-              <li>✓ Detailed Portfolio Project Ideas</li>
+              <li>✓ Course &amp; Training Links for Your Target Career</li>
+              <li>✓ Experience &amp; Portfolio Ideas</li>
               <li>✓ Resume Optimization Guide</li>
               <li>✓ LinkedIn Profile Template</li>
               <li>✓ AI Career Coach (Monthly)</li>

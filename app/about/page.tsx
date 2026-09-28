@@ -8,13 +8,13 @@ export default function About() {
       <Header />
       <main className="main-content">
         <div className="page-container">
-          <h1>About Cloud Designs</h1>
+          <h1>About FutureMap</h1>
 
           <section className="about-intro">
             <div className="about-hero">
               <h2>Empowering Career Transformations with AI</h2>
               <p>
-                Cloud Designs was founded with a simple mission: make career
+                FutureMap was founded with a simple mission: make career
                 transitions accessible, transparent, and achievable for
                 everyone. We believe that great careers aren't just
                 found—they're designed.
@@ -33,11 +33,11 @@ export default function About() {
             <p>
               Darec realized that AI could solve this problem. With the right
               prompts and trained models, AI could provide personalized,
-              data-driven career guidance at scale. Cloud Designs was born from
+              data-driven career guidance at scale. FutureMap was born from
               this insight.
             </p>
             <p>
-              Today, Cloud Designs has helped thousands of professionals
+              Today, FutureMap has helped thousands of professionals
               successfully transition to new roles in tech, finance,
               healthcare, marketing, and beyond. Our average user reports 40%
               faster career transitions with greater confidence and fewer dead
@@ -103,7 +103,7 @@ export default function About() {
                   deep expertise in machine learning, career coaching, and
                   product strategy. He combines technical excellence with
                   genuine passion for helping professionals transform their
-                  careers. Under his leadership, Cloud Designs has become the
+                  careers. Under his leadership, FutureMap has become the
                   industry standard for AI-driven career planning.
                 </p>
               </div>

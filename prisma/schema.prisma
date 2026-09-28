@@ -1,4 +1,4 @@
-// This is your Prisma schema file for Cloud Designs AI Career Planner
+// This is your Prisma schema file for FutureMap Career Planner
 // Phase 2: User Management & Payment System
 
 generator client {

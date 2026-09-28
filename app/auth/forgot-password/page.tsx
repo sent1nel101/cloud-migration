@@ -109,8 +109,8 @@ export default function ForgotPasswordPage() {
           </div>
 
           <div className="auth-info">
-            <h3>Cloud Designs</h3>
-            <p>Your AI-powered career migration roadmap</p>
+            <h3>FutureMap</h3>
+            <p>Your personalized roadmap for any career move</p>
             <ul>
               <li>✓ Personalized career roadmap</li>
               <li>✓ Skill gap analysis</li>

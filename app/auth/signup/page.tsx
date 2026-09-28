@@ -97,7 +97,7 @@ export default function SignUpPage() {
         <div className="auth-container">
           <div className="auth-card">
             <h1>Create Account</h1>
-            <p className="auth-subtitle">Join Cloud Designs for free</p>
+            <p className="auth-subtitle">Join FutureMap for free</p>
 
             {error && <div className="auth-error">{error}</div>}
 

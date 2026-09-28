@@ -3699,3 +3699,44 @@ textarea:focus {
     color: black;
   }
 }
+
+/* Inline blog articles (expand from a post card) */
+.blog-article {
+  margin-top: 1rem;
+}
+
+.blog-article > summary {
+  list-style: none;
+  display: inline-block;
+}
+
+.blog-article > summary::-webkit-details-marker {
+  display: none;
+}
+
+.blog-article[open] > summary {
+  margin-bottom: 1rem;
+}
+
+.blog-article-body {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.blog-article-body h4 {
+  color: var(--text-primary);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.blog-article-body ul {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.blog-article-body li {
+  margin-bottom: 0.5rem;
+}
+
+.blog-article-body a {
+  color: var(--primary-color);
+}

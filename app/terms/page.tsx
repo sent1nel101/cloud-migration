@@ -14,7 +14,7 @@ export default function Terms() {
           <strong>Last Updated:</strong> December 30, 2024
         </p>
         <p>
-          These Terms of Service ("Terms") govern your use of Cloud Designs' website and services (collectively, the "Services"). Cloud Designs is operated by Darec McDaniel as a solo business. By accessing or using our Services, you agree to be bound by these Terms. If you do not agree, please do not use our Services.
+          These Terms of Service ("Terms") govern your use of FutureMap' website and services (collectively, the "Services"). FutureMap is operated by Darec McDaniel as a solo business. By accessing or using our Services, you agree to be bound by these Terms. If you do not agree, please do not use our Services.
         </p>
       </div>
 
@@ -23,7 +23,7 @@ export default function Terms() {
 
         <ul>
           <li>
-            <strong>"Company":</strong> Cloud Designs, operated by Darec McDaniel
+            <strong>"Company":</strong> FutureMap, operated by Darec McDaniel
           </li>
           <li>
             <strong>"Services":</strong> Our website and AI-powered career roadmap generation service
@@ -44,7 +44,7 @@ export default function Terms() {
         <h2>2. Use License</h2>
 
         <p>
-          Cloud Designs grants you a limited, non-exclusive, non-transferable license to use our Services for your personal, non-commercial use, subject to these Terms.
+          FutureMap grants you a limited, non-exclusive, non-transferable license to use our Services for your personal, non-commercial use, subject to these Terms.
         </p>
 
         <p>
@@ -105,7 +105,7 @@ export default function Terms() {
 
         <h3>Your Rights</h3>
         <p>
-          You retain all rights to any content you submit (User Content). By submitting User Content, you grant Cloud Designs:
+          You retain all rights to any content you submit (User Content). By submitting User Content, you grant FutureMap:
         </p>
 
         <ul>
@@ -116,7 +116,7 @@ export default function Terms() {
 
         <h3>Our Intellectual Property</h3>
         <p>
-          All content, features, and functionality in our Services (except User Content) are owned by Cloud Designs, including:
+          All content, features, and functionality in our Services (except User Content) are owned by FutureMap, including:
         </p>
 
         <ul>
@@ -172,7 +172,7 @@ export default function Terms() {
         <h2>5A. Rate Limiting & Abuse Prevention</h2>
 
         <p>
-          To ensure service availability and prevent abuse, Cloud Designs implements rate limiting on our API:
+          To ensure service availability and prevent abuse, FutureMap implements rate limiting on our API:
         </p>
 
         <ul>
@@ -236,7 +236,7 @@ export default function Terms() {
         <h2>7. No Professional Advice</h2>
 
         <p>
-          <strong>THE SERVICES DO NOT CONSTITUTE PROFESSIONAL ADVICE.</strong> Cloud Designs is not a licensed career counselor, employment agency, educational institution, or professional advisor. The information provided through our Services is for general informational purposes only and should not be construed as:
+          <strong>THE SERVICES DO NOT CONSTITUTE PROFESSIONAL ADVICE.</strong> FutureMap is not a licensed career counselor, employment agency, educational institution, or professional advisor. The information provided through our Services is for general informational purposes only and should not be construed as:
         </p>
 
         <ul>
@@ -247,7 +247,7 @@ export default function Terms() {
         </ul>
 
         <p>
-          You should consult with qualified professionals before making any career, educational, or financial decisions. Cloud Designs expressly disclaims any responsibility for decisions made based on information provided through our Services.
+          You should consult with qualified professionals before making any career, educational, or financial decisions. FutureMap expressly disclaims any responsibility for decisions made based on information provided through our Services.
         </p>
       </section>
 
@@ -256,7 +256,7 @@ export default function Terms() {
 
         <h3>As-Is Services</h3>
         <p>
-          Our Services are provided "as is" and "as available" without warranties of any kind, express or implied. Cloud Designs disclaims all warranties including:
+          Our Services are provided "as is" and "as available" without warranties of any kind, express or implied. FutureMap disclaims all warranties including:
         </p>
 
         <ul>
@@ -290,7 +290,7 @@ export default function Terms() {
         </ul>
 
         <p>
-          <strong>Cloud Designs expressly disclaims all liability for any career decisions, job applications, resignations, educational investments, or financial decisions made in reliance on our roadmaps. You assume full responsibility for all decisions made using our Services.</strong>
+          <strong>FutureMap expressly disclaims all liability for any career decisions, job applications, resignations, educational investments, or financial decisions made in reliance on our roadmaps. You assume full responsibility for all decisions made using our Services.</strong>
         </p>
 
         <h3>Third-Party Content</h3>
@@ -339,7 +339,7 @@ export default function Terms() {
         <h2>10. Indemnification</h2>
 
         <p>
-          You agree to indemnify, defend, and hold harmless Cloud Designs, its owner Darec McDaniel, and any affiliates, licensors, service providers, employees, agents, officers, and directors (collectively, "Indemnified Parties") from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including but not limited to reasonable attorneys' fees and court costs) arising from or related to:
+          You agree to indemnify, defend, and hold harmless FutureMap, its owner Darec McDaniel, and any affiliates, licensors, service providers, employees, agents, officers, and directors (collectively, "Indemnified Parties") from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including but not limited to reasonable attorneys' fees and court costs) arising from or related to:
         </p>
 
         <ul>
@@ -368,7 +368,7 @@ export default function Terms() {
         <h2>12. Modifications to Services</h2>
 
         <p>
-          Cloud Designs reserves the right to:
+          FutureMap reserves the right to:
         </p>
 
         <ul>
@@ -425,7 +425,7 @@ export default function Terms() {
         <h2>16. Entire Agreement</h2>
 
         <p>
-          These Terms, together with our Privacy Policy and any other legal notices published by us on the Services, constitute the entire agreement between you and Cloud Designs concerning your use of the Services. These Terms supersede all prior or contemporaneous communications, whether electronic, oral, or written, between you and Cloud Designs.
+          These Terms, together with our Privacy Policy and any other legal notices published by us on the Services, constitute the entire agreement between you and FutureMap concerning your use of the Services. These Terms supersede all prior or contemporaneous communications, whether electronic, oral, or written, between you and FutureMap.
         </p>
       </section>
 

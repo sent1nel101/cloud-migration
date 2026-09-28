@@ -160,7 +160,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
               </h3>
             
             <div style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Real Courses & Learning Resources</h3>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Courses & Training</h3>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                 {(roadmap as any).professional_tier_content.courses && Array.isArray((roadmap as any).professional_tier_content.courses) ? (
                   (roadmap as any).professional_tier_content.courses.map((course: any, idx: number) => (
@@ -194,7 +194,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
             </div>
 
             <div style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Industry Certifications</h3>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "600", marginBottom: "0.75rem" }}>Certifications & Licenses</h3>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                 {(roadmap as any).professional_tier_content.certifications && Array.isArray((roadmap as any).professional_tier_content.certifications) && (
                   (roadmap as any).professional_tier_content.certifications.map((cert: any, idx: number) => (
@@ -251,7 +251,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
               </ul>
             </div>
 
-            {/* Portfolio Project Ideas - Professional Feature Card */}
+            {/* Experience & Portfolio Ideas - Professional Feature Card */}
             <div style={{ 
               marginBottom: "1.5rem", 
               padding: "1.5rem", 
@@ -261,7 +261,7 @@ export default function RoadmapDisplay({ roadmap }: RoadmapDisplayProps) {
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
                 <span style={{ fontSize: "1.75rem" }}>🚀</span>
-                <h3 style={{ fontSize: "1.15rem", fontWeight: "700", margin: 0, color: "#10b981" }}>Portfolio Project Ideas</h3>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: "700", margin: 0, color: "#10b981" }}>Experience & Portfolio Ideas</h3>
               </div>
               <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "1rem", fontStyle: "italic" }}>
                 Build these projects to demonstrate your skills to employers

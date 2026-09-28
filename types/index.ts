@@ -58,7 +58,7 @@ export interface Milestone {
  * Includes demand level and salary information.
  */
 export interface RecommendedRole {
-  /** Job title (e.g., "Prompt Engineer", "AI Training Specialist") */
+  /** Job title (e.g., "Registered Nurse", "Project Manager") */
   title: string;
   /** Description of the role and responsibilities */
   description: string;

@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       const resend = new Resend(process.env.RESEND_API_KEY);
 
       const emailResult = await resend.emails.send({
-        from: "Cloud Designs <noreply@darecmcdaniel.info>",
+        from: "FutureMap <noreply@darecmcdaniel.info>",
         to: CONTACT_EMAIL,
         subject: "New Bug Report Submission",
         html: emailHtml,
