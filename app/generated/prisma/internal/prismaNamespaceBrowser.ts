@@ -56,6 +56,7 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Roadmap: 'Roadmap',
+  RoadmapCache: 'RoadmapCache',
   Payment: 'Payment',
   RevisionRequest: 'RevisionRequest'
 } as const
@@ -145,6 +146,21 @@ export const RoadmapScalarFieldEnum = {
 } as const
 
 export type RoadmapScalarFieldEnum = (typeof RoadmapScalarFieldEnum)[keyof typeof RoadmapScalarFieldEnum]
+
+
+export const RoadmapCacheScalarFieldEnum = {
+  id: 'id',
+  currentRole: 'currentRole',
+  targetRole: 'targetRole',
+  content: 'content',
+  model: 'model',
+  hitCount: 'hitCount',
+  lastHitAt: 'lastHitAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RoadmapCacheScalarFieldEnum = (typeof RoadmapCacheScalarFieldEnum)[keyof typeof RoadmapCacheScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {

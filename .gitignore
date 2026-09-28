@@ -120,3 +120,6 @@ START_SESSION_34.md
 VERIFY_DATABASE_COLUMNS.md
 test-resume.txt
 test-parser.js
+
+# Local refactor tracking
+REFACTOR_LOG.md

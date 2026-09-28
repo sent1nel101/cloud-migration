@@ -389,6 +389,7 @@ export const ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Roadmap: 'Roadmap',
+  RoadmapCache: 'RoadmapCache',
   Payment: 'Payment',
   RevisionRequest: 'RevisionRequest'
 } as const
@@ -406,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "roadmap" | "payment" | "revisionRequest"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "roadmap" | "roadmapCache" | "payment" | "revisionRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -780,6 +781,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RoadmapCache: {
+      payload: Prisma.$RoadmapCachePayload<ExtArgs>
+      fields: Prisma.RoadmapCacheFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RoadmapCacheFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RoadmapCacheFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>
+        }
+        findFirst: {
+          args: Prisma.RoadmapCacheFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RoadmapCacheFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>
+        }
+        findMany: {
+          args: Prisma.RoadmapCacheFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>[]
+        }
+        create: {
+          args: Prisma.RoadmapCacheCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>
+        }
+        createMany: {
+          args: Prisma.RoadmapCacheCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RoadmapCacheCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>[]
+        }
+        delete: {
+          args: Prisma.RoadmapCacheDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>
+        }
+        update: {
+          args: Prisma.RoadmapCacheUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>
+        }
+        deleteMany: {
+          args: Prisma.RoadmapCacheDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RoadmapCacheUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RoadmapCacheUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>[]
+        }
+        upsert: {
+          args: Prisma.RoadmapCacheUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RoadmapCachePayload>
+        }
+        aggregate: {
+          args: Prisma.RoadmapCacheAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRoadmapCache>
+        }
+        groupBy: {
+          args: Prisma.RoadmapCacheGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RoadmapCacheGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RoadmapCacheCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RoadmapCacheCountAggregateOutputType> | number
+        }
+      }
+    }
     Payment: {
       payload: Prisma.$PaymentPayload<ExtArgs>
       fields: Prisma.PaymentFieldRefs
@@ -1036,6 +1111,21 @@ export const RoadmapScalarFieldEnum = {
 } as const
 
 export type RoadmapScalarFieldEnum = (typeof RoadmapScalarFieldEnum)[keyof typeof RoadmapScalarFieldEnum]
+
+
+export const RoadmapCacheScalarFieldEnum = {
+  id: 'id',
+  currentRole: 'currentRole',
+  targetRole: 'targetRole',
+  content: 'content',
+  model: 'model',
+  hitCount: 'hitCount',
+  lastHitAt: 'lastHitAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RoadmapCacheScalarFieldEnum = (typeof RoadmapCacheScalarFieldEnum)[keyof typeof RoadmapCacheScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {
@@ -1310,6 +1400,7 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   verificationToken?: Prisma.VerificationTokenOmit
   roadmap?: Prisma.RoadmapOmit
+  roadmapCache?: Prisma.RoadmapCacheOmit
   payment?: Prisma.PaymentOmit
   revisionRequest?: Prisma.RevisionRequestOmit
 }

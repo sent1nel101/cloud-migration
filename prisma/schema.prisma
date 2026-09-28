@@ -116,6 +116,30 @@ model Roadmap {
   @@index([createdAt])
 }
 
+// RoadmapCache model - reusable AI-generated content per role pair.
+// Stores only role-level content (no user data), so it is safe to share across users.
+model RoadmapCache {
+  id            String   @id @default(cuid())
+
+  // Normalized cache key (lowercased, trimmed, whitespace collapsed)
+  currentRole   String
+  targetRole    String
+
+  // RoadmapAIContent JSON (see lib/roadmap-builder.ts)
+  content       String   @db.Text
+  model         String   // Claude model that generated the content
+
+  // Usage stats
+  hitCount      Int      @default(0)
+  lastHitAt     DateTime?
+
+  // Audit
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([currentRole, targetRole])
+}
+
 // Payment model - tracks all payments
 model Payment {
   id                String   @id @default(cuid())
