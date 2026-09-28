@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SalaryResearchArticle from "./salary-research-article";
 
 export default function Blog() {
   const blogPosts = [
@@ -15,12 +16,13 @@ export default function Blog() {
     },
     {
       id: 2,
-      title: "Tech Salaries by Role: Real Data from 5,000+ Professionals",
-      excerpt: "Comprehensive salary insights across software engineering, data science, DevOps, and emerging tech roles. Updated quarterly.",
+      title: "What Will I Earn? How to Research Salaries for Any Career",
+      excerpt: "A simple, free process for finding realistic pay for any role, from nursing and the trades to teaching and finance, and building your own salary range before you make the switch.",
       author: "Darec McDaniel",
-      date: "December 8, 2024",
+      date: "September 28, 2026",
       category: "Salary Data",
-      readTime: "8 min",
+      readTime: "5 min",
+      article: <SalaryResearchArticle />,
     },
     {
       id: 3,
@@ -33,8 +35,8 @@ export default function Blog() {
     },
     {
       id: 4,
-      title: "How to Build a Portfolio That Accelerates Your Career Change",
-      excerpt: "A step-by-step guide to creating portfolio projects that impress hiring managers and demonstrate real-world skills.",
+      title: "Show, Don't Tell: Building Proof of Your Skills for a Career Change",
+      excerpt: "Projects, volunteer work, job shadowing, work samples, and references: how to show hiring managers you can do the job in any field.",
       author: "Darec McDaniel",
       date: "November 22, 2024",
       category: "Portfolio",
@@ -111,8 +113,14 @@ export default function Blog() {
                   <span className="dot">•</span>
                   <span className="date">{post.date}</span>
                 </div>
-                <button className="read-more">Read →</button>
+                {!post.article && <button className="read-more">Read →</button>}
               </div>
+              {post.article && (
+                <details className="blog-article">
+                  <summary className="read-more">Read the article →</summary>
+                  {post.article}
+                </details>
+              )}
             </article>
           ))}
         </div>
@@ -137,13 +145,13 @@ export default function Blog() {
         <div className="resources-grid">
           <div className="resource-card">
             <h3>Free Learning Platforms</h3>
-            <p>Discover Coursera, edX, Khan Academy, and freeCodeCamp for skill-building during career transitions. Thousands of free courses across tech, data, business, and more.</p>
+            <p>Discover Coursera, edX, Khan Academy, and community college programs for skill-building during career transitions. Thousands of free and low-cost courses across healthcare, business, the trades, tech, and more.</p>
             <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer" className="resource-button">Explore Courses</a>
           </div>
           <div className="resource-card">
             <h3>Salary Research Tools</h3>
-            <p>Use Glassdoor, Levels.fyi, Payscale, and PaycheckCity to research salaries by role, location, and experience level for informed career decisions.</p>
-            <a href="https://www.glassdoor.com" target="_blank" rel="noopener noreferrer" className="resource-button">Check Salaries</a>
+            <p>Start with the free Bureau of Labor Statistics Occupational Outlook Handbook for pay and job outlook in almost any occupation, then cross-check with Glassdoor and Payscale for your location.</p>
+            <a href="https://www.bls.gov/ooh/" target="_blank" rel="noopener noreferrer" className="resource-button">Check Salaries</a>
           </div>
           <div className="resource-card">
             <h3>Free Resume & LinkedIn Resources</h3>
