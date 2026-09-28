@@ -45,24 +45,24 @@ const client = new Anthropic({
  */
 function escapeForJSON(str: string): string {
   return str
-    .replace(/\\/g, "\\\\")  // Backslash
-    .replace(/"/g, '\\"')    // Double quote
-    .replace(/\n/g, "\\n")   // Newline
-    .replace(/\r/g, "\\r")   // Carriage return
-    .replace(/\t/g, "\\t")   // Tab
+    .replace(/\\/g, "\\\\") // Backslash
+    .replace(/"/g, '\\"') // Double quote
+    .replace(/\n/g, "\\n") // Newline
+    .replace(/\r/g, "\\r") // Carriage return
+    .replace(/\t/g, "\\t") // Tab
 }
 
 /**
  * Extracts a target role from the user's goal statement.
  * Uses Claude to infer a specific job title that matches the goals.
- * 
+ *
  * @param goals - User's career goals statement
  * @param currentRole - User's current role (for context)
  * @returns Promise<string> - Inferred target role name
  */
 async function extractTargetRoleFromGoals(
   goals: string,
-  currentRole: string
+  currentRole: string,
 ): Promise<string> {
   try {
     const response = await client.messages.create({
@@ -98,15 +98,13 @@ Examples: "Data Scientist", "Product Manager", "Machine Learning Engineer", "UX 
 
 async function generateRoadmapWithAI(
   input: CareerInput,
-  userTier: string = "FREE"
+  userTier: string = "FREE",
 ): Promise<Roadmap> {
   // Customize prompt based on user tier - keep guidance brief to avoid token limits
   const tierGuidance = {
     FREE: "Keep it simple.",
-    PROFESSIONAL:
-      "Add professional tier content.",
-    PREMIUM:
-      "Add premium tier content with all coaching details.",
+    PROFESSIONAL: "Add professional tier content.",
+    PREMIUM: "Add premium tier content with all coaching details.",
   }
 
   const guidance =
@@ -118,16 +116,21 @@ async function generateRoadmapWithAI(
   const totalMonths = Math.min(48, baseMonths + experienceFactor)
 
   // Extract target role from goals for proper job title usage
-  const targetRole = await extractTargetRoleFromGoals(input.goals, input.currentRole)
+  const targetRole = await extractTargetRoleFromGoals(
+    input.goals,
+    input.currentRole,
+  )
 
   // Build personalization context with all variables resolved and properly escaped
   const currentRoleRef = escapeForJSON(input.currentRole)
   const goalsRef = escapeForJSON(input.goals)
   const targetRoleRef = escapeForJSON(targetRole)
-  const skillsRef = escapeForJSON(input.skills?.join(", ") || "your existing skills")
+  const skillsRef = escapeForJSON(
+    input.skills?.join(", ") || "your existing skills",
+  )
   const yearsRef = input.yearsExperience
   const completionDate = new Date(
-    Date.now() + totalMonths * 30 * 24 * 60 * 60 * 1000
+    Date.now() + totalMonths * 30 * 24 * 60 * 60 * 1000,
   )
     .toISOString()
     .split("T")[0]
@@ -146,7 +149,7 @@ async function generateRoadmapWithAI(
       {
         phase: 1,
         title: `Foundation: Leverage Your ${currentRoleRef} Strengths (Months 1-${Math.ceil(
-          totalMonths * 0.2
+          totalMonths * 0.2,
         )})`,
         description: `Identify which aspects of your ${currentRoleRef} background transfer to ${targetRoleRef}. Focus on your ${skillsRef} as a foundation.`,
         tasks: [
@@ -328,7 +331,8 @@ async function generateRoadmapWithAI(
       resumes: [
         {
           type: "Tech-Focused",
-          description: "Emphasizes technical skills and projects for tech-heavy roles",
+          description:
+            "Emphasizes technical skills and projects for tech-heavy roles",
           content: `• Transform your ${yearsRef}-year ${currentRoleRef} background into tech-forward narrative\n• Lead with technical skills: ${skillsRef}\n• Emphasize metrics-driven projects with quantified impact\n• Show how ${currentRoleRef} background built foundations for ${targetRoleRef}\n• Use examples: "Improved systems efficiency by X%", "Architected solutions for Y users"\n• Position as technically grounded ${targetRoleRef} professional ready to contribute immediately`,
         },
         {
@@ -338,12 +342,14 @@ async function generateRoadmapWithAI(
         },
         {
           type: "Startup-Focused",
-          description: "Highlights adaptability and growth mindset for fast-moving companies",
+          description:
+            "Highlights adaptability and growth mindset for fast-moving companies",
           content: `• Highlight adaptability as a ${currentRoleRef} transitioning to ${targetRoleRef}\n• Emphasize: side projects, learning velocity, wearing multiple hats\n• Use startup language: "Built from ground up", "Scaled processes", "Learned fast"\n• Show hunger to grow and energy to move fast\n• Demonstrate: continuous learning, rapid skill acquisition, flexibility\n• Appeal to startups valuing hustle and diverse experience`,
         },
         {
           type: "Enterprise-Focused",
-          description: "Emphasizes leadership and structured process improvement",
+          description:
+            "Emphasizes leadership and structured process improvement",
           content: `• Position ${yearsRef} years in ${currentRoleRef} as leadership experience\n• Highlight: cross-functional collaboration, budget management, team leadership\n• Demonstrate: stakeholder communication, process improvement, change management\n• Use enterprise language: "Optimized workflows", "Managed initiatives", "Drove adoption"\n• Show how you led change in ${currentRoleRef}\n• Appeal to enterprises seeking ${targetRoleRef} leaders with management credibility`,
         },
       ],
@@ -432,7 +438,10 @@ ${roadmapJSON}`
     cleanedText = cleanedText.trim()
 
     console.log("Cleaned text preview:", cleanedText.substring(0, 200))
-    console.log("Full cleaned response (first 500 chars):", cleanedText.substring(0, 500))
+    console.log(
+      "Full cleaned response (first 500 chars):",
+      cleanedText.substring(0, 500),
+    )
 
     // Try to extract JSON if it's wrapped in other text
     let jsonText = cleanedText
@@ -444,9 +453,15 @@ ${roadmapJSON}`
 
     console.log("=== JSON TO PARSE ===")
     console.log("JSON text length:", jsonText.length)
-    console.log("Last 500 chars of JSON:", jsonText.substring(jsonText.length - 500))
-    console.log("Area around error position 8263:", jsonText.substring(8200, 8300))
-    
+    console.log(
+      "Last 500 chars of JSON:",
+      jsonText.substring(jsonText.length - 500),
+    )
+    console.log(
+      "Area around error position 8263:",
+      jsonText.substring(8200, 8300),
+    )
+
     // Parse cleaned JSON string
     const parsed = JSON.parse(jsonText)
 
@@ -475,7 +490,7 @@ ${roadmapJSON}`
         total_months: 24,
         start_date: "2024-12-29",
         estimated_completion: new Date(
-          Date.now() + 24 * 30 * 24 * 60 * 60 * 1000
+          Date.now() + 24 * 30 * 24 * 60 * 60 * 1000,
         )
           .toISOString()
           .split("T")[0],
@@ -489,18 +504,18 @@ ${roadmapJSON}`
         communities: [],
       },
       next_steps: parsed.next_steps || [],
-      ...(professionalContent && { 
+      ...(professionalContent && {
         professional_tier_content: {
           ...professionalContent,
           courses: resources.courses,
           certifications: resources.certifications,
-        }
+        },
       }),
-      ...(premiumContent && { 
+      ...(premiumContent && {
         premium_tier_content: {
           ...premiumContent,
           communities: resources.communities,
-        }
+        },
       }),
     }
 
@@ -508,11 +523,20 @@ ${roadmapJSON}`
     console.log("Has skill_gaps?", roadmap.skill_gaps.length > 0)
     console.log("Has milestones?", roadmap.milestones.length > 0)
     console.log("Has resource_categories?", !!roadmap.resource_categories)
-    console.log("Has professional_tier_content?", !!roadmap.professional_tier_content)
+    console.log(
+      "Has professional_tier_content?",
+      !!roadmap.professional_tier_content,
+    )
     console.log("Has premium_tier_content?", !!roadmap.premium_tier_content)
     if (premiumContent) {
-      console.log("Premium resumes count:", premiumContent.resumes?.length || 0)
-      console.log("Premium coaching insights count:", premiumContent.career_coaching_insights?.length || 0)
+      console.log(
+        "Premium resumes count:",
+        premiumContent.resumes?.length || 0,
+      )
+      console.log(
+        "Premium coaching insights count:",
+        premiumContent.career_coaching_insights?.length || 0,
+      )
     }
     return roadmap
   } catch (error) {
@@ -550,19 +574,22 @@ export async function POST(request: NextRequest) {
     // Return 429 if rate limited
     if (!rateLimitResult.allowed) {
       console.log(
-        `Rate limit exceeded for ${identifier}: ${rateLimitResult.resetIn}ms remaining`
+        `Rate limit exceeded for ${identifier}: ${rateLimitResult.resetIn}ms remaining`,
       )
       return NextResponse.json(
         {
           error: "Too many requests. Please try again later.",
           retryAfter: Math.ceil(rateLimitResult.resetIn / 1000),
         },
-        { status: 429, headers: { "Retry-After": rateLimitResult.resetIn.toString() } }
+        {
+          status: 429,
+          headers: { "Retry-After": rateLimitResult.resetIn.toString() },
+        },
       )
     }
 
     console.log(
-      `Rate limit check passed for ${identifier}: ${rateLimitResult.remaining} requests remaining`
+      `Rate limit check passed for ${identifier}: ${rateLimitResult.remaining} requests remaining`,
     )
 
     // Parse request body as CareerInput type
@@ -575,7 +602,7 @@ export async function POST(request: NextRequest) {
       console.log("Validation failed: missing required fields")
       return NextResponse.json(
         { error: "Missing required fields: currentRole, yearsExperience" },
-        { status: 400 }
+        { status: 400 },
       )
     }
 
@@ -584,7 +611,7 @@ export async function POST(request: NextRequest) {
       console.log("Validation failed: invalid experience")
       return NextResponse.json(
         { error: "Years of experience must be between 0 and 70" },
-        { status: 400 }
+        { status: 400 },
       )
     }
 
@@ -605,7 +632,9 @@ export async function POST(request: NextRequest) {
         })
         if (dbUser) {
           if (dbUser.tier !== userTier) {
-            console.log(`⚠️ Session tier was stale! Updated from ${userTier} to ${dbUser.tier}`)
+            console.log(
+              `⚠️ Session tier was stale! Updated from ${userTier} to ${dbUser.tier}`,
+            )
           }
           userTier = dbUser.tier
         }
@@ -637,7 +666,7 @@ export async function POST(request: NextRequest) {
             education: body.educationLevel || undefined, // Save education for later editing
           },
           roadmapContent,
-          `${body.currentRole} → AI Role`
+          `${body.currentRole} → AI Role`,
         )
         console.log("✅ Roadmap saved successfully:", savedRoadmap.id)
       } catch (dbError) {
@@ -649,7 +678,9 @@ export async function POST(request: NextRequest) {
         // Continue with response even if save fails
       }
     } else {
-      console.log("User not authenticated, roadmap not saved to database (guest generation)")
+      console.log(
+        "User not authenticated, roadmap not saved to database (guest generation)",
+      )
     }
 
     console.log("Sending response with roadmap")
@@ -658,7 +689,7 @@ export async function POST(request: NextRequest) {
         ...roadmap,
         roadmapId: savedRoadmap?.id, // Include ID if saved
       },
-      { status: 200 }
+      { status: 200 },
     )
   } catch (error) {
     // Comprehensive error handling with specific messages
