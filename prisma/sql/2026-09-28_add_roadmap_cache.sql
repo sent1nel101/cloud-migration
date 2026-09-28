@@ -21,3 +21,8 @@ CREATE TABLE IF NOT EXISTS "RoadmapCache" (
 
 CREATE UNIQUE INDEX IF NOT EXISTS "RoadmapCache_currentRole_targetRole_key"
     ON "RoadmapCache"("currentRole", "targetRole");
+
+-- Block Supabase's public API (anon/authenticated keys). No policies are added,
+-- so those roles get no access. The app connects via Prisma as the table owner,
+-- which RLS does not restrict.
+ALTER TABLE "RoadmapCache" ENABLE ROW LEVEL SECURITY;
