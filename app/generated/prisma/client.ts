@@ -65,6 +65,11 @@ export type VerificationToken = Prisma.VerificationTokenModel
  */
 export type Roadmap = Prisma.RoadmapModel
 /**
+ * Model RoadmapCache
+ * 
+ */
+export type RoadmapCache = Prisma.RoadmapCacheModel
+/**
  * Model Payment
  * 
  */
